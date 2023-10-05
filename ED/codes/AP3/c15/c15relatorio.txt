@@ -1,0 +1,180 @@
+1) A variável só erea declarada dentro do escopo do for, por isos não podia ser retornada fora.
+
+2) Script started on 2023-09-08 18:53:40-03:00 [TERM="alacritty" TTY="/dev/pts/1" COLUMNS="148" LINES="36"]
+[;f6:53PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c15 ]
+ $ gcc -g c15.gc	 gcc -g c15.gd		b a.out
+GNU gdb (GDB) 13.2
+Copyright (C) 2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-pc-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from a.out...
+(gdb) br 9
+Breakpoint 1 at 0x1137: file c15.c, line 9.
+(gdb) next
+The program is not being run.
+(gdb) run
+Starting program: /home/iago/Documents/school/ufmg/3_Semestre/ED/codes/TP/c15/a.out
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+
+Breakpoint 1, main (argc=1, argv=0x7fffffffe158) at c15.c:9
+9	  for(int i=1; i < 5; i++) {
+(gdb) next
+10	     int a = 1;
+(gdb) next
+11	     a = inc(a);
+(gdb) p a a
+$1 = 1
+(gdb) next
+9	  for(int i=1; i < 5; i++) {
+(gdb) p a
+No symbol "a" in current context.
+(gdb) next
+10	     int a = 1;
+(gdb) p a
+$2 = 2
+(gdb) next
+11	     a = inc(a);
+(gdb) p a
+$3 = 1
+(gdb) next
+9	  for(int i=1; i < 5; i++) {
+(gdb) next
+10	     int a = 1;
+(gdb) next
+11	     a = inc(a);
+(gdb) next
+9	  for(int i=1; i < 5; i++) {
+(gdb) p a
+No symbol "a" in current context.
+(gdb) next
+10	     int a = 1;
+(gdb) p a
+$4 = 2
+(gdb) next
+11	     a = inc(a);
+(gdb) p a
+$5 = 1
+(gdb) ce
+Continuing.
+[Inferior 1 (process 127442) exited with code 01]
+(gdb) exit
+[;f6:54PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c15 ]
+ $ catatestea | perl -pe 's/\e([^\[\]]|\[.*?[a-zA-Z]|\].*?\a)//g' | col -b > tesce									      valgrind --leak-check=full ./a.ouvalgrind --leak-check=full ./a.out
+==127586== Memcheck, a memory error detector
+==127586== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==127586== Using Valgrind-3.21.0 and LibVEX; rerun with -h for copyright info
+==127586== Command: ./a.out
+==127586==
+==127586==
+==127586== HEAP SUMMARY:
+==127586==     in use at exit: 0 bytes in 0 blocks
+==127586==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==127586==
+==127586== All heap blocks were freed -- no leaks are possible
+==127586==
+==127586== For lists of detected and suppressed errors, rerun with: -s
+==127586== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[;f6:54PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c15 ]
+ $ exit
+
+Script done on 2023-09-08 18:54:46-03:00 [COMMAND_EXIT_CODE="1"]
+
+3) Declarei a variável antes do for e retornei ao final do programa.
+
+4) Script started on 2023-09-08 18:54:57-03:00 [TERM="alacritty" TTY="/dev/pts/1" COLUMNS="148" LINES="36"]
+[;f6:54PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c15 ]
+ $ gcc -g c15correto.gd			b a.out
+GNU gdb (GDB) 13.2
+Copyright (C) 2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-pc-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from a.out...
+(gdb) br 9
+Breakpoint 1 at 0x1157: file c15correto.c, line 9.
+(gdb) run
+Starting program: /home/iago/Documents/school/ufmg/3_Semestre/ED/codes/TP/c15/a.out
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+
+Breakpoint 1, main (argc=1, argv=0x7fffffffe158) at c15correto.c:9
+9	  int a = 1;
+(gdb) next
+10	  for(int i=1; i < 5; i++) {
+(gdb) p a
+$1 = 1
+(gdb) next
+11	     a = inc(a);
+(gdb) next
+10	  for(int i=1; i < 5; i++) {
+(gdb) p a
+$2 = 2
+(gdb) next
+11	     a = inc(a);
+(gdb) p a
+$3 = 2
+(gdb) next
+10	  for(int i=1; i < 5; i++) {
+(gdb) p a
+$4 = 3
+(gdb) next
+11	     a = inc(a);
+(gdb) next
+10	  for(int i=1; i < 5; i++) {
+(gdb) next
+11	     a = inc(a);
+(gdb) next
+10	  for(int i=1; i < 5; i++) {
+(gdb) next
+13	  printf("%d", a);
+(gdb) next
+14	  return a;
+(gdb) p a
+$5 = 5
+(gdb) c
+Continuing.
+5[Inferior 1 (process 127761) exited with code 05]
+(gdb) exit
+[;f6:55PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c15 ]
+ $ valgrind --leak-check=full ./a.ouvalgrind --leak-check=full ./a.out
+==127843== Memcheck, a memory error detector
+==127843== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==127843== Using Valgrind-3.21.0 and LibVEX; rerun with -h for copyright info
+==127843== Command: ./a.out
+==127843==
+5==127843==
+==127843== HEAP SUMMARY:
+==127843==     in use at exit: 0 bytes in 0 blocks
+==127843==   total heap usage: 1 allocs, 1 frees, 1,024 bytes allocated
+==127843==
+==127843== All heap blocks were freed -- no leaks are possible
+==127843==
+==127843== For lists of detected and suppressed errors, rerun with: -s
+==127843== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[;f6:55PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c15 ]
+ $ exit
+
+Script done on 2023-09-08 18:55:36-03:00 [COMMAND_EXIT_CODE="5"]
+

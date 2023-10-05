@@ -1,0 +1,178 @@
+1) A string tinha tamanho de 8, mas a palavra inserida tinha mais de 8 caracteres. Além disso a variável também não foi liberada da memória.
+
+2) Script started on 2023-09-08 18:32:47-03:00 [TERM="alacritty" TTY="/dev/pts/1" COLUMNS="148" LINES="36"]
+[;f6:32PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c11 ]
+ $ gcc -g c11correto.gd			b a.out
+GNU gdb (GDB) 13.2
+Copyright (C) 2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-pc-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from a.out...
+(gdb) br 9
+Breakpoint 1 at 0x116f: file c11correto.c, line 9.
+(gdb) run
+Starting program: /home/iago/Documents/school/ufmg/3_Semestre/ED/codes/TP/c11/a.out
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+
+Breakpoint 1, main () at c11correto.c:9
+9		strcpy(msg, "Holberton");
+(gdb) p mds
+No symbol "mds" in current context.
+(gdb) p msg
+$1 = 0x5555555592a0 ""
+(gdb) next
+10		msg[0] = 'R';
+(gdb) p msg
+$2 = 0x5555555592a0 "Holberton"
+(gdb) next
+11		printf("%ld, %s\n", (long)getpid(), msg);
+(gdb) next
+121350, Rolberton
+12		return (0);
+(gdb) exit
+A debugging session is active.
+
+	Inferior 1 [process 121350] will be killed.
+
+Quit anyway? (y or n) y
+[;f6:33PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c11 ]
+ $ valgrind --leak-check=full ./a.ouvalgrind --leak-check=full ./a.out
+==121467== Memcheck, a memory error detector
+==121467== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==121467== Using Valgrind-3.21.0 and LibVEX; rerun with -h for copyright info
+==121467== Command: ./a.out
+==121467==
+==121467== Invalid write of size 2
+==121467==    at 0x109180: main (c11correto.c:9)
+==121467==  Address 0x4ac6048 is 0 bytes after a block of size 8 alloc'd
+==121467==    at 0x4841848: malloc (vg_replace_malloc.c:431)
+==121467==    by 0x10916A: main (c11correto.c:8)
+==121467==
+==121467== Invalid read of size 1
+==121467==    at 0x4847ED4: strlen (vg_replace_strmem.c:501)
+==121467==    by 0x48D66E8: __printf_buffer (vfprintf-process-arg.c:435)
+==121467==    by 0x48D6E51: __vfprintf_internal (vfprintf-internal.c:1523)
+==121467==    by 0x48CC2FE: printf (printf.c:33)
+==121467==    by 0x1091AE: main (c11correto.c:11)
+==121467==  Address 0x4ac6048 is 0 bytes after a block of size 8 alloc'd
+==121467==    at 0x4841848: malloc (vg_replace_malloc.c:431)
+==121467==    by 0x10916A: main (c11correto.c:8)
+==121467==
+==121467== Invalid read of size 1
+==121467==    at 0x484C100: memmove (vg_replace_strmem.c:1400)
+==121467==    by 0x48CCC88: memcpy (string_fortified.h:29)
+==121467==    by 0x48CCC88: __printf_buffer_write (Xprintf_buffer_write.c:39)
+==121467==    by 0x48D4F76: __printf_buffer (vfprintf-process-arg.c:501)
+==121467==    by 0x48D6E51: __vfprintf_internal (vfprintf-internal.c:1523)
+==121467==    by 0x48CC2FE: printf (printf.c:33)
+==121467==    by 0x1091AE: main (c11correto.c:11)
+==121467==  Address 0x4ac6048 is 0 bytes after a block of size 8 alloc'd
+==121467==    at 0x4841848: malloc (vg_replace_malloc.c:431)
+==121467==    by 0x10916A: main (c11correto.c:8)
+==121467==
+121467, Rolberton
+==121467==
+==121467== HEAP SUMMARY:
+==121467==     in use at exit: 8 bytes in 1 blocks
+==121467==   total heap usage: 2 allocs, 1 frees, 1,032 bytes allocated
+==121467==
+==121467== 8 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==121467==    at 0x4841848: malloc (vg_replace_malloc.c:431)
+==121467==    by 0x10916A: main (c11correto.c:8)
+==121467==
+==121467== LEAK SUMMARY:
+==121467==    definitely lost: 8 bytes in 1 blocks
+==121467==    indirectly lost: 0 bytes in 0 blocks
+==121467==	possibly lost: 0 bytes in 0 blocks
+==121467==    still reachable: 0 bytes in 0 blocks
+==121467==	   suppressed: 0 bytes in 0 blocks
+==121467==
+==121467== For lists of detected and suppressed errors, rerun with: -s
+==121467== ERROR SUMMARY: 6 errors from 4 contexts (suppressed: 0 from 0)
+[;f6:33PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c11 ]
+ $ exit
+
+Script done on 2023-09-08 18:33:38-03:00 [COMMAND_EXIT_CODE="0"]
+
+3) Aumentei o tamanho possível da string e liberei a variável ao final do programa.
+
+4) Script started on 2023-09-08 18:35:52-03:00 [TERM="alacritty" TTY="/dev/pts/1" COLUMNS="148" LINES="36"]
+[;f6:35PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c11 ]
+ $ script -q testecorretoa			gcc -g c11correto.gd		     b a.out
+GNU gdb (GDB) 13.2
+Copyright (C) 2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-pc-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from a.out...
+(gdb) br 9
+Breakpoint 1 at 0x117f: file c11correto.c, line 9.
+(gdb) run
+Starting program: /home/iago/Documents/school/ufmg/3_Semestre/ED/codes/TP/c11/a.out
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+
+Breakpoint 1, main () at c11correto.c:9
+warning: Source file is more recent than executable.
+9		strcpy(msg, "Holberton");
+(gdb) p msg
+$1 = 0x5555555592a0 ""
+(gdb) next
+10		msg[0] = 'R';
+(gdb) p msg
+$2 = 0x5555555592a0 "Holberton"
+(gdb) next
+11		printf("%ld, %s\n", (long)getpid(), msg);
+(gdb) p msg
+$3 = 0x5555555592a0 "Rolberton"
+(gdb) next
+122284, Rolberton
+12		free(msg);
+(gdb) continue
+Continuing.
+[Inferior 1 (process 122284) exited normally]
+(gdb) exit
+[;f6:36PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c11 ]
+ $ valgrind --leak-check=full ./a.ouvalgrind --leak-check=full ./a.out
+==122347== Memcheck, a memory error detector
+==122347== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==122347== Using Valgrind-3.21.0 and LibVEX; rerun with -h for copyright info
+==122347== Command: ./a.out
+==122347==
+122347, Rolberton
+==122347==
+==122347== HEAP SUMMARY:
+==122347==     in use at exit: 0 bytes in 0 blocks
+==122347==   total heap usage: 2 allocs, 2 frees, 1,034 bytes allocated
+==122347==
+==122347== All heap blocks were freed -- no leaks are possible
+==122347==
+==122347== For lists of detected and suppressed errors, rerun with: -s
+==122347== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[;f6:36PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c11 ]
+ $ exit
+
+Script done on 2023-09-08 18:36:31-03:00 [COMMAND_EXIT_CODE="0"]
+

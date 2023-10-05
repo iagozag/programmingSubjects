@@ -1,0 +1,128 @@
+1) Toda iteração do for era alocada memória no heap e a cada novo malloc, a memória alocada anteriormente era perdida.
+
+2) Script started on 2023-09-08 15:41:54-03:00 [TERM="alacritty" TTY="/dev/pts/3" COLUMNS="148" LINES="36"]
+[;f3:41PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c3 ]
+ $ gcc -g c3.gd		b a.out
+GNU gdb (GDB) 13.2
+Copyright (C) 2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-pc-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from a.out...
+(gdb) break 4
+Breakpoint 1 at 0x1158: file c3.c, line 8.
+(gdb) run
+Starting program: /home/iago/Documents/school/ufmg/3_Semestre/ED/codes/TP/c3/a.out
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+
+Breakpoint 1, main (argc=1, argv=0x7fffffffe158) at c3.c:8
+8	  for (i=0; i < 10; i++){
+(gdb) next
+9	    a = malloc(sizeof(int) * 100);
+(gdb) p a
+$1 = (int *) 0x7ffff7ffdab0 <_rtld_global+2736>
+(gdb) next
+8	  for (i=0; i < 10; i++){
+(gdb) next
+9	    a = malloc(sizeof(int) * 100);
+(gdb) p a
+$2 = (int *) 0x5555555592a0
+(gdb) next
+8	  for (i=0; i < 10; i++){
+(gdb) next
+9	    a = malloc(sizeof(int) * 100);
+(gdb) p a
+$3 = (int *) 0x555555559440
+(gdb) continue
+Continuing.
+[Inferior 1 (process 78594) exited normally]
+(gdb) exit
+[;f3:44PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c3 ]
+ $ valgrind --leak-check=full ./a.ouvalgrind --leak-check=full ./a.out
+==78990== Memcheck, a memory error detector
+==78990== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==78990== Using Valgrind-3.21.0 and LibVEX; rerun with -h for copyright info
+==78990== Command: ./a.out
+==78990==
+==78990==
+==78990== HEAP SUMMARY:
+==78990==     in use at exit: 3,600 bytes in 9 blocks
+==78990==   total heap usage: 10 allocs, 1 frees, 4,000 bytes allocated
+==78990==
+==78990== 3,600 bytes in 9 blocks are definitely lost in loss record 1 of 1
+==78990==    at 0x4841848: malloc (vg_replace_malloc.c:431)
+==78990==    by 0x10916A: main (c3.c:9)
+==78990==
+==78990== LEAK SUMMARY:
+==78990==    definitely lost: 3,600 bytes in 9 blocks
+==78990==    indirectly lost: 0 bytes in 0 blocks
+==78990==      possibly lost: 0 bytes in 0 blocks
+==78990==    still reachable: 0 bytes in 0 blocks
+==78990==	  suppressed: 0 bytes in 0 blocks
+==78990==
+==78990== For lists of detected and suppressed errors, rerun with: -s
+==78990== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+[;f3:44PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c3 ]
+ $ exit
+
+Script done on 2023-09-08 15:44:15-03:00 [COMMAND_EXIT_CODE="0"]
+
+3) Foi necessário limpar a memória do heap toda iteração para prevenir o vazamento de memória.
+
+4) Script started on 2023-09-08 15:47:46-03:00 [TERM="alacritty" TTY="/dev/pts/3" COLUMNS="148" LINES="36"]
+[;f3:47PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c3 ]
+ $ gcc -g c3correto.gd		      b a.out
+GNU gdb (GDB) 13.2
+Copyright (C) 2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-pc-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from a.out...
+(gdb) run
+Starting program: /home/iago/Documents/school/ufmg/3_Semestre/ED/codes/TP/c3/a.out
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+[Inferior 1 (process 80066) exited normally]
+(gdb) exit
+[;f3:48PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c3 ]
+ $ valgrind --leak-check=full ./a.ouvalgrind --leak-check=full ./a.out
+==80116== Memcheck, a memory error detector
+==80116== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==80116== Using Valgrind-3.21.0 and LibVEX; rerun with -h for copyright info
+==80116== Command: ./a.out
+==80116==
+==80116==
+==80116== HEAP SUMMARY:
+==80116==     in use at exit: 0 bytes in 0 blocks
+==80116==   total heap usage: 10 allocs, 10 frees, 4,000 bytes allocated
+==80116==
+==80116== All heap blocks were freed -- no leaks are possible
+==80116==
+==80116== For lists of detected and suppressed errors, rerun with: -s
+==80116== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[;f3:48PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c3 ]
+ $ exit
+
+Script done on 2023-09-08 15:48:29-03:00 [COMMAND_EXIT_CODE="0"]
+

@@ -1,0 +1,128 @@
+1) A variável não foi inicializada antes da condição do if.
+
+2) Script started on 2023-09-08 18:37:35-03:00 [TERM="alacritty" TTY="/dev/pts/1" COLUMNS="148" LINES="36"]
+[;f6:37PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c12 ]
+ $ gcc -g c12.gd	  b a.out
+GNU gdb (GDB) 13.2
+Copyright (C) 2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-pc-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from a.out...
+(gdb) br 5
+Breakpoint 1 at 0x1141: file c12.c, line 6.
+(gdb) runtinue
+Starting program: /home/iago/Documents/school/ufmg/3_Semestre/ED/codes/TP/c12/a.out
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+
+Breakpoint 1, main () at c12.c:6
+6	    if(x == 0) {
+(gdb) p x
+$1 = 32767
+(gdb) next
+9	    return 0;
+(gdb) continue
+Continuing.
+[Inferior 1 (process 122735) exited normally]
+(gdb) exit
+[;f6:38PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c12 ]
+ $ valgrind --leak-check=full ./a.ouvalgrind --leak-check=full ./a.out
+==122817== Memcheck, a memory error detector
+==122817== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==122817== Using Valgrind-3.21.0 and LibVEX; rerun with -h for copyright info
+==122817== Command: ./a.out
+==122817==
+==122817== Conditional jump or move depends on uninitialised value(s)
+==122817==    at 0x109145: main (c12.c:6)
+==122817==
+X is zero==122817==
+==122817== HEAP SUMMARY:
+==122817==     in use at exit: 0 bytes in 0 blocks
+==122817==   total heap usage: 1 allocs, 1 frees, 1,024 bytes allocated
+==122817==
+==122817== All heap blocks were freed -- no leaks are possible
+==122817==
+==122817== Use --track-origins=yes to see where uninitialised values come from
+==122817== For lists of detected and suppressed errors, rerun with: -s
+==122817== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+[;f6:38PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c12 ]
+ $ exit
+
+Script done on 2023-09-08 18:38:06-03:00 [COMMAND_EXIT_CODE="0"]
+
+3) Iniciei a variável x como 0.
+
+4) Script started on 2023-09-08 18:38:15-03:00 [TERM="alacritty" TTY="/dev/pts/1" COLUMNS="148" LINES="36"]
+[;f6:38PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c12 ]
+ $ gcc -g c12correto.cgd		  b a.out
+GNU gdb (GDB) 13.2
+Copyright (C) 2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "x86_64-pc-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<https://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from a.out...
+(gdb) br 5
+Breakpoint 1 at 0x1141: file c12correto.c, line 5.
+(gdb) run
+Starting program: /home/iago/Documents/school/ufmg/3_Semestre/ED/codes/TP/c12/a.out
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+
+Breakpoint 1, main () at c12correto.c:5
+5	    int x = 0;
+(gdb) next
+6	    if(x == 0) {
+(gdb) p x
+$1 = 0
+(gdb) p (x)==)0)
+$2 = 1
+(gdb) next
+7		printf("X is zero");
+(gdb) next
+9	    return 0;
+(gdb) continue
+Continuing.
+X is zero[Inferior 1 (process 122966) exited normally]
+(gdb) exit
+[;f6:38PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c12 ]
+ $ valgrind --leak-check=full ./a.ouvalgrind --leak-check=full ./a.out
+==123095== Memcheck, a memory error detector
+==123095== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==123095== Using Valgrind-3.21.0 and LibVEX; rerun with -h for copyright info
+==123095== Command: ./a.out
+==123095==
+X is zero==123095==
+==123095== HEAP SUMMARY:
+==123095==     in use at exit: 0 bytes in 0 blocks
+==123095==   total heap usage: 1 allocs, 1 frees, 1,024 bytes allocated
+==123095==
+==123095== All heap blocks were freed -- no leaks are possible
+==123095==
+==123095== For lists of detected and suppressed errors, rerun with: -s
+==123095== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+[;f6:38PMa]ch[siago@arch-sentinL1:~/Documents/school/ufmg/3_Semestre/ED/codes/TP/c12 ]
+ $ exit
+
+Script done on 2023-09-08 18:38:53-03:00 [COMMAND_EXIT_CODE="0"]
+
