@@ -49,7 +49,6 @@ int main(int argc, char ** argv){
     parse_args(argc, argv);
 
     if(opt == EVALUATEEXPRESSION){
-        cout << infix_to_postfix(expression, values);
         bool answer = evaluate(expression, values);
         cout << answer << endl;
     }

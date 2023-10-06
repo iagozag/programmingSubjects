@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int priority(const char& c){
+int priority(char c){
     switch(c){
         case '~':
             return 3; 
@@ -16,7 +16,7 @@ int priority(const char& c){
     }
 }
 
-string infix_to_postfix(string& st, string values){
+string infix_to_postfix(string st, string values){
     Stack<char> s;
     string result = "";
     int N = st.size();
@@ -51,7 +51,7 @@ string infix_to_postfix(string& st, string values){
     return result;
 }
 
-bool evaluate(string& st, string values){
+bool evaluate(string st, string values){
     if(values == "0") return 0;
 
     for(auto& x: values) if(x == 'a') x = '1';
