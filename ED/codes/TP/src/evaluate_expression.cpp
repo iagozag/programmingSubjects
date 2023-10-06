@@ -39,7 +39,7 @@ string infix_to_postfix(string& st, string values){
         }
 
         else{
-            while(!s.empty() && priority(c) <= priority(s.top()))
+            while(!s.empty() && priority(c) < priority(s.top()))
                 result += s.pop();
             s.push(c);
         }

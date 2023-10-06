@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string.h>
 #include <getopt.h>
 
 #include "../include/Graph.hpp"
@@ -38,10 +37,10 @@ int main(int argc, char ** argv){
     parse_args(argc, argv);
     Grafo g;
     int n; cin >> n;
-    for(int i = 0; i < n; ++i)
-        g.InsereVertice();
 
     for(int i = 0; i < n; ++i){
+        g.InsereVertice();
+
         int m; cin >> m;
         for(int j = 0; j < m; j++){
             int a; cin >> a; g.InsereAresta(i, a);
