@@ -15,6 +15,10 @@ string NodeType::getItem(){
     return item;
 }
 
+size_t NodeType::getSize(){
+    return item.size();
+}
+
 BinaryTree::BinaryTree(string expression)
 {
     expression_ = expression;
@@ -68,35 +72,47 @@ void BinaryTree::DeleteRecursive(NodeType* p){
     }
 }
 
+string resume_string(string s1, string s2){
+    string result = "";
+    for(size_t i = 0; i < s1.size(); ++i){
+        if(s1[i] != s2[i]){
+            if(s1[i] == 'a') result += s2[i];
+            else if(s2[i] == 'a') result += s1[i];
+            else result += 'a';
+        }
+        else result += s1[i];
+    }
+
+    return result;
+}
+
 bool BinaryTree::posOrder(NodeType *p){
     if(p!=NULL){
         posOrder(p->esq);
         posOrder(p->dir);
 
-        char letter;
-        for(unsigned i = 0; i < p->item.size(); i++) if(p->item[i] == 'a' || p->item[i] == 'e'){
-            letter = p->item[i];
-            break;
-        }
+        if(p->esq != NULL){        
+            char letter;
+            for(size_t i = 0; i < p->item.size(); ++i) if(p->item[i] == 'a' || p->item[i] == 'e'){
+                letter = p->item[i];
+                break;
+            }
 
-        if(p->esq != NULL){ 
             bool e1 = evaluate(expression_, p->esq->item), e2 = evaluate(expression_, p->dir->item);
 
-            if(letter == 'a' && !(e1 && e2)){
-                p->item = "0";
-                return 0;
+            if(letter == 'a'){
+                if(!(e1 && e2)){
+                    p->item = "0";
+                    return 0;
+                }
+                
+                p->item = resume_string(p->esq->item, p->dir->item);
             }
 
             else if(letter == 'e'){
                 if(!(e1 || e2)) return 0;
 
-                else if(e1 && e2){
-                    for(unsigned i = 0; i < p->item.size(); i++) if(p->esq->item[i] != p->dir->item[i]){
-                        if(p->esq->item[i] == 'a') p->item[i] = p->dir->item[i];
-                        else if(p->dir->item[i] == 'a') p->item[i] = p->dir->item[i];
-                        else p->item[i] = 'a';
-                    }
-                }
+                else if(e1 && e2) p->item = resume_string(p->esq->item, p->dir->item);
 
                 else if(e1) p->item = p->esq->item;
 

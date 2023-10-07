@@ -9,6 +9,7 @@ class NodeType {
     public:
         NodeType();
         string getItem();
+        size_t getSize();
 
     private:
         string item;
@@ -34,7 +35,6 @@ class BinaryTree {
         
         string expression_;
         NodeType *root;
-        char level[5];
 };
 
 #endif

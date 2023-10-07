@@ -5,7 +5,7 @@ SRCEXT = cpp
 OBJ = obj
 INC = include
 BIN = bin
-CFLAGS = -pg -Wall -c -I$(INC)
+CFLAGS = -pg -g -Wall -c -I$(INC)
 EXE = $(BIN)/tp1.out
 
 SOURCES := $(shell find $(SRC) -type f -name *.$(SRCEXT))
