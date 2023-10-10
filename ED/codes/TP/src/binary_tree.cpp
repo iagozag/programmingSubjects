@@ -3,6 +3,7 @@
 #include "../include/Evaluate_expression.h"
 
 #include <iostream>
+using namespace std;
 
 NodeType::NodeType()
 {
