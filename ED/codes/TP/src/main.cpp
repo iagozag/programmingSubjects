@@ -4,7 +4,7 @@
 
 #include "../include/Stack.h"
 #include "../include/Evaluate_expression.h"
-#include "../include/Satisfaction.h"
+#include "../include/Binary_tree.h"
 
 using namespace std;
 
@@ -45,21 +45,32 @@ void parse_args(int argc,char** argv){
     }
 }
 
-int main(int argc, char ** argv){
+int main(int argc, char** argv){
     parse_args(argc, argv);
 
     if(opt == EVALUATEEXPRESSION){
-        bool answer = evaluate(expression, values);
-        cout << answer << endl;
+        try{
+            cout << evaluate(expression, values) << endl;
+        } catch(stack_overflow_e e){
+            cout << "A pilha está cheia!" << endl;
+        } catch(empty_stack_e e){
+            cout << "A pilha está vazia!" << endl;
+        }
     }
     else if(opt == SATISFIABILITY){
-        Pair p = satisfaction(expression, values);
-
-        (p.get_ans()) ? cout << p.get_ans() << " " << p.get_res() :
-                        cout << p.get_ans();
-        cout << endl;
+        try{
+            BinaryTree bt(expression);
+            bt.insert(values); 
+            (bt.posOrder(bt.get_root())) ? cout << 1 << " " << bt.get_root()->getItem() << endl :
+                                           cout << 0 << endl;
+        } catch(stack_overflow_e e){
+            cout << "A pilha está cheia!" << endl;
+        } catch(empty_stack_e e){
+            cout << "A pilha está vazia!" << endl;
+        }
     }
     else cout << "Comando invalido!" << endl;
-      
-    exit(0);
+
+    return(0);
 }
+

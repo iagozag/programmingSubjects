@@ -16,10 +16,6 @@ string NodeType::getItem(){
     return item;
 }
 
-size_t NodeType::getSize(){
-    return item.size();
-}
-
 BinaryTree::BinaryTree(string expression)
 {
     expression_ = expression;
@@ -43,18 +39,6 @@ void BinaryTree::clear(){
     root = NULL;
 }
 
-string change_letter_by_num(string s, char num){
-    bool flag = false;
-    for(auto& x: s)
-        if(x == 'a' || x == 'e'){
-            x = num, flag = true;
-            break;
-        }
-
-    if(flag) return s;
-    return "-1";
-}
-
 void BinaryTree::InsertRecursive(NodeType* &p, string item){
     p = new NodeType();
     p->item = item;
@@ -73,20 +57,6 @@ void BinaryTree::DeleteRecursive(NodeType* p){
     }
 }
 
-string resume_string(string s1, string s2){
-    string result = "";
-    for(size_t i = 0; i < s1.size(); ++i){
-        if(s1[i] != s2[i]){
-            if(s1[i] == 'a') result += s2[i];
-            else if(s2[i] == 'a') result += s1[i];
-            else result += 'a';
-        }
-        else result += s1[i];
-    }
-
-    return result;
-}
-
 bool BinaryTree::posOrder(NodeType *p){
     if(p!=NULL){
         posOrder(p->esq);
@@ -103,7 +73,7 @@ bool BinaryTree::posOrder(NodeType *p){
 
             if(letter == 'a'){
                 if(!(e1 && e2)){
-                    p->item = "0";
+                    p->item = "-1";
                     return 0;
                 }
                 
@@ -111,7 +81,10 @@ bool BinaryTree::posOrder(NodeType *p){
             }
 
             else if(letter == 'e'){
-                if(!(e1 || e2)) return 0;
+                if(!(e1 || e2)){
+                    p->item = "-1";
+                    return 0;
+                }
 
                 else if(e1 && e2) p->item = resume_string(p->esq->item, p->dir->item);
 
@@ -124,3 +97,30 @@ bool BinaryTree::posOrder(NodeType *p){
 
     return 1;
 }
+
+string change_letter_by_num(string s, char num){
+    bool flag = false;
+    for(auto& x: s)
+        if(x == 'a' || x == 'e'){
+            x = num, flag = true;
+            break;
+        }
+
+    if(flag) return s;
+    return "-1";
+}
+
+string resume_string(string s1, string s2){
+    string result = "";
+    for(size_t i = 0; i < s1.size(); ++i){
+        if(s1[i] != s2[i]){
+            if(s1[i] == 'a') result += s2[i];
+            else if(s2[i] == 'a') result += s1[i];
+            else result += 'a';
+        }
+        else result += s1[i];
+    }
+
+    return result;
+}
+

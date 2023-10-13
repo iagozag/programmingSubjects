@@ -16,11 +16,6 @@ class NodeType {
          */
         std::string getItem();
 
-        /**
-         * @return O tamanho da string 'item'.
-         */
-        size_t getSize();
-
     private:
         std::string item; // O item armazenado no nó
         NodeType *esq;    // Ponteiro para o filho esquerdo
@@ -102,4 +97,5 @@ std::string change_letter_by_num(std::string s, char num);
 std::string resume_string(std::string s1, std::string s2);
 
 #endif
+
 

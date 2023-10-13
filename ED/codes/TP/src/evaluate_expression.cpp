@@ -1,6 +1,7 @@
 #include "../include/Evaluate_expression.h"
 #include "../include/Stack.h"
 
+#include <iostream>
 using namespace std;
 
 int priority(char c){
@@ -20,28 +21,31 @@ string infix_to_postfix(string st, string values){
     Stack<char> s;
     string result = "";
     int N = st.size();
-
     for(int i = 0; i < N; i++){
-        char c = st[i];
-
         if(st[i] == ' ') continue;
 
-        if((c >= '0' && c <= '9'))
-            result += values[c-'0'];
+        if(st[i] >= '0' && st[i] <= '9'){
+            string numbuffer = "";
+            while(st[i] >= '0' && st[i] <= '9')
+                numbuffer += st[i], i++;
+            i--;
+            result += values[stoi(numbuffer)];
+            numbuffer = "";
+        }
 
-        else if(c == '(') 
-            s.push(c);
+        else if(st[i] == '(') 
+            s.push(st[i]);
 
-        else if(c == ')'){
+        else if(st[i] == ')'){
             while(!s.empty() && s.top() != '(')
                 result += s.pop();
             if(!s.empty()) s.pop();
         }
 
         else{
-            while(!s.empty() && priority(c) < priority(s.top()))
+            while(!s.empty() && priority(st[i]) < priority(s.top()))
                 result += s.pop();
-            s.push(c);
+            s.push(st[i]);
         }
     }
 
@@ -52,17 +56,14 @@ string infix_to_postfix(string st, string values){
 }
 
 bool evaluate(string st, string values){
-    if(values == "0") return 0;
+    if(values == "-1") return 0;
 
     for(auto& x: values) if(x == 'a') x = '1';
 
     string postfix = infix_to_postfix(st, values);
 
     Stack<int> s;
-    int v1, v2, N = postfix.size();
-    for(int i = 0; i < N; i++){
-        char c = postfix[i];
-
+    for(auto& c: postfix){
         if(c == '0' || c == '1')
             s.push(c-'0');
 
@@ -70,15 +71,16 @@ bool evaluate(string st, string values){
             s.push(!s.pop());
 
         else if(c == '&'){
-            v1 = s.pop(), v2 = s.pop();
+            int v1 = s.pop(), v2 = s.pop();
             s.push(v1 && v2);
         }
 
         else{
-            v1 = s.pop(), v2 = s.pop();
+            int v1 = s.pop(), v2 = s.pop();
             s.push(v1 || v2);
         }
     }
 
     return s.pop();
 }
+

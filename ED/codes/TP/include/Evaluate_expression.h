@@ -27,4 +27,3 @@ std::string infix_to_postfix(std::string st, std::string values);
 bool evaluate(std::string st, std::string values);
 
 #endif
-
