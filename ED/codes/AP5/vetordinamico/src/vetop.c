@@ -99,7 +99,6 @@ void parse_args(int argc,char ** argv, opt_tipo * opt)
        erroAssert(opt->tam>0, "matop - tamanho do vetor tem que ser positivo");
 }
 
-
 int main(int argc, char ** argv)
 // Descricao: programa principal para execucao de operacoes de matrizes 
 // Entrada: argc e argv
