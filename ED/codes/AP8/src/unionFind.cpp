@@ -16,14 +16,16 @@ void UnionFind::Make(int x){
 }
 
 int UnionFind::Find(int x){
-    return subconjuntos[x].representante;
+    if (x == subconjuntos[x].representante)
+        return x;
+    return subconjuntos[x].representante = Find(subconjuntos[x].representante);
 }
 
 void UnionFind::Union(int x, int y){
     x = Find(x);
     y = Find(y);
     if (x != y) {
-        if (subconjuntos[x].rank < subconjuntos[y].rank)
+        if(subconjuntos[x].rank < subconjuntos[y].rank)
             std::swap(x, y);
         subconjuntos[y].representante = x;
         if(subconjuntos[x].rank == subconjuntos[y].rank)

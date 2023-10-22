@@ -4,7 +4,7 @@
 using namespace std;
 
 Heap::Heap(int maxsize){
-    data  = new int[maxsize];
+    data = new Aresta[maxsize];
     tamanho = 0;
 }
 
@@ -12,11 +12,11 @@ Heap::~Heap(){
     delete[] data; 
 }
 
-void Heap::Inserir(int x){
+void Heap::Inserir(Aresta x){
     data[tamanho] = x;
     int i = tamanho;
     int p = GetAncestral(i);
-    while(data[i] < data[p]){
+    while(data[i].custo < data[p].custo){
         swap(data[i], data[p]);
         i = p;
         p = GetAncestral(i);
@@ -24,8 +24,8 @@ void Heap::Inserir(int x){
     tamanho++;
 }
 
-int Heap::Remover(){
-    int x = data[0];
+Aresta Heap::Remover(){
+    Aresta x = data[0];
     data[0] = data[tamanho-1];
     tamanho--;
 
@@ -35,10 +35,10 @@ int Heap::Remover(){
         int dir = GetSucessorDir(i);
         int menor = i;
 
-        if(esq < tamanho && data[esq] < data[menor])
+        if(esq < tamanho && data[esq].custo < data[menor].custo)
             menor = esq;
 
-        if(dir < tamanho && data[dir] < data[menor])
+        if(dir < tamanho && data[dir].custo < data[menor].custo)
             menor = dir;
 
         if(menor != i){
