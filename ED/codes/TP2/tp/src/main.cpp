@@ -1,7 +1,8 @@
-#include <bits/stdc++.h>
-
 #include "../include/sorting_algorithms.h"
 #include "../include/verifying_coloring.h"
+#include "../include/linked_list.h"
+
+#include <iostream>
 using namespace std;
 
 #define BUBBLE 'b'
@@ -14,20 +15,28 @@ using namespace std;
 
 int main(){
     int c, n; cin >> c >> n;
-    vector<vector<int>> v(n);
-    vector<int> colors(n);
+    ListaAdjacencia v(n);
+    LinkedList colors; 
 
     for(int i = 0; i < n; i++){
         int m; cin >> m;
-        for(int j = 0; j < m; j++) cin >> v[i][j];
+        for(int j = 0; j < m; j++){
+            int a; cin >> a; a--; v.adicionaAresta(i, a); 
+        }
     } 
 
-    for(int i = 0; i < n; i++) cin >> colors[i];
+    for(int i = 0; i < n; i++){ int a; cin >> a; colors.insert(a); }
+
+    if(!verify_coloring(v)) { cout << 0 << endl; return(0); }
 
     switch(c){
         case BUBBLE:
-            verify_coloring(v, colors, bubble_sort(v, colors));
+            // verify_coloring(v, colors, bubble_sort(v, colors));
+            break;
     } 
+
+    for(int i = 0; i < n; i++) v.imprime(i);
+    colors.print();
 
     exit(0);
 }

@@ -1,5 +1,9 @@
 #include "../include/verifying_coloring.h"
 
-void verify_coloring(int *A, int *C, void (*func)(int*, int*)){
+bool verify_coloring(ListaAdjacencia l){
+    for(int i = 0; i < l.getTam(); i++){
+        
+    } 
 
+    return true;
 }
