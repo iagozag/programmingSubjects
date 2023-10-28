@@ -5,7 +5,6 @@
 
 class NodeType {
     int data;
-    int color;
     NodeType* next;
 
     NodeType(const int& value) : data(value), next(nullptr) {}
@@ -21,7 +20,8 @@ class LinkedList {
         int getLength();
         bool empty();
         void insert(const int& item);
-        int& at(int index);
+        NodeType* at(int index);
+        NodeType* getNext(NodeType* cur);
         void clear();
         void print() const;
 
@@ -37,11 +37,15 @@ class ListaAdjacencia {
         ~ListaAdjacencia();
 
         int getTam();
+        int getCor(int x);
+        void adicionaCores(int* v);
         void adicionaAresta(int v, int w);
+        LinkedList getArestas(int x);
         void imprime(int v);
 
     private:
         LinkedList* lista;
+        int* colors;
         int tamanho;
 };
 

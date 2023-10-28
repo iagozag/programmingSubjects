@@ -22,7 +22,7 @@ void LinkedList::insert(const int& item) {
     length++;
 }
 
-int& LinkedList::at(int index) {
+NodeType* LinkedList::at(int index) {
     if (index < 0 || index >= length) {
         throw std::out_of_range("Index out of range");
     }
@@ -32,7 +32,11 @@ int& LinkedList::at(int index) {
         current = current->next;
     }
 
-    return current->data;
+    return current;
+}
+
+NodeType* LinkedList::getNext(NodeType* cur){
+    return cur->next;
 }
 
 void LinkedList::clear() {
@@ -46,7 +50,6 @@ void LinkedList::clear() {
     length = 0;
 }
 
-
 void LinkedList::print() const {
     NodeType* current = head;
     while(current) {
@@ -58,18 +61,33 @@ void LinkedList::print() const {
 ListaAdjacencia::ListaAdjacencia(int n){
     tamanho = n;
     lista = new LinkedList[tamanho];
+    colors = new int[tamanho];
 }
 
 ListaAdjacencia::~ListaAdjacencia(){
-    delete lista;
+    delete[] lista;
+    delete[] colors;
 }
 
 int ListaAdjacencia::getTam(){
     return tamanho;
 }
 
+int ListaAdjacencia::getCor(int x){
+    return colors[x];
+}
+
+void ListaAdjacencia::adicionaCores(int v[]){
+    for(int i = 0; i < tamanho; i++)
+        colors[i] = v[i];
+}
+
 void ListaAdjacencia::adicionaAresta(int v, int w){
     lista[v].insert(w);
+}
+
+LinkedList ListaAdjacencia::getArestas(int x){
+    return lista[x];
 }
 
 void ListaAdjacencia::imprime(int v){

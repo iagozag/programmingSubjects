@@ -6,7 +6,7 @@ OBJ = obj
 INC = include
 BIN = bin
 CFLAGS = -pg -g -Wall -c -I$(INC)
-EXE = $(BIN)/tp1.out
+EXE = $(BIN)/tp2.out
 ANALISAMEM = ../analisamem/bin/analisamem
 
 SOURCES := $(shell find $(SRC) -type f -name *.$(SRCEXT))

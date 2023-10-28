@@ -14,20 +14,24 @@ using namespace std;
 #define MINE 'y'
 
 int main(){
-    int c, n; cin >> c >> n;
-    ListaAdjacencia v(n);
-    LinkedList colors; 
+    char c; int n; cin >> c >> n;
+    ListaAdjacencia* v = new ListaAdjacencia(n);
+    int colors[n]; 
 
     for(int i = 0; i < n; i++){
         int m; cin >> m;
         for(int j = 0; j < m; j++){
-            int a; cin >> a; a--; v.adicionaAresta(i, a); 
+            int a; cin >> a; a--; v->adicionaAresta(i, a); 
         }
     } 
 
-    for(int i = 0; i < n; i++){ int a; cin >> a; colors.insert(a); }
+    for(int i = 0; i < n; i++){ int a; cin >> a; a--; colors[i] = a; }
+    v->adicionaCores(colors);
 
-    if(!verify_coloring(v)) { cout << 0 << endl; return(0); }
+    for(int i = 0; i < n; i++){ cout << i << ": "; v->imprime(i); cout << endl << "cor: " << v->getCor(i) << endl; }
+
+    if(!verify_coloring(v)) { cout << 0 << endl; exit(0); }
+    cout << 1 << " ";
 
     switch(c){
         case BUBBLE:
@@ -35,9 +39,9 @@ int main(){
             break;
     } 
 
-    for(int i = 0; i < n; i++) v.imprime(i);
-    colors.print();
 
+    cout << endl;
+    delete v;
     exit(0);
 }
 
