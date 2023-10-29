@@ -1,6 +1,5 @@
 #include "../include/sorting_algorithms.h"
-#include "../include/verifying_coloring.h"
-#include "../include/linked_list.h"
+#include "../include/graph.h"
 
 #include <iostream>
 using namespace std;
@@ -15,22 +14,21 @@ using namespace std;
 
 int main(){
     char c; int n; cin >> c >> n;
-    ListaAdjacencia* v = new ListaAdjacencia(n);
+    Grafo g(n);
     int colors[n]; 
 
     for(int i = 0; i < n; i++){
         int m; cin >> m;
         for(int j = 0; j < m; j++){
-            int a; cin >> a; a--; v->adicionaAresta(i, a); 
+            int a; cin >> a; a--; g.InsereAresta(i, a); 
         }
     } 
 
-    for(int i = 0; i < n; i++){ int a; cin >> a; a--; colors[i] = a; }
-    v->adicionaCores(colors);
+    for(int i = 0; i < n; i++){ int a; cin >> a; colors[i] = a; }
+    g.adicionaCores(colors);
 
-    for(int i = 0; i < n; i++){ cout << i << ": "; v->imprime(i); cout << endl << "cor: " << v->getCor(i) << endl; }
+    if(!g.verify_coloring()) { cout << 0 << endl; exit(0); }
 
-    if(!verify_coloring(v)) { cout << 0 << endl; exit(0); }
     cout << 1 << " ";
 
     switch(c){
@@ -39,9 +37,7 @@ int main(){
             break;
     } 
 
-
     cout << endl;
-    delete v;
     exit(0);
 }
 
