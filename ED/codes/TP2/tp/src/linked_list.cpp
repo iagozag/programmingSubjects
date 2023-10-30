@@ -1,7 +1,19 @@
 #include "../include/linked_list.h"
 
+NodeType::NodeType(){
+    data = -1;
+    next = nullptr;
+}
+
+LinkedList::LinkedList(){
+    head = new NodeType();
+    last = head;
+    length = 0;
+}
+
 LinkedList::~LinkedList() {
     clear();
+    delete head;
 }
 
 int LinkedList::getLength() {
@@ -13,43 +25,46 @@ bool LinkedList::empty() {
 }
 
 void LinkedList::insert(const int& item) {
-    NodeType* newNode = new NodeType(item);
+    NodeType* newNode = new NodeType();
+    newNode->data = item;
 
-    if (!head) head = newNode;
-    else last->next = newNode;
-
+    last->next = newNode;
     last = newNode;
     length++;
 }
 
-int LinkedList::at(int index) {
-    if (index < 0 || index >= length) {
-        throw std::out_of_range("Index out of range");
-    }
+NodeType* LinkedList::Posiciona(int pos){
+    if ((pos >= length) || (pos < 0))
+        throw "ERRO: Posicao Invalida!";
 
-    NodeType* current = head;
-    for (int i = 0; i < index; i++) {
-        current = current->next;
-    }
+    NodeType* p = head->next;
+    for(int i=0; i<pos; i++)
+        p = p->next;
 
-        return current->data;
+    return p;
+}
+
+int LinkedList::getItem(int pos){
+    NodeType* p = Posiciona(pos);
+    return p->data;
 }
 
 void LinkedList::clear() {
-    while(head) {
-        NodeType* temp = head;
-        head = head->next;
-        delete temp;
+    NodeType* p = head->next;
+    while(p != NULL) {
+        head->next = p->next;
+        delete p;
+        p = head->next;
     }
 
-    last = nullptr;
+    last = head;
     length = 0;
 }
 
 void LinkedList::print() const {
-    NodeType* current = head;
+    NodeType* current = head->next;
     while(current) {
-        std::cout << current->data+1 << " ";
+        std::cout << current->data << " ";
         current = current->next;
     }
 }
@@ -71,8 +86,12 @@ void ListaAdjacencia::adicionaAresta(int v, int w){
     lista[v].insert(w);
 }
 
-LinkedList ListaAdjacencia::getArestas(int x){
-    return lista[x];
+int ListaAdjacencia::degree(int x){
+    return lista[x].getLength();
+}
+
+int ListaAdjacencia::getArestas(int x, int y){
+    return lista[x].getItem(y);
 }
 
 void ListaAdjacencia::imprime(int v){

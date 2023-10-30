@@ -4,10 +4,12 @@
 #include <iostream>
 
 class NodeType {
-    int data;
-    NodeType* next;
-
-    NodeType(const int& value) : data(value), next(nullptr) {}
+    public: 
+        NodeType();
+    private:
+        int data;
+        int cor;
+        NodeType* next;
 
     friend class LinkedList;
 };
@@ -15,13 +17,18 @@ class NodeType {
 
 class LinkedList {
     public:
-        LinkedList() : length(0), head(nullptr), last(nullptr) {}
+        LinkedList();
         ~LinkedList();
 
         int getLength();
         bool empty();
         void insert(const int& item);
         int at(int index);
+        NodeType* getHead();
+        int getItem(int pos);
+        int getHeadVert();
+        int getHeadCor();
+        void setHead(int v, int c);
         void clear();
         void print() const;
 
@@ -29,6 +36,7 @@ class LinkedList {
         int length;
         NodeType* head;
         NodeType* last;
+        NodeType* Posiciona(int pos);
 };
 
 class ListaAdjacencia {
@@ -38,7 +46,10 @@ class ListaAdjacencia {
 
         int getTam();
         void adicionaAresta(int v, int w);
-        LinkedList getArestas(int x);
+        int degree(int x);
+        int getArestas(int x, int y);
+        int getCor(int x);
+        void setCores(int* v);
         void imprime(int v);
 
     private:

@@ -16,7 +16,7 @@ class Grafo{
         
     private:
         int _tamanho;
-        ListaAdjacencia* lista;
+        ListaAdjacencia listaAdj;
         int* colors;
         
 };

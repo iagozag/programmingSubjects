@@ -1,18 +1,21 @@
 #ifndef SORT_ALG_H
 #define SORT_ALG_H
 
-void bubble_sort(int **A, int *c);
+#include "../include/graph.h"
+#include "../include/pair.h"
 
-void insertion_sort(int **A, int *c);
+void bubble_sort(Pair* ans, int n);
 
-void selection_sort(int **A, int *c);
+void insertion_sort(Pair*ans, int n);
 
-void quick_sort(int **A, int *c);
+void selection_sort(Pair* ans, int n);
 
-void merge_sort(int **A, int *c);
+void quick_sort(Pair* ans, int n);
 
-void heap_sort(int **A, int *c);
+void merge_sort(Pair* v, int e, int d);
 
-void my_sort(int **A, int *c);
+void heap_sort(Pair* ans, int n);
+
+void my_sort(Pair* ans, int n);
 
 #endif
