@@ -33,7 +33,7 @@ void LinkedList::insert(const int& item) {
     length++;
 }
 
-NodeType* LinkedList::Posiciona(int pos){
+NodeType* LinkedList::at(int pos){
     if ((pos >= length) || (pos < 0))
         throw "ERRO: Posicao Invalida!";
 
@@ -45,7 +45,7 @@ NodeType* LinkedList::Posiciona(int pos){
 }
 
 int LinkedList::getItem(int pos){
-    NodeType* p = Posiciona(pos);
+    NodeType* p = at(pos);
     return p->data;
 }
 
@@ -61,39 +61,27 @@ void LinkedList::clear() {
     length = 0;
 }
 
-void LinkedList::print() const {
-    NodeType* current = head->next;
-    while(current) {
-        std::cout << current->data << " ";
-        current = current->next;
-    }
+AdjacencyList::AdjacencyList(int n){
+    length = n;
+    list = new LinkedList[length];
 }
 
-ListaAdjacencia::ListaAdjacencia(int n){
-    tamanho = n;
-    lista = new LinkedList[tamanho];
+AdjacencyList::~AdjacencyList(){
+    delete[] list;
 }
 
-ListaAdjacencia::~ListaAdjacencia(){
-    delete[] lista;
+int AdjacencyList::getLen(){
+    return length;
 }
 
-int ListaAdjacencia::getTam(){
-    return tamanho;
+void AdjacencyList::addEdge(int v, int w){
+    list[v].insert(w);
 }
 
-void ListaAdjacencia::adicionaAresta(int v, int w){
-    lista[v].insert(w);
+int AdjacencyList::degree(int x){
+    return list[x].getLength();
 }
 
-int ListaAdjacencia::degree(int x){
-    return lista[x].getLength();
-}
-
-int ListaAdjacencia::getArestas(int x, int y){
-    return lista[x].getItem(y);
-}
-
-void ListaAdjacencia::imprime(int v){
-    lista[v].print();
+int AdjacencyList::getEdges(int x, int y){
+    return list[x].getItem(y);
 }

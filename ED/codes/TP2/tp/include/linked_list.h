@@ -23,38 +23,32 @@ class LinkedList {
         int getLength();
         bool empty();
         void insert(const int& item);
-        int at(int index);
         NodeType* getHead();
         int getItem(int pos);
-        int getHeadVert();
-        int getHeadCor();
-        void setHead(int v, int c);
         void clear();
-        void print() const;
 
     private:
         int length;
         NodeType* head;
         NodeType* last;
-        NodeType* Posiciona(int pos);
+        NodeType* at(int pos);
 };
 
-class ListaAdjacencia {
+class AdjacencyList {
     public:
-        ListaAdjacencia(int n);
-        ~ListaAdjacencia();
+        AdjacencyList(int n);
+        ~AdjacencyList();
 
-        int getTam();
-        void adicionaAresta(int v, int w);
+        int getLen();
+        void addEdge(int v, int w);
         int degree(int x);
-        int getArestas(int x, int y);
-        int getCor(int x);
-        void setCores(int* v);
-        void imprime(int v);
+        int getEdges(int x, int y);
+        int getColor(int x);
+        void setColors(int* v);
 
     private:
-        LinkedList* lista;
-        int tamanho;
+        LinkedList* list;
+        int length;
 };
 
 #endif

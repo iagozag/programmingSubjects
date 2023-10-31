@@ -34,56 +34,56 @@ void selection_sort(Pair *v, int n) {
     }
 }
 
-void partiton(int e, int d, int* i, int* j, Pair* v);
-
-void sort(int e, int d, Pair* v);
-
-void quick_sort(Pair* v, int n){
-    sort(0, n-1, v);
+void quick_sort(Pair* v, int e, int d){
+    int i, j;
+    partition(e, d, &i, &j, v);
+    if(e < j) quick_sort(v, e, j);
+    if(i < d) quick_sort(v, i, d);
 }
-
-void Merge(Pair* v, int nl, int mid, int nr);
 
 void merge_sort(Pair* v, int e, int d){
     if (e < d){
         int mid = (e+d)/2;
         merge_sort(v, e, mid);
         merge_sort(v, mid+1, d);
-        Merge(v, e, mid, d);
+        merge(v, e, mid, d);
     }
-}
-
-void redo(int e, int d, Pair* v){
-    int i = e, j = i * 2;
-    Pair x = v[i];
-    while (j <= d){
-        if (j < d)
-            if (v[j] < v[j+1]) j++;
-        if (x >= v[j]) break;
-        v[i] = v[j];
-        i = j; 
-        j = i *2;
-    }
-    v[i] = x;
 }
 
 void heap_sort(Pair* v, int n){
-    int e = n/2+1;
-    while(e > 1){
-        e--;
-        redo(e, n, v);
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(v, n, i);
+ 
+    for (int i = n - 1; i >= 0; i--) {
+        swap(v[0], v[i]);
+        heapify(v, i, 0);
     }
 }
 
 void my_sort(Pair* v, int n){
+    bool sorted = false;
+    while (!sorted) {
+        sorted = true;
 
+        for (int i = 1; i < n-1; i += 2)
+            if(v[i] > v[i + 1]){
+                swap(v[i], v[i + 1]);
+                sorted = false;
+            }
+
+        for(int i = 0; i < n - 1; i += 2)
+            if(v[i] > v[i + 1]) {
+                swap(v[i], v[i + 1]);
+                sorted = false;
+            }
+    }  
 }
 
 // QuickSort
-void partiton(int e, int d, int* i, int* j, Pair* v){
+void partition(int e, int d, int* i, int* j, Pair* v){
     Pair x, w;
     *i = e; *j = d;
-    x = v[(*i + *j)/2]; /* obtem o pivo x */
+    x = v[(*i + *j)/2];
     do
     { 
         while (x > v[*i]) (*i)++;
@@ -95,40 +95,51 @@ void partiton(int e, int d, int* i, int* j, Pair* v){
     } while (*i <= *j);
 }
 
-void sort(int e, int d, Pair* v){
-    int i, j;
-    partiton(e, d, &i, &j, v);
-    if(e < j) sort(e, j, v);
-    if(i < d) sort(i, d, v);
-}
-
 // MergeSort
-void Merge(Pair* v, int nl, int mid, int nr) {
-    int subArrayOne = mid - nl + 1;
-    int subArrayTwo = nr - mid;
+void merge(Pair* v, int nl, int mid, int nr) {
+    int end1 = mid - nl + 1;
+    int end2 = nr - mid;
 
-    auto *lArray = new Pair[subArrayOne],
-         *rArray = new Pair[subArrayTwo];
+    auto *lArray = new Pair[end1],
+         *rArray = new Pair[end2];
 
-    int i = 0, j = 0, k = 0;
-    for(; i < subArrayOne; i++)
+    int i = 0, j = 0, k = nl;
+    for(; i < end1; i++)
         lArray[i] = v[nl+i];
-    for(; j < subArrayTwo; j++)
+    for(; j < end2; j++)
         rArray[j] = v[mid+1+j];
 
     i = 0, j = 0;
-    while(i < nl && j < nr){
-        if(lArray[i] < rArray[j])
-            v[k] = lArray[i], i++;
-        else
-            v[k] = rArray[j], j++;
+    while(i < end1 && j < end2){
+        if(lArray[i] < rArray[j]) v[k] = lArray[i], i++;
+        else v[k] = rArray[j], j++;
         k++;
     } 
 
-    if(k < nl+nr){
-        for(; i < nl; i++)
-            v[k] = lArray[i], k++;
-        for(; j < nr; j++)
-            v[k] = rArray[j], k++;
+    for(; i < end1; i++)
+        v[k] = lArray[i], k++;
+    for(; j < end2; j++)
+        v[k] = rArray[j], k++;
+
+    delete[] lArray;
+    delete[] rArray;
+}
+
+// HeapSort
+void heapify(Pair* v, int n, int i){
+    int largest = i,
+        l = 2 * i + 1,
+        r = 2 * i + 2;
+ 
+    if (l < n && v[l] > v[largest])
+        largest = l;
+ 
+    if (r < n && v[r] > v[largest])
+        largest = r;
+ 
+    if (largest != i) {
+        swap(v[i], v[largest]);
+ 
+        heapify(v, n, largest);
     }
 }

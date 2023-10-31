@@ -2,21 +2,19 @@
 #define GRAPH_HPP
 #include "../include/linked_list.h"
 
-class Grafo{
+class Graph{
     public:
-        Grafo(int tamanho);
-        ~Grafo();
+        Graph(int length);
+        ~Graph();
 
-        void InsereAresta(int v, int w);
-        int QuantidadeVertices();
-        void adicionaCores(int* v);
-        int getCor(int x);
-        void ImprimeVizinhos(int v);
+        void insertEdge(int v, int w);
+        void addColors(int* v);
+        int getColor(int x);
         bool verify_coloring();
         
     private:
-        int _tamanho;
-        ListaAdjacencia listaAdj;
+        int _length;
+        AdjacencyList adjList;
         int* colors;
         
 };

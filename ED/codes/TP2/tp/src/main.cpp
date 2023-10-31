@@ -16,18 +16,18 @@ using namespace std;
 
 int main(){
     char c; int n; cin >> c >> n;
-    Grafo g(n);
+    Graph g(n);
     int colors[n]; 
 
     for(int i = 0; i < n; i++){
         int m; cin >> m;
         for(int j = 0; j < m; j++){
-            int a; cin >> a; g.InsereAresta(i, a); 
+            int a; cin >> a; g.insertEdge(i, a); 
         }
     } 
 
     for(int i = 0; i < n; i++){ int a; cin >> a; colors[i] = a; }
-    g.adicionaCores(colors);
+    g.addColors(colors);
 
     if(!g.verify_coloring()) { cout << 0 << endl; exit(0); }
 
@@ -48,7 +48,7 @@ int main(){
             insertion_sort(ans, n);
             break;
         case QUICK:
-            quick_sort(ans, n);
+            quick_sort(ans, 0, n-1);
             break;
         case MERGE:
             merge_sort(ans, 0, n-1);

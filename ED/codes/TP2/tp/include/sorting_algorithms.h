@@ -4,18 +4,24 @@
 #include "../include/graph.h"
 #include "../include/pair.h"
 
-void bubble_sort(Pair* ans, int n);
+void bubble_sort(Pair* v, int n);
 
-void insertion_sort(Pair*ans, int n);
+void insertion_sort(Pair* v, int n);
 
-void selection_sort(Pair* ans, int n);
+void selection_sort(Pair* v, int n);
 
-void quick_sort(Pair* ans, int n);
+void partition(int e, int d, int* i, int* j, Pair* v);
+
+void quick_sort(Pair* v, int e, int d);
+
+void merge(Pair* v, int nl, int mid, int nr);
 
 void merge_sort(Pair* v, int e, int d);
 
-void heap_sort(Pair* ans, int n);
+void heapify(Pair* v, int n, int i);
 
-void my_sort(Pair* ans, int n);
+void heap_sort(Pair* v, int n);
+
+void my_sort(Pair* v, int n);
 
 #endif
