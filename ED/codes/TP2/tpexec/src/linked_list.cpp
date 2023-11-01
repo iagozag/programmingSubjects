@@ -5,6 +5,14 @@ NodeType::NodeType(){
     next = nullptr;
 }
 
+int NodeType::getData(){
+    return data;
+}
+
+NodeType* NodeType::getNext(){
+    return next;
+}
+
 LinkedList::LinkedList(){
     head = new NodeType();
     last = head;
@@ -33,21 +41,9 @@ void LinkedList::insert(const int& item) {
     length++;
 }
 
-NodeType* LinkedList::at(int pos){
-    if ((pos >= length) || (pos < 0))
-        throw invalid_pos_e(); 
-
-    NodeType* p = head->next;
-    for(int i=0; i<pos; i++)
-        p = p->next;
-
-    return p;
-}
-
-int LinkedList::getItem(int pos){
-    NodeType* p = at(pos);
-    return p->data;
-}
+NodeType* LinkedList::getFirst(){
+    return head->next;
+}   
 
 void LinkedList::clear() {
     NodeType* p = head->next;
@@ -74,14 +70,14 @@ int AdjacencyList::getLen(){
     return length;
 }
 
+NodeType* AdjacencyList::getFirst(int x){
+    return list[x].getFirst();
+}
+
 void AdjacencyList::addEdge(int v, int w){
     list[v].insert(w);
 }
 
 int AdjacencyList::degree(int x){
     return list[x].getLength();
-}
-
-int AdjacencyList::getEdges(int x, int y){
-    return list[x].getItem(y);
 }

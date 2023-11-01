@@ -16,7 +16,7 @@ using namespace std;
 #define MINE 'y'
 
 int main(){
-    char lognome[100] = "teste/verifycoloringlog.out";
+    char lognome[100] = "data.out";
     iniciaMemLog(lognome);
 
     ativaMemLog();
@@ -44,7 +44,7 @@ int main(){
     for(int i = 0; i < n; i++){
         Pair p; p.vert = i, p.color = colors[i];
         ans[i] = p;
-        escreveMemLog((long int)(&(ans[i])),sizeof(double),0);
+        escreveMemLog((long int)(&(ans[i])),sizeof(Pair),0);
     }
 
     switch(c){
@@ -76,12 +76,12 @@ int main(){
     cout << 1 << " ";
     for(int i = 0; i < n; i++){
         cout << ans[i].vert << " ";
-        leMemLog((long int)(&(ans[i])),sizeof(double),0);
+        leMemLog((long int)(&(ans[i])),sizeof(Pair),0);
     }
     cout << endl;
 
     defineFaseMemLog(2);
-    for(int i = 0; i < n; i++) leMemLog((long int)(&(ans[i])),sizeof(double),0);
+    for(int i = 0; i < n; i++) leMemLog((long int)(&(ans[i])),sizeof(Pair),0);
     delete[] ans;
     return finalizaMemLog(); 
 }

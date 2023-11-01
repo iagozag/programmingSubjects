@@ -29,11 +29,7 @@ int main(){
     for(int i = 0; i < n; i++){ int a; cin >> a; colors[i] = a; }
     g.addColors(colors);
 
-    try{
-        if(!g.verify_coloring()) { cout << 0 << endl; exit(0); }
-    } catch(invalid_pos_e e){
-        cout << "Alguma posição inválida foi acessada na vericação de coloração do grafo.\n";
-    }
+    if(!g.verify_coloring()) { cout << 0 << endl; exit(0); }
 
     Pair* ans = new Pair[n];
     for(int i = 0; i < n; i++){

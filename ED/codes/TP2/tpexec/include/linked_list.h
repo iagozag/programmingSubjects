@@ -3,8 +3,6 @@
 
 #include <iostream>
 
-class invalid_pos_e {};
-
 /**
  * @brief Classe NodeType representa um nó de lista encadeada para uso em AdjacencyList.
  */
@@ -14,6 +12,10 @@ class NodeType {
          * @brief Construtor da classe NodeType.
          */
         NodeType();
+
+        int getData();
+
+        NodeType* getNext();
     private:
         int data;       /**< Dado armazenado no nó. */
         NodeType* next; /**< Ponteiro para o próximo nó na lista encadeada. */
@@ -56,11 +58,10 @@ class LinkedList {
         void insert(const int& item);
 
         /**
-         * @brief Obtém o item em uma posição específica da lista.
-         * @param pos A posição do item a ser obtido.
-         * @return O item na posição especificada.
+         * @brief Obtém o item na posição zero da lista.
+         * @return O item na primeira posição.
          */
-        int getItem(int pos);
+        NodeType* getFirst();
 
         /**
          * @brief Limpa a lista, liberando a memória alocada.
@@ -97,6 +98,8 @@ class AdjacencyList {
          */
         int getLen();
 
+        NodeType* getFirst(int x);
+
         /**
          * @brief Adiciona uma aresta entre dois vértices.
          * @param v O primeiro vértice.
@@ -110,14 +113,6 @@ class AdjacencyList {
          * @return O grau do vértice.
          */
         int degree(int x);
-
-        /**
-         * @brief Obtém o número de arestas entre dois vértices.
-         * @param x O primeiro vértice.
-         * @param y O segundo vértice.
-         * @return O número de arestas entre os vértices.
-         */
-        int getEdges(int x, int y);
 
         /**
          * @brief Obtém a cor de um vértice.

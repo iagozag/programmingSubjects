@@ -25,20 +25,20 @@ void Graph::addColors(int v[]){
 }
 
 bool Graph::verify_coloring(){
-    int N = _length;
-    for(int i = 0; i < N; i++){
-        int E = adjList.degree(i);
-        int sum = 0, color = getColor(i), arr[color-1];
-        for(int j = 0; j < color-1; j++) arr[j] = 0;
+    for(int i = 0; i < _length; i++){
+        int sum = 0, colorV = getColor(i), vis[colorV-1];
+        for(int j = 0; j < colorV-1; j++) vis[j] = 0;
 
-        NodeType* vert = adjList.getEdges(i, 0);
+        NodeType* vert = adjList.getFirst(i);
+        for(int j = 0; j < adjList.degree(i); j++){
+            int curColor = getColor(vert->getData());
+            if(curColor < colorV && !vis[curColor-1]) 
+                sum += curColor, vis[curColor-1] = 1;
 
-        for(int j = 0; j < E; j++){
-            int vert = adjList.getEdges(i, j), curColor = getColor(vert);
-            if(curColor < color && !arr[curColor-1]) sum += curColor, arr[curColor-1] = 1;
+            vert = vert->getNext();
         }
 
-        if(sum != (color*(color-1))/2) return false;
+        if(sum != (colorV*(colorV-1))/2) return false;
     }
 
     return true;

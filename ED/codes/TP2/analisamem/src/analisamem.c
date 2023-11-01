@@ -19,7 +19,6 @@
 // assumimos o que o tamanho da palavra de máquina é 64 bits (8 bytes)
 // em uma versao posterior pode ser um parametro
 #define TAMPALAVRA 8
-#define TAMPALAVRA 1
 
 // variaveis globais para a captura de opcoes de linha de comando
 // poderia ser uma estrutura passada como parametro
@@ -85,7 +84,7 @@ void parse_args(int argc,char ** argv)
      strcpy(formato,"png");
      strcpy(terminal,"png");
      // percorre a linha de comando buscando identificadores
-     while ((c = getopt(argc, argv, "i:p:f:h")) != EOF)
+     while ((c = getopt(argc, argv, "i:p:f:h")) != EOF){
        switch(c) {
          case 'i':
 	          // log de entrada
@@ -113,6 +112,7 @@ void parse_args(int argc,char ** argv)
                   exit(1);
 
        }
+     }
        erroAssert(lognome[0],"Arquivo de log nao definido.");
        erroAssert(prefixo[0],"Prefixo de saida nao definido.");
 }
