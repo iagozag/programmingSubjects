@@ -8,7 +8,6 @@ class NodeType {
         NodeType();
     private:
         int data;
-        int cor;
         NodeType* next;
 
     friend class LinkedList;
@@ -32,6 +31,7 @@ class LinkedList {
         NodeType* head;
         NodeType* last;
         NodeType* at(int pos);
+        static int id_;
 };
 
 class AdjacencyList {

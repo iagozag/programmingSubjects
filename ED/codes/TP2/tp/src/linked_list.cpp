@@ -1,14 +1,19 @@
 #include "../include/linked_list.h"
+#include "../include/memlog.h"
 
 NodeType::NodeType(){
     data = -1;
     next = nullptr;
 }
 
+int LinkedList::id_ = 1;
+
 LinkedList::LinkedList(){
     head = new NodeType();
     last = head;
     length = 0;
+    escreveMemLog((long int)(head),sizeof(double),id_);
+    id_++;
 }
 
 LinkedList::~LinkedList() {
@@ -31,6 +36,8 @@ void LinkedList::insert(const int& item) {
     last->next = newNode;
     last = newNode;
     length++;
+
+    escreveMemLog((long int)(newNode),sizeof(double),id_);
 }
 
 NodeType* LinkedList::at(int pos){
@@ -41,11 +48,14 @@ NodeType* LinkedList::at(int pos){
     for(int i=0; i<pos; i++)
         p = p->next;
 
+    leMemLog((long int)(p),sizeof(double),id_);
+
     return p;
 }
 
 int LinkedList::getItem(int pos){
     NodeType* p = at(pos);
+    leMemLog((long int)(p),sizeof(double),id_);
     return p->data;
 }
 
@@ -53,6 +63,7 @@ void LinkedList::clear() {
     NodeType* p = head->next;
     while(p != NULL) {
         head->next = p->next;
+        leMemLog((long int)(p),sizeof(double),id_);
         delete p;
         p = head->next;
     }

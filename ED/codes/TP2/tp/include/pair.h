@@ -6,21 +6,17 @@ struct Pair{
     int color;
 
     bool operator<(const Pair &p) const {
-        if (color < p.color) {
-            return true;
-        } else if (color == p.color) {
-            return vert < p.vert;
-        }
-        return false;
+        if (color != p.color)
+            return color < p.color;
+        
+        return vert < p.vert;
     }
 
     bool operator>(const Pair &p) const {
-        if (color > p.color) {
-            return true;
-        } else if (color == p.color) {
-            return vert > p.vert;
-        }
-        return false;
+        if (color != p.color)
+            return color > p.color;
+        
+        return vert > p.vert;
     }
 
     bool operator>=(const Pair &p) const {
