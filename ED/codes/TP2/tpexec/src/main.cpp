@@ -1,7 +1,6 @@
 #include "../include/sorting_algorithms.h"
 #include "../include/graph.h"
 #include "../include/pair.h"
-#include "../include/memlog.h"
 
 #include <iostream>
 #include <numeric>
@@ -16,14 +15,7 @@ using namespace std;
 #define MINE 'y'
 
 int main(){
-    char lognome[100]; cin >> lognome;
-    iniciaMemLog(lognome);
-
-    ativaMemLog();
-
     char c; int n; cin >> c >> n;
-
-    defineFaseMemLog(0);
     Graph g(n);
     int colors[n]; 
 
@@ -76,6 +68,6 @@ int main(){
     cout << endl;
 
     delete[] ans;
-    return finalizaMemLog(); 
+    exit(0);
 }
 
