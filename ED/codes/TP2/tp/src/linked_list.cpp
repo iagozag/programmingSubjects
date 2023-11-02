@@ -7,22 +7,19 @@ NodeType::NodeType(){
 }
 
 int NodeType::getData(){
-    leMemLog((long int)(data),sizeof(NodeType),1);
+    leMemLog((long int)(data),sizeof(int),0);
     return data;
 }
 
 NodeType* NodeType::getNext(){
-    leMemLog((long int)(next),sizeof(NodeType),1);
+    leMemLog((long int)(next),sizeof(NodeType),0);
     return next;
 }
-
-int LinkedList::id_ = 2;
 
 LinkedList::LinkedList(){
     head = new NodeType();
     last = head;
     length = 0;
-    id_++;
 }
 
 LinkedList::~LinkedList() {
@@ -46,7 +43,7 @@ void LinkedList::insert(const int& item) {
     last = newNode;
     length++;
 
-    escreveMemLog((long int)(newNode),sizeof(NodeType),id_);
+    escreveMemLog((long int)(newNode),sizeof(NodeType),0);
 }
 
 NodeType* LinkedList::getFirst(){
@@ -56,7 +53,7 @@ NodeType* LinkedList::getFirst(){
 void LinkedList::clear() {
     NodeType* p = head->next;
     while(p != NULL) {
-        leMemLog((long int)(p),sizeof(NodeType),id_);
+        leMemLog((long int)(p),sizeof(NodeType),0);
         head->next = p->next;
         delete p;
         p = head->next;

@@ -7,16 +7,14 @@ using namespace std;
 void bubble_sort(Pair* v, int n){
     for(int i = 0; i < n-1; i++)
         for(int j = 1; j < n-i; j++){
-            // Monitor memory read
-            leMemLog((long int)(&(v[j])), sizeof(Pair), 0);
-            leMemLog((long int)(&(v[j - 1])), sizeof(Pair), 0);
+            leMemLog((long int)(&(v[j])), sizeof(Pair), 1);
+            leMemLog((long int)(&(v[j - 1])), sizeof(Pair), 1);
             
             if (v[j] < v[j-1]) 
                 swap(v[j-1], v[j]);
             
-            // Monitor memory write
-            escreveMemLog((long int)(&(v[j - 1])), sizeof(Pair), 0);
-            escreveMemLog((long int)(&(v[j])), sizeof(Pair), 0);
+            escreveMemLog((long int)(&(v[j - 1])), sizeof(Pair), 1);
+            escreveMemLog((long int)(&(v[j])), sizeof(Pair), 1);
         }
 }
 
@@ -25,20 +23,17 @@ void insertion_sort(Pair* v, int n){
         Pair aux = v[i];
         int j = i - 1;
         while ((j >= 0) && (aux < v[j])) {
-            // Monitor memory read
-            leMemLog((long int)(&(v[j])), sizeof(Pair), 0);
+            leMemLog((long int)(&(v[j])), sizeof(Pair), 1);
             
             v[j + 1] = v[j];
             
-            // Monitor memory write
-            escreveMemLog((long int)(&(v[j + 1])), sizeof(Pair), 0);
+            escreveMemLog((long int)(&(v[j + 1])), sizeof(Pair), 1);
             
             j--;
         }
         v[j + 1] = aux;
         
-        // Monitor memory write
-        escreveMemLog((long int)(&(v[j + 1])), sizeof(Pair), 0);
+        escreveMemLog((long int)(&(v[j + 1])), sizeof(Pair), 1);
     }
 }
 
@@ -46,18 +41,16 @@ void selection_sort(Pair *v, int n) {
     for (int i = 0; i < n - 1; i++) {
         int min = i;
         for(int j = i + 1; j < n; j++) {
-            // Monitor memory read
-            leMemLog((long int)(&(v[j])), sizeof(Pair), 0);
-            leMemLog((long int)(&(v[min])), sizeof(Pair), 0);
+            leMemLog((long int)(&(v[j])), sizeof(Pair), 1);
+            leMemLog((long int)(&(v[min])), sizeof(Pair), 1);
             
             if(v[j] < v[min]) 
                 min = j;
         }
         swap(v[i], v[min]);
         
-        // Monitor memory write
-        escreveMemLog((long int)(&(v[i])), sizeof(Pair), 0);
-        escreveMemLog((long int)(&(v[min])), sizeof(Pair), 0);
+        escreveMemLog((long int)(&(v[i])), sizeof(Pair), 1);
+        escreveMemLog((long int)(&(v[min])), sizeof(Pair), 1);
     }
 }
 
@@ -65,14 +58,12 @@ void quick_sort(Pair* v, int e, int d){
     int i, j;
     partition(e, d, &i, &j, v);
     if(e < j) {
-        // Monitor memory read
-        leMemLog((long int)(&(v[e])), (j - e + 1) * sizeof(Pair), 0);
+        leMemLog((long int)(&(v[e])), (j - e + 1) * sizeof(Pair), 1);
         
         quick_sort(v, e, j);
     }
     if(i < d) {
-        // Monitor memory read
-        leMemLog((long int)(&(v[i])), (d - i + 1) * sizeof(Pair), 0);
+        leMemLog((long int)(&(v[i])), (d - i + 1) * sizeof(Pair), 1);
         
         quick_sort(v, i, d);
     }
@@ -89,24 +80,21 @@ void merge_sort(Pair* v, int e, int d){
 
 void heap_sort(Pair* v, int n){
     for (int i = n / 2 - 1; i >= 0; i--) {
-        // Monitor memory read
-        leMemLog((long int)(&(v[i])), sizeof(Pair), 0);
+        leMemLog((long int)(&(v[i])), sizeof(Pair), 1);
         
         heapify(v, n, i);
     }
 
     for (int i = n - 1; i >= 0; i--) {
-        // Monitor memory read
-        leMemLog((long int)(&(v[0])), sizeof(Pair), 0);
-        leMemLog((long int)(&(v[i])), sizeof(Pair), 0);
+        leMemLog((long int)(&(v[0])), sizeof(Pair), 1);
+        leMemLog((long int)(&(v[i])), sizeof(Pair), 1);
         
         swap(v[0], v[i]);
         
-        // Monitor memory write
-        escreveMemLog((long int)(&(v[0])), sizeof(Pair), 0);
-        escreveMemLog((long int)(&(v[i])), sizeof(Pair), 0);
+        escreveMemLog((long int)(&(v[0])), sizeof(Pair), 1);
+        escreveMemLog((long int)(&(v[i])), sizeof(Pair), 1);
         
-        heapify(v, i, 0);
+        heapify(v, i, 1);
     }
 }
 
@@ -116,33 +104,29 @@ void my_sort(Pair* v, int n){
         sorted = true;
 
         for (int i = 1; i < n-1; i += 2) {
-            // Monitor memory read
-            leMemLog((long int)(&(v[i])), sizeof(Pair), 0);
-            leMemLog((long int)(&(v[i + 1])), sizeof(Pair), 0);
+            leMemLog((long int)(&(v[i])), sizeof(Pair), 1);
+            leMemLog((long int)(&(v[i + 1])), sizeof(Pair), 1);
             
             if(v[i] > v[i + 1]) {
                 swap(v[i], v[i + 1]);
                 sorted = false;
             }
             
-            // Monitor memory write
-            escreveMemLog((long int)(&(v[i])), sizeof(Pair), 0);
-            escreveMemLog((long int)(&(v[i + 1])), sizeof(Pair), 0);
+            escreveMemLog((long int)(&(v[i])), sizeof(Pair), 1);
+            escreveMemLog((long int)(&(v[i + 1])), sizeof(Pair), 1);
         }
 
         for(int i = 0; i < n - 1; i += 2) {
-            // Monitor memory read
-            leMemLog((long int)(&(v[i])), sizeof(Pair), 0);
-            leMemLog((long int)(&(v[i + 1])), sizeof(Pair), 0);
+            leMemLog((long int)(&(v[i])), sizeof(Pair), 1);
+            leMemLog((long int)(&(v[i + 1])), sizeof(Pair), 1);
             
             if(v[i] > v[i + 1]) {
                 swap(v[i], v[i + 1]);
                 sorted = false;
             }
             
-            // Monitor memory write
-            escreveMemLog((long int)(&(v[i])), sizeof(Pair), 0);
-            escreveMemLog((long int)(&(v[i + 1])), sizeof(Pair), 0);
+            escreveMemLog((long int)(&(v[i])), sizeof(Pair), 1);
+            escreveMemLog((long int)(&(v[i + 1])), sizeof(Pair), 1);
         }
     }  
 }
@@ -155,15 +139,13 @@ void partition(int e, int d, int* i, int* j, Pair* v){
     do
     { 
         while (x > v[*i]) {
-            // Monitor memory read
-            leMemLog((long int)(&(v[*i])), sizeof(Pair), 0);
+            leMemLog((long int)(&(v[*i])), sizeof(Pair), 1);
             
             (*i)++;
         }
         
         while (x < v[*j]) {
-            // Monitor memory read
-            leMemLog((long int)(&(v[*j])), sizeof(Pair), 0);
+            leMemLog((long int)(&(v[*j])), sizeof(Pair), 1);
             
             (*j)--;
         }
@@ -173,9 +155,8 @@ void partition(int e, int d, int* i, int* j, Pair* v){
             v[*i] = v[*j]; 
             v[*j] = w;
             
-            // Monitor memory write
-            escreveMemLog((long int)(&(v[*i])), sizeof(Pair), 0);
-            escreveMemLog((long int)(&(v[*j])), sizeof(Pair), 0);
+            escreveMemLog((long int)(&(v[*i])), sizeof(Pair), 1);
+            escreveMemLog((long int)(&(v[*j])), sizeof(Pair), 1);
             
             (*i)++;
             (*j)--;
@@ -194,12 +175,12 @@ void merge(Pair* v, int nl, int mid, int nr) {
     int i = 0, j = 0, k = nl;
 
     for(; i < end1; i++) {
-        leMemLog((long int)(&(v[nl + i])), sizeof(Pair), 0);
+        leMemLog((long int)(&(v[nl + i])), sizeof(Pair), 1);
         lArray[i] = v[nl + i];
     }
 
     for(; j < end2; j++) {
-        leMemLog((long int)(&(v[mid + 1 + j])), sizeof(Pair), 0);
+        leMemLog((long int)(&(v[mid + 1 + j])), sizeof(Pair), 1);
         rArray[j] = v[mid + 1 + j];
     }
 
@@ -214,21 +195,21 @@ void merge(Pair* v, int nl, int mid, int nr) {
         }
         k++;
 
-        escreveMemLog((long int)(&(v[k])), sizeof(Pair), 0);
+        escreveMemLog((long int)(&(v[k])), sizeof(Pair), 1);
     }
 
     for(; i < end1; i++) {
         v[k] = lArray[i];
         k++;
         
-        escreveMemLog((long int)(&(v[k])), sizeof(Pair), 0);
+        escreveMemLog((long int)(&(v[k])), sizeof(Pair), 1);
     }
 
     for(; j < end2; j++) {
         v[k] = rArray[j];
         k++;
 
-        escreveMemLog((long int)(&(v[k])), sizeof(Pair), 0);
+        escreveMemLog((long int)(&(v[k])), sizeof(Pair), 1);
     }
 
     delete[] lArray;
@@ -242,17 +223,15 @@ void heapify(Pair* v, int n, int i){
         r = 2 * i + 2;
 
     if (l < n && v[l] > v[largest]) {
-        // Monitor memory read
-        leMemLog((long int)(&(v[l])), sizeof(Pair), 0);
-        leMemLog((long int)(&(v[largest])), sizeof(Pair), 0);
+        leMemLog((long int)(&(v[l])), sizeof(Pair), 1);
+        leMemLog((long int)(&(v[largest])), sizeof(Pair), 1);
         
         largest = l;
     }
 
     if (r < n && v[r] > v[largest]) {
-        // Monitor memory read
-        leMemLog((long int)(&(v[r])), sizeof(Pair), 0);
-        leMemLog((long int)(&(v[largest])), sizeof(Pair), 0);
+        leMemLog((long int)(&(v[r])), sizeof(Pair), 1);
+        leMemLog((long int)(&(v[largest])), sizeof(Pair), 1);
         
         largest = r;
     }
@@ -260,9 +239,8 @@ void heapify(Pair* v, int n, int i){
     if (largest != i) {
         swap(v[i], v[largest]);
 
-        // Monitor memory write
-        escreveMemLog((long int)(&(v[i])), sizeof(Pair), 0);
-        escreveMemLog((long int)(&(v[largest])), sizeof(Pair), 0);
+        escreveMemLog((long int)(&(v[i])), sizeof(Pair), 1);
+        escreveMemLog((long int)(&(v[largest])), sizeof(Pair), 1);
         
         heapify(v, n, largest);
     }

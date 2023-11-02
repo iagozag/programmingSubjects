@@ -34,24 +34,25 @@ int endinfoidxcopia(endinfoidx_t * src, endinfoidx_t * dst)
   return 1;
 }
 
-void criapilhaidx(pilhaidx_t *p, endidx_t maxend) {
+void criapilhaidx(pilhaidx_t *p, endidx_t maxend)
+// Descricao: inicializa a estrutura de dados pilha para um espaco de 
+//            enderecamento entre 0 e maxend
+// Entrada: p e maxend
+// Saida: p
+{
   long i;
-  erroAssert(p != NULL, "p nulo");
+  erroAssert(p != NULL,"p nulo");
   p->topo = PILHAIDXNULO;
   p->maxend = maxend;
-  p->pilha = (elemidx_t*) malloc((maxend + 1) * sizeof(elemidx_t));
-  if (p->pilha == NULL) {
-    printf("Erro: Falha na alocação de memória para p->pilha.\n");
-    exit(1);
-  }
-  for (i = 0; i <= maxend; i++) {
+  p->pilha = (elemidx_t*) malloc((maxend+1)*sizeof(elemidx_t));
+  erroAssert(p->pilha != NULL,"nao foi possivel alocar p->pilha");
+  for (i=0; i<=maxend; i++){
     p->pilha[i].ant = PILHAIDXNULO;
     p->pilha[i].prox = PILHAIDXNULO;
     p->pilha[i].info.fase = -1;
     p->pilha[i].info.tsec = -1;
     p->pilha[i].info.tnsec = 0;
   }
-  printf("Alocação de memória para p->pilha bem-sucedida.\n");
 }
 
 int pilhaidxvazia(pilhaidx_t * p)

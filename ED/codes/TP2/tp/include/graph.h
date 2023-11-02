@@ -9,7 +9,6 @@ class Graph{
 
         void insertEdge(int v, int w);
         void addColors(int* v);
-        int getColor(int x);
         bool verify_coloring();
         
     private:
