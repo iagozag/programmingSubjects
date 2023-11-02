@@ -80,7 +80,6 @@ class LinkedList {
         int length;             /**< O comprimento da lista. */
         NodeType* head;         /**< Ponteiro para o início da lista. */
         NodeType* last;         /**< Ponteiro para o último nó na lista. */
-        NodeType* at(int pos);  /**< Obtém o nó em uma posição específica. */
 };
 
 /**
@@ -125,12 +124,6 @@ class AdjacencyList {
          * @return O grau do vértice.
          */
         int degree(int x);
-
-        /**
-         * @brief Define as cores dos vértices.
-         * @param v Um array de cores para os vértices.
-         */
-        void setColors(int* v);
 
     private:
         LinkedList* list; /**< Array de listas encadeadas para representar a lista de adjacência. */
