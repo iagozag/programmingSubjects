@@ -77,9 +77,9 @@ class LinkedList {
         void clear();
 
     private:
-        int length;             /**< O comprimento da lista. */
-        NodeType* head;         /**< Ponteiro para o início da lista. */
-        NodeType* last;         /**< Ponteiro para o último nó na lista. */
+        int length;          /**< O comprimento da lista. */
+        NodeType* head;      /**< Ponteiro para o início da lista. */
+        NodeType* last;      /**< Ponteiro para o último nó na lista. */
 };
 
 /**
@@ -127,7 +127,7 @@ class AdjacencyList {
 
     private:
         LinkedList* list; /**< Array de listas encadeadas para representar a lista de adjacência. */
-        int length; /**< O comprimento da lista de adjacência. */
+        int length;       /**< O comprimento da lista de adjacência. */
 };
 
 #endif

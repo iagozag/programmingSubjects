@@ -32,13 +32,6 @@ class Graph {
         void addColors(int* v);
 
         /**
-         * @brief Obtém a cor de um vértice específico.
-         * @param x O índice do vértice.
-         * @return A cor do vértice.
-         */
-        int getColor(int x);
-
-        /**
          * @brief Verifica se a coloração do grafo é válida.
          * @return True se a coloração for válida, False caso contrário.
          */

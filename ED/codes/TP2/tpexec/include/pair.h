@@ -5,7 +5,7 @@
  * @brief Estrutura Pair representa um par de valores inteiros.
  */
 struct Pair {
-    int vert; /**< O primeiro valor inteiro. */
+    int vert;  /**< O primeiro valor inteiro. */
     int color; /**< O segundo valor inteiro (cor). */
 
     /**

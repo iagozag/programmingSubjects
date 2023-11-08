@@ -13,16 +13,24 @@ class NodeType {
          */
         NodeType();
 
+        /**
+         * @brief Obtém o dado armazenado no nó.
+         * @return O dado armazenado no nó.
+         */
         int getData();
 
+        /**
+         * @brief Obtém o ponteiro para o próximo nó na lista encadeada.
+         * @return O ponteiro para o próximo nó.
+         */
         NodeType* getNext();
+
     private:
         int data;       /**< Dado armazenado no nó. */
         NodeType* next; /**< Ponteiro para o próximo nó na lista encadeada. */
 
     friend class LinkedList;
 };
-
 
 /**
  * @brief Classe LinkedList representa uma lista encadeada para uso em AdjacencyList.
@@ -58,8 +66,8 @@ class LinkedList {
         void insert(const int& item);
 
         /**
-         * @brief Obtém o item na posição zero da lista.
-         * @return O item na primeira posição.
+         * @brief Obtém o primeiro nó da lista.
+         * @return O primeiro nó da lista.
          */
         NodeType* getFirst();
 
@@ -69,11 +77,9 @@ class LinkedList {
         void clear();
 
     private:
-        int length;             /**< O comprimento da lista. */
-        NodeType* head;         /**< Ponteiro para o início da lista. */
-        NodeType* last;         /**< Ponteiro para o último nó na lista. */
-        NodeType* at(int pos);  /**< Obtém o nó em uma posição específica. */
-        static int id_;         /**< ID estático para rastrear a lista. */
+        int length;          /**< O comprimento da lista. */
+        NodeType* head;      /**< Ponteiro para o início da lista. */
+        NodeType* last;      /**< Ponteiro para o último nó na lista. */
 };
 
 /**
@@ -98,6 +104,11 @@ class AdjacencyList {
          */
         int getLen();
 
+        /**
+         * @brief Obtém o primeiro nó de uma lista de adjacência de um vértice.
+         * @param x O índice do vértice.
+         * @return O primeiro nó da lista de adjacência.
+         */
         NodeType* getFirst(int x);
 
         /**
@@ -114,23 +125,9 @@ class AdjacencyList {
          */
         int degree(int x);
 
-        /**
-         * @brief Obtém a cor de um vértice.
-         * @param x O índice do vértice.
-         * @return A cor do vértice.
-         */
-        int getColor(int x);
-
-        /**
-         * @brief Define as cores dos vértices.
-         * @param v Um array de cores para os vértices.
-         */
-        void setColors(int* v);
-
     private:
         LinkedList* list; /**< Array de listas encadeadas para representar a lista de adjacência. */
-        int length; /**< O comprimento da lista de adjacência. */
+        int length;       /**< O comprimento da lista de adjacência. */
 };
 
 #endif
-
