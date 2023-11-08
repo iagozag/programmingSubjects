@@ -21,7 +21,7 @@ $(OBJ)/%.o: $(SRC)/%.$(SRCEXT)
 	$(CC) $(CFLAGS) -o $@ $<
 
 clean:
-	rm -f $(EXE) $(OBJECTS)
+	rm -f $(EXE) $(OBJECTS) gmon.out
 
 .PHONY: clean
 
