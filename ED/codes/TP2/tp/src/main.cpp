@@ -12,7 +12,7 @@ using namespace std;
 #define INSERTION 'i'
 #define QUICK 'q'
 #define MERGE 'm'
-#define HEAP 'h'
+#define HEAP 'p'
 #define MINE 'y'
 
 int main(){
@@ -44,7 +44,7 @@ int main(){
     for(int i = 0; i < n; i++){
         Pair p; p.vert = i, p.color = colors[i];
         ans[i] = p;
-        escreveMemLog((long int)(&(ans[i])),sizeof(Pair),1);
+        escreveMemLog((long int)(&(ans[i])),sizeof(int),1);
     }
 
     switch(c){
@@ -76,12 +76,13 @@ int main(){
     cout << 1 << " ";
     for(int i = 0; i < n; i++){
         cout << ans[i].vert << " ";
-        leMemLog((long int)(&(ans[i])),sizeof(Pair),1);
+        leMemLog((long int)(&(ans[i])),sizeof(int),1);
     }
     cout << endl;
 
     defineFaseMemLog(2);
-    for(int i = 0; i < n; i++) leMemLog((long int)(&(ans[i])),sizeof(Pair),1);
+    g.printNeighbors();
+    for(int i = 0; i < n; i++) leMemLog((long int)(&(ans[i])),sizeof(int),1);
     delete[] ans;
     return finalizaMemLog(); 
 }
