@@ -421,7 +421,6 @@ int main (int argc, char ** argv){
   char pref[100];
   opt_t opt;
   struct timespec inittp, endtp, restp;
-  int retp;
 
   // parse_args
   parse_args(argc,argv,&opt);
@@ -436,7 +435,7 @@ int main (int argc, char ** argv){
   vet[opt.size] = vet[0]; // for heapsort
   //if (opt.size < 100) printVector(vet, opt.size);
 
-  retp = clock_gettime(CLOCK_MONOTONIC, &inittp);
+  clock_gettime(CLOCK_MONOTONIC, &inittp);
   
   // execute algorithm
   switch (opt.alg){
@@ -465,7 +464,7 @@ int main (int argc, char ** argv){
          recursiveSelectionSort(vet, 0, opt.size-1, &s);
          break;
   }
-  retp = clock_gettime(CLOCK_MONOTONIC, &endtp);
+  clock_gettime(CLOCK_MONOTONIC, &endtp);
   clkDiff(inittp, endtp, &restp);
 
 

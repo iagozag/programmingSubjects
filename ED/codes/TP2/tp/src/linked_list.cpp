@@ -12,7 +12,6 @@ int NodeType::getData(){
 }
 
 NodeType* NodeType::getNext(){
-    leMemLog((long int)(next),sizeof(NodeType),0);
     return next;
 }
 
@@ -43,7 +42,7 @@ void LinkedList::insert(const int& item) {
     last = newNode;
     length++;
 
-    escreveMemLog((long int)(newNode),sizeof(NodeType),0);
+    escreveMemLog((long int)(newNode),sizeof(int),0);
 }
 
 NodeType* LinkedList::getFirst(){
@@ -53,7 +52,7 @@ NodeType* LinkedList::getFirst(){
 void LinkedList::clear() {
     NodeType* p = head->next;
     while(p != NULL) {
-        leMemLog((long int)(p),sizeof(NodeType),0);
+        leMemLog((long int)(p),sizeof(int),0);
         head->next = p->next;
         delete p;
         p = head->next;

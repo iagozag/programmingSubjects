@@ -31,6 +31,7 @@ void Graph::printNeighbors(){
             cout << vert->getData() << " ";
             vert = vert->getNext();
         }
+
         cout << endl;
     }
 }

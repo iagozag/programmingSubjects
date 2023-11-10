@@ -11,7 +11,7 @@ using namespace std;
 #define INSERTION 'i'
 #define QUICK 'q'
 #define MERGE 'm'
-#define HEAP 'h'
+#define HEAP 'p'
 #define MINE 'y'
 
 int main(){
