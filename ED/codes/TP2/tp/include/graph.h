@@ -31,6 +31,8 @@ class Graph {
          */
         void addColors(int* v);
 
+        void printNeighbors();
+
         /**
          * @brief Verifica se a coloração do grafo é válida.
          * @return True se a coloração for válida, False caso contrário.

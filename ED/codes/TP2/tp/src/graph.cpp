@@ -21,6 +21,20 @@ void Graph::addColors(int v[]){
         colors[i] = v[i];
 }
 
+void Graph::printNeighbors(){
+    for (int i = 0; i < _length; i++) {
+        NodeType* vert = adjList.getFirst(i);
+
+        for (int j = 0; j < adjList.degree(i); j++) {
+            leMemLog((long int)(vert),sizeof(NodeType),0);
+
+            cout << vert->getData() << " ";
+            vert = vert->getNext();
+        }
+        cout << endl;
+    }
+}
+
 bool Graph::verify_coloring(){
     for(int i = 0; i < _length; i++){
         int sum = 0, colorV = colors[i], vis[colorV-1];

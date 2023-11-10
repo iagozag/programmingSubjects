@@ -81,6 +81,7 @@ int main(){
     cout << endl;
 
     defineFaseMemLog(2);
+    g.printNeighbors(); 
     for(int i = 0; i < n; i++) leMemLog((long int)(&(ans[i])),sizeof(Pair),1);
     delete[] ans;
     return finalizaMemLog(); 
