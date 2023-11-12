@@ -1,10 +1,3 @@
-//---------------------------------------------------------------------
-// Arquivo      : evalenum.c
-// Conteudo     : avaliacao de desempenho de algoritmos de ordenacao 
-// Autor        : Wagner Meira Jr. (meira@dcc.ufmg.br)
-// Historico    : 2023-11-04 - arquivo criado
-//---------------------------------------------------------------------
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,7 +16,7 @@
 
 typedef struct alg{
   int num;
-  char * name;
+  char* name;
 } alg_t;
 
 alg_t algvet[]={
@@ -63,8 +56,8 @@ typedef struct opt{
 } opt_t;
 
 typedef struct sortperf{
-  long int cmp;
-  long int move;
+  unsigned long cmp;
+  int move;
   int calls;
 } sortperf_t;
 
@@ -103,10 +96,9 @@ char * printsortperf(sortperf_t * s, char * str, char * pref){
 // Entrada: s, pref
 // Saida: str
 
- sprintf(str,"%s cmp %ld move %ld calls %d", pref, s->cmp, s->move, s->calls); 
+ sprintf(str,"%s cmp %lu move %d calls %d", pref, s->cmp, s->move, s->calls); 
  return str;
 }
-
 
 void initVector(int * vet, int size){
 // Descricao: inicializa vet com valores aleatorios
@@ -181,7 +173,6 @@ void heapSort(int *A, int n, sortperf_t * s) {
         heapify(A, Esq, Dir, s);
     }
 }
-
 
 // recursive selection sort
 void recursiveSelectionSort(int arr[], int l, int r, sortperf_t * s)
@@ -387,7 +378,6 @@ void parse_args(int argc, char ** argv, opt_t * opt)
          default:
                   uso();
                   exit(1);
-
        }
      }
      if (!opt->alg) {
@@ -397,7 +387,7 @@ void parse_args(int argc, char ** argv, opt_t * opt)
 }
 
 void clkDiff(struct timespec t1, struct timespec t2,
-                   struct timespec * res)
+             struct timespec * res)
 // Descricao: calcula a diferenca entre t2 e t1, que e armazenada em res
 // Entrada: t1, t2
 // Saida: res
@@ -413,7 +403,6 @@ void clkDiff(struct timespec t1, struct timespec t2,
   }
 }
 
-
 int main (int argc, char ** argv){
   sortperf_t s;
   int * vet;
@@ -421,6 +410,7 @@ int main (int argc, char ** argv){
   char pref[100];
   opt_t opt;
   struct timespec inittp, endtp, restp;
+  int retp;
 
   // parse_args
   parse_args(argc,argv,&opt);
@@ -435,7 +425,7 @@ int main (int argc, char ** argv){
   vet[opt.size] = vet[0]; // for heapsort
   //if (opt.size < 100) printVector(vet, opt.size);
 
-  clock_gettime(CLOCK_MONOTONIC, &inittp);
+  retp = clock_gettime(CLOCK_MONOTONIC, &inittp);
   
   // execute algorithm
   switch (opt.alg){
@@ -464,11 +454,8 @@ int main (int argc, char ** argv){
          recursiveSelectionSort(vet, 0, opt.size-1, &s);
          break;
   }
-  clock_gettime(CLOCK_MONOTONIC, &endtp);
+  retp = clock_gettime(CLOCK_MONOTONIC, &endtp);
   clkDiff(inittp, endtp, &restp);
-
-
-  //if (opt.size<100) printVector(vet, opt.size);
 
   // print stats
   sprintf(pref,"alg %s seed %d size %d time %ld.%.9ld",
@@ -479,4 +466,3 @@ int main (int argc, char ** argv){
 
   exit(0);
 }
-

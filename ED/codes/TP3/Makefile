@@ -5,16 +5,13 @@ SRCEXT = cpp
 OBJ = obj
 INC = include
 BIN = bin
-CFLAGS = -pg -g -Wall -c -I$(INC)
-EXE = $(BIN)/tp2.out
-ANALISAMEM = ../analisamem/bin/analisamem
+CFLAGS = -g -Wall -c -I$(INC)
+EXE = $(BIN)/tp3.out
 
 SOURCES := $(shell find $(SRC) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRC)/%,$(OBJ)/%,$(SOURCES:.$(SRCEXT)=.o))
 
-all: test
-
-test: $(EXE)
+all: $(EXE)
 
 $(EXE): $(OBJECTS)
 	$(CC) -o $(EXE) $(OBJECTS) $(LIBS)

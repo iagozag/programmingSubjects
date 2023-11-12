@@ -5,7 +5,7 @@ SRCEXT = c
 OBJ = obj
 INC = include
 BIN = bin
-CFLAGS = -g -pg -Wall -c -I$(INC)
+CFLAGS = -g -Wall -c -I$(INC)
 EXE = $(BIN)/pa9.out
 
 SOURCES := $(shell find $(SRC) -type f -name *.$(SRCEXT))
