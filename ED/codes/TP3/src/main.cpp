@@ -109,7 +109,7 @@ void solve(){
             cin >> a >> b >> c >> d;
             vector<vi> m = query(1, 0, n-1, a, b);
             m = multiply(m, {{c, d}, {0, 0}});
-            cout << m[0][0] << " " << m[0][1] << endl;
+            cout << m[0][0] << " " << m[1][0] << endl;
         }
     }
 }
