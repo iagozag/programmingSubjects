@@ -44,32 +44,72 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) 0
 #endif
 
-vector<vi> seg;
+int MAX = 1E5+10;
+vector<vector<vi>> seg(4*MAX);
+
+vector<vi> multiply(const vector<vi>& mat1, const vector<vi>& mat2) 
+{
+    int x, i, j; 
+    vector<vi> res(2, vi(2, 0)); 
+
+    for (i = 0; i < 2; i++) { 
+        for (j = 0; j < 2; j++) { 
+            for (x = 0; x < 2; x++) { 
+                res[i][j] += mat1[i][x] * mat2[x][j]; 
+            } 
+        } 
+    }
+
+    return res;
+} 
 
 vector<vi> build(int node, int tl, int tr){
+    vector<vi> v = {{1, 0}, {0, 1}};
+    if(tl == tr){
+        seg[node][0][0] = 1, seg[node][1][1] = 1;
+        return seg[node];
+    }
+
+    int tm = (tl+tr)>>1;
+    return seg[node] = multiply(build(node*2, tl, tm), build(node*2+1, tm+1, tr));
 }
 
 vector<vi> update(int node, int tl, int tr, int idx, int val[2][2]){
+    if(idx < tl || idx > tr) return seg[node];
+    if(tl == tr){
+        for(int i = 0; i < 2; i++)
+            for(int j = 0; j < 2; j++)
+                seg[node][i][j] = val[i][j];
+        return seg[node];
+    }
 
+    int tm = (tl+tr)>>1;
+    return seg[node] = multiply(update(node*2, tl, tm, idx, val), update(node*2+1, tm+1, tr, idx, val));
 }
 
 vector<vi> query(int node, int tl, int tr, int l, int r){
+    if(r < tl || l > tr) return {{1, 0}, {0, 1}};
+    if(l <= tl && r >= tr) return seg[node];
+
+    int tm = (tl+tr)>>1;
+    return multiply(query(node*2, tl, tm, l, r), query(node*2+1, tm+1, tr, l, r));
 }
 
 void solve(){
     int n, m; cin >> n >> m;
-    vector<vector<vi>> seg(n, vector<vi>(2, vi(2, 0))); 
     build(1, 0, n-1);
 
     for(int i = 0; i < m; i++){
-        char op; int idx, a, b, c, d;
+        char op; int idx, a, b, c, d; cin >> op;
         if(op == 'u'){
             cin >> idx >> a >> b >> c >> d;
             int m[2][2] = {{a, b}, {c, d}};
             update(1, 0, n-1, idx, m);
         } else{
             cin >> a >> b >> c >> d;
-            
+            vector<vi> m = query(1, 0, n-1, a, b);
+            m = multiply(m, {{c, d}, {0, 0}});
+            cout << m[0][0] << " " << m[0][1] << endl;
         }
     }
 }
