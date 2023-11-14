@@ -3,15 +3,15 @@
 #include <string>
 using namespace std;
 
-void multiply(long long** seg, long long** mat1, long long** mat2) {
-    for(int i = 0; i < 2; i++)
-        for(int j = 0; j < 2; j++)
-            seg[i][j] = 0;
+Matrix multiply(Matrix mat1, Matrix mat2) {
+    Matrix ans(0, 0, 0, 0); 
 
     for(int i = 0; i < 2; i++)
         for(int j = 0; j < 2; j++)
             for(int k = 0; k < 2; k++)
-                seg[i][j] += mat1[i][k] * mat2[k][j];
+                ans.sumIdx(i, j, mat1.getIdx(i, k) * mat2.getIdx(k, j));
+
+    return ans;
 }
 
 long long get_less_sig(long long a){

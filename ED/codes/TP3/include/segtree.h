@@ -5,20 +5,17 @@
 
 class Segtree{
     private:
-        
+        Matrix* seg;
     public:
-        long long*** seg;
         Segtree(int length);
 
         ~Segtree();
 
-        void build(int node, int tl, int tr);
+        Matrix update(int node, int tl, int tr, int idx, Matrix& mat);
 
-        void update(int node, int tl, int tr, int idx, long long mat[][2]);
+        Matrix query(int node, int tl, int tr, int a, int b);
 
-        long long** query(int node, int tl, int tr, int a, int b);
-
-        void destroySegtree(int node);
+        void printSegTree(); 
 };
 
 #endif
