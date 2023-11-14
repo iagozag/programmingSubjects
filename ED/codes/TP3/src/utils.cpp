@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-void multiply(long long** mat1, long long** mat2, long long** seg) {
+void multiply(long long** seg, long long** mat1, long long** mat2) {
     for(int i = 0; i < 2; i++)
         for(int j = 0; j < 2; j++)
             seg[i][j] = 0;

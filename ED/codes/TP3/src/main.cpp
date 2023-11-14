@@ -10,7 +10,16 @@ int main(){ _
     Segtree segt(n);
     segt.build(1, 0, n-1);
 
-    for(int i = 0; i < m; i++){
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < 2; j++){
+            for(int k = 0; k < 2; k++){
+                cout << segt.seg[i][j][k] << " ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
+    /*for(int i = 0; i < m; i++){
         char op; int idx, a, b, c, d; cin >> op;
         if(op == 'u'){
             cin >> idx >> a >> b >> c >> d;
@@ -30,7 +39,7 @@ int main(){ _
                 for(int j = 0; j < 2; j++)
                     aux[i][j] = 0, ans[i][j] = 0;
 
-            multiply(m, aux, ans);
+            multiply(ans, m, aux);
             cout << get_less_sig(ans[0][0]) << " " << get_less_sig(ans[1][0]) << endl;
 
             for (int i = 0; i < 2; ++i) {
@@ -42,7 +51,7 @@ int main(){ _
             delete[] aux;
             delete[] ans;
         }
-    }
+    }*/
 
     exit(0);
 }

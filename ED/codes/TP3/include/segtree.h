@@ -5,8 +5,9 @@
 
 class Segtree{
     private:
-        long long*** seg; 
+        
     public:
+        long long*** seg;
         Segtree(int length);
 
         ~Segtree();

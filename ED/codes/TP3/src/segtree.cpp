@@ -16,14 +16,19 @@ void Segtree::build(int node, int tl, int tr){
             for(int j = 0; j < 2; ++j)
                 seg[node][i][j] = (i == j) ? 1 : 0;
         }
-
         return;
     }
 
     int tm = (tl+tr)>>1;
     build(node*2, tl, tm);
     build(node*2+1, tm+1, tr);
-    multiply(seg[node*2], seg[node*2+1], seg[node]);
+
+    seg[node] = new long long*[2];
+    for(int i = 0; i < 2; ++i){
+        seg[node][i] = new long long[2];
+        for(int j = 0; j < 2; ++j)
+            seg[node][i][j] = (i == j) ? 1 : 0;
+    }
 }
 
 void Segtree::update(int node, int tl, int tr, int idx, long long mat[][2]){
@@ -38,7 +43,7 @@ void Segtree::update(int node, int tl, int tr, int idx, long long mat[][2]){
     if(tl <= idx && idx <= tm) update(node*2, tl, tm, idx, mat);
     else update(node*2+1, tm+1, tr, idx, mat);
 
-    multiply(seg[node*2], seg[node*2+1], seg[node]);
+    multiply(seg[node], seg[node*2], seg[node*2+1]);
 }
 
 long long** Segtree::query(int node, int tl, int tr, int a, int b){
@@ -57,7 +62,7 @@ long long** Segtree::query(int node, int tl, int tr, int a, int b){
     int tm = (tl+tr)>>1;
     query(node*2, tl, tm, a, b);
     query(node*2+1, tm+1, tr, a, b);
-    multiply(seg[node*2], seg[node*2+1], seg[node]);
+    multiply(seg[node], seg[node*2], seg[node*2+1]);
 
     return seg[node];
 }
