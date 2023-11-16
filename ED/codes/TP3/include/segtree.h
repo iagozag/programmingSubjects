@@ -1,7 +1,7 @@
 #ifndef SEGTREE_H
 #define SEGTREE_H
 
-#include "utils.h"
+#include "matrix.h"
 
 class Segtree{
     private:

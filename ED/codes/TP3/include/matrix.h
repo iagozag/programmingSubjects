@@ -16,4 +16,6 @@ class Matrix{
         long long getIdx(int i, int j);
 };
 
+Matrix multiply(Matrix mat1, Matrix mat2);
+
 #endif

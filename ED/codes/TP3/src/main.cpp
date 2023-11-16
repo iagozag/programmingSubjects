@@ -4,7 +4,7 @@
 using namespace std;
 
 int main(){
-    int n, m; cin >> n >> m;
+    int n, m, mod = 1e8; cin >> n >> m;
     Segtree* segt = new Segtree(n);
 
     for(int i = 0; i < m; i++){
@@ -19,7 +19,7 @@ int main(){
             Matrix m = segt->query(1, 0, n-1, a, b);
 
             Matrix ans = multiply(m, Matrix(c, 0, d, 0));
-            cout << get_less_sig(ans.getIdx(0, 0)) << " " << get_less_sig(ans.getIdx(1, 0)) << endl;
+            cout << ans.getIdx(0, 0) % mod << " " << ans.getIdx(1, 0) % mod << endl;
         }
     }
 
