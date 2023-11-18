@@ -26,7 +26,7 @@ int main(int argc, char** argv){
 
     for(int i = 0; i < n; i++){
         cin >> c;
-        switch (c)
+        switch(c)
         {
             case 'i':
                 cin >> t;
@@ -39,9 +39,9 @@ int main(int argc, char** argv){
             case 'n':
                 cin >> t;
                 if(s->Pertence(t))
-                    cout << "O elemento " << t << "pertence ao conjunto!\n";
+                    cout << "O elemento " << t << " pertence ao conjunto!\n";
                 else
-                    cout << "O elemento " << t << "nao pertence ao conjunto!\n";
+                    cout << "O elemento " << t << " nao pertence ao conjunto!\n";
                 break;
             case 'u':{
                 cout << "A uniao dos conjuntos e: ";

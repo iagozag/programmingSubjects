@@ -5,10 +5,9 @@
 using namespace std;
 
 typedef struct s_table_elem{
-    string dado;
-    bool vazio;
-    bool retirada;
-
+    string dado = "";
+    bool vazio = true;
+    bool retirada = false;
 } ElementoTabela;
 
 class StringSet{
