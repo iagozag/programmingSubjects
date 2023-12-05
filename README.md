@@ -15,5 +15,6 @@ Sempre que ocorrer uma transição de subida no sinal de clock "clk", os seguint
 - Caso contrário, o fluxo de execução continua para o próximo passo.
   - Define a saída "q" como o valor presente na entrada "d".
 - Caso contrário, mantém o valor atual da saída "q".
+
 Dessa forma, o flip-flop D síncrono armazena o valor de entrada "d" na saída "q" em cada transição de subida do sinal de clock "clk". Contudo, se o sinal de reset estiver ativo, a saída "q" é redefinida para o valor lógico "0".
 
