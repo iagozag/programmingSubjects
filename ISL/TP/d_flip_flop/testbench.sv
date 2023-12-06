@@ -15,7 +15,7 @@ module tb_d_flip_flop;
       d = 0;
       reset = 0;
       
-	  #16 reset = 1; // Após 16 unidades de tempo, o sinal de reset é ativado (1)
+	  #16 reset = 1; // Após 16 unidades de tempo, o sinal de reset é ativado para teste (1)
       #4 reset = 0;  // Após mais 4 unidades de tempo, o sinal de reset é desativado (0) novamente
       #20 $finish;   // Encerra a simulação após mais 20 unidades de tempo
    end
@@ -25,7 +25,7 @@ module tb_d_flip_flop;
       $display("Tempo %t, d = %b, q = %b", $time, d, q);
    end
 
-   // Escolhe arquivo para salvar o gráfico de ondas
+   // Escolhe arquivo para salvar o diagrama de tempo 
    initial begin
       $dumpfile("waveform.vcd");
       $dumpvars();
