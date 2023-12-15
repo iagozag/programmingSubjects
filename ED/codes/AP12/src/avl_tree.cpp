@@ -24,12 +24,7 @@ private:
     }
 
     int height(node* t) {
-        return (t == nullptr ? -1 : t->height);
-    }
-
-    int updateHeight(node* t) {
-        t->height = max(height(t->left), height(t->right)) + 1;
-        return t->height;
+        return (t == nullptr ? 0 : t->height);
     }
 
     int max(int a, int b) {
@@ -37,25 +32,30 @@ private:
     }
 
     node* rightRotate(node* t) {
-        if (t == nullptr || t->left == nullptr) return t;
-
         node* u = t->left;
-        t->left = u->right;
+        node* T2 = u->right;
         u->right = t;
+        t->left = T2;
+
         t->height = max(height(t->left), height(t->right)) + 1;
-        u->height = max(height(u->left), t->height) + 1;
+        u->height = max(height(u->left), height(u->right)) + 1;
         return u;
     }
 
-    node* leftRotate(node* t) {
-        if (t == nullptr || t->right == nullptr) return t;
-
+    node* leftRotate(node* t) { 
         node* u = t->right;
-        t->right = u->left;
+        node* T2 = u->left;
         u->left = t;
+        t->right = T2;
+
         t->height = max(height(t->left), height(t->right)) + 1;
         u->height = max(height(t->right), t->height) + 1;
         return u;
+    }
+
+    int getBalanceFactor(node* N) {
+        if (N == NULL) return 0;
+        return height(N->left) - height(N->right);
     }
 
     node* insert(int x, node* t) {
@@ -72,9 +72,9 @@ private:
         else
             return t;
 
-        t->height = updateHeight(t);
+        t->height = 1 + max(height(t->left), height(t->right));
 
-        int balanceFactor = height(t->left) - height(t->right);
+        int balanceFactor = getBalanceFactor(t);
 
         if (balanceFactor > 1) {
             if (x < t->left->data)
@@ -86,72 +86,65 @@ private:
         }
         else if (balanceFactor < -1) {
             if (x > t->right->data) {
+                return leftRotate(t);
+            }
+            else{
                 t->right = rightRotate(t->right);
                 return leftRotate(t);
             }
-            else
-                return leftRotate(t);
         }
 
         return t;
     }
 
     node* remove(int x, node* t) {
-        if (t == nullptr) return nullptr;
+        if (t == nullptr) return t;
 
         if (x < t->data)
             t->left = remove(x, t->left);
         else if (x > t->data)
             t->right = remove(x, t->right);
         else {
-            if (t->left == nullptr && t->right == nullptr) {
-                delete t;
-                return nullptr;
-            }
-            else if (t->left == nullptr && t->right != nullptr) {
-                node* subRightTree = t->right;
-                delete t;
-                return subRightTree;
-            }
-            else if (t->left != nullptr && t->right == nullptr) {
-                node* subLeftTree = t->left;
-                delete t;
-                return subLeftTree;
-            }
-            else {
-                node* maxLeftNode = max_node(t->left);
-                t->data = maxLeftNode->data;
-                t->left = remove(maxLeftNode->data, t->left);
+            if (t->left == nullptr || t->right == nullptr) {
+                node* tmp = t->left ? t->left : t->right;
+
+                if(tmp == nullptr) tmp = t, t = nullptr;
+                else *t = *tmp, delete(tmp);
+            } else{
+                node* tmp = min_node(t->right);
+                t->data = tmp->data;
+                t->right = remove(tmp->data, t->right);
             }
         }
 
-        t->height = updateHeight(t);
+        if(t == nullptr) return t;
 
-        int balanceFactor = height(t->left) - height(t->right);
+        t->height = 1 + max(height(t->left), height(t->right));
 
+        int balanceFactor = getBalanceFactor(t);
         if (balanceFactor > 1) {
-            if (height(t->left->left) >= height(t->left->right))
+            if (getBalanceFactor(t->left) >= 0)
                 return rightRotate(t);
             else {
                 t->left = leftRotate(t->left);
                 return rightRotate(t);
             }
-        }
-        else if (balanceFactor < -1) {
-            if (height(t->right->left) > height(t->right->right)) {
+        } else if (balanceFactor < -1) {
+            if (getBalanceFactor(t->right) <= 0)
+                return leftRotate(t);
+            else{
                 t->right = rightRotate(t->right);
                 return leftRotate(t);
             }
-            else
-                return leftRotate(t);
         }
 
         return t;
     }
 
-    node* max_node(node* t) {
-        if (t->right == nullptr) return t;
-        else return max_node(t->right);
+    node* min_node(node* t) {
+        node* cur = t;
+        while(cur->left != nullptr) cur = cur->left;
+        return cur;
     }
 
     void preorder(node* t) {
