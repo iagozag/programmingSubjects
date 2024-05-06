@@ -36,7 +36,7 @@ void bfs(int s = 0){
     queue<int> q; q.push(s);
     while(!q.empty()){
         int v = q.front(); q.pop();
-        forr(ve, g_t[v]) if(bfsdist[v]+1 <= bfsdist[ve]){
+        forr(ve, g_t[v]){
             if(bfsdist[v]+1 < bfsdist[ve]) bfsdist[ve] = bfsdist[v]+1, par[ve] = v, q.push(ve);
             else if(bfsdist[v]+1 == bfsdist[ve] and v < par[ve]) par[ve] = v;
         }
