@@ -1,0 +1,5 @@
+info: Opening plain database via sqlite backend.
+warning: sqlite database already exists. Set your database backend to sqlite
+format error: cannot recognize xref format
+warning: trying to repair broken xref
+warning: repairing PDF document
