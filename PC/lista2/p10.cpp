@@ -52,10 +52,31 @@ template<class H, class... T> void DBGC(H h, T... t) {
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 2e5+10, MOD = 1e9+7;
+const int MAX = 1e6+10, MOD = 1e9+7;
+
+ll dp(ll n){
+    if(n < 10) return n*(n+1)/2;
+
+    ll d = log10(n), p = pow(10, d), c = ;
+
+    return dp(n-(n/p)*p)*c+45*p;
+}
+
+ll naive(ll n){
+    ll sum = 0;
+    rep(i, 1, n+1){
+        string s = to_string(i);
+        forr(x, s) sum += x-'0';
+    }
+
+    return sum;
+}
 
 void solve(ll l, ll r){
-     
+    cout << "dp(" << r << "): " << dp(r) << ", dp(" << l-1 << "): " << dp(l-1) << endl;
+    cout << "naive(" << r << "): " << naive(r) << ", naive(" << l-1 << "): " << naive(l-1) << endl;
+    cout << "dp: " << (dp(r)%MOD-dp(l-1)%MOD+MOD)%MOD << endl; 
+    cout << "naive: " << naive(r)-naive(l-1) << endl;
 }
 
 int main(){ _
