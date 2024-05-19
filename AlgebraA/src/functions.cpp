@@ -50,14 +50,29 @@ void Functions::Generator(){
         }
     if(n) fact.push_back(n);
 
-    ll gen = -1;
     for (ll ans=2; ans<=p; ans++) {
         bool ok = true;
         for (size_t i = 0; i < fact.size() and ok; i++)
             ok &= fexp(ans, phi/fact[i], p) != 1;
-        if(ok){ gen = ans; break; }
+        if(ok){ g = ans; break; }
     }
     
-    cout << "Generator: " << gen << endl;
+    cout << "Generator: " << g << endl;
 }
 
+void Functions::DiscreteLogarithm(){
+    a %= p, g %= p;
+    ll n = sqrt(p) + 1, ans = -1;
+    unordered_map<ll, ll> vals;
+    for (ll p = 1; p <= n; ++p)
+        vals[fexp(a, p * n, p)] = p;
+    for (ll q = 0; q <= n; ++q) {
+        ll cur = (fexp(a, q, p) * g) % p;
+        if (vals.count(cur)) {
+            ans = vals[cur] * n - q;
+            break;
+        }
+    }
+    
+    cout << "Discrete Log of a module p in base g = " << ans << endl;
+}

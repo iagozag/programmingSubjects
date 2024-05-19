@@ -8,6 +8,7 @@ int main(){ _
     Functions F(n, a);
     F.MillerRabin();
     F.Generator();
+    F.DiscreteLogarithm();
 
     exit(0);
 }
