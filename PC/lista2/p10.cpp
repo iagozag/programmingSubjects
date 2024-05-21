@@ -21,66 +21,30 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void DBG() {
-    cerr << "]" << endl;
-}
-
-void DBGC() {
-    cerr << "]" << endl;
-}
-
-template<class H, class... T> void DBG(H h, T... t) {
-    cerr << to_string(h);
-    if(sizeof...(t)) cerr << ", ";
-    DBG(t...);
-}
-
-template<class H, class... T> void DBGC(H h, T... t) {
-    for(auto& x: h) cerr << x << " ";
-    if(sizeof...(t)) cerr << "], [ ";
-    DBGC(t...);
-}
-
-#ifndef _DEBUG
-#define dbg(...) cerr << "[" << #__VA_ARGS__ << "]: [", DBG(__VA_ARGS__)
-#define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
-#else
-#define dbg(...) 0
-#define dbgc(...) 0
-#endif
-
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 1e6+10, MOD = 1e9+7;
+const ll MAX = 1e6+10, MOD = 1e9+7;
+
+vl pref(11);
 
 ll dp(ll n){
     if(n < 10) return n*(n+1)/2;
 
-    ll d = log10(n), p = pow(10, d), c = ;
+    ll d = log10(n)+1, p = pow(10, d-1), c = n/p, rest = n-c*p;
 
-    return dp(n-(n/p)*p)*c+45*p;
-}
-
-ll naive(ll n){
-    ll sum = 0;
-    rep(i, 1, n+1){
-        string s = to_string(i);
-        forr(x, s) sum += x-'0';
-    }
-
-    return sum;
+    return (pref[d-1]%MOD*c%MOD+(c*(c-1)/2)*p%MOD+c*(rest+1)%MOD+dp(rest)%MOD)%MOD;
 }
 
 void solve(ll l, ll r){
-    cout << "dp(" << r << "): " << dp(r) << ", dp(" << l-1 << "): " << dp(l-1) << endl;
-    cout << "naive(" << r << "): " << naive(r) << ", naive(" << l-1 << "): " << naive(l-1) << endl;
-    cout << "dp: " << (dp(r)%MOD-dp(l-1)%MOD+MOD)%MOD << endl; 
-    cout << "naive: " << naive(r)-naive(l-1) << endl;
+    cout << (dp(r)%MOD-dp(l-1)%MOD+MOD)%MOD << endl;
 }
 
 int main(){ _
     ll l, r;
+
+    ll p = 1;
+    rep(i, 1, 11) pref[i] = (1LL*45*i%MOD*p%MOD)%MOD, p *= 10;
 
     while(cin >> l >> r) solve(l, r);
 
