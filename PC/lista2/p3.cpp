@@ -56,6 +56,9 @@ const int MAX = 2e5+10, MOD = 1e9+7;
 void solve(int s, int b){
     vi slots(s), balls(b); forr(x, slots) cin >> x; forr(x, balls) cin >> x;
 
+    vector<vi> val(b, vi(s));
+    rep(i, 0, b) rep(j, 0, s) val[i][j] = (s[j]+s[(j+1)%s])*b[i];
+
 }
 
 int main(){ _
