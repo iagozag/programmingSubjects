@@ -6,7 +6,7 @@ int main(){ _
     ll n, a; cin >> n >> a;
 
     Functions F(n, a);
-    F.MillerRabin();
+    F.NextPrime();
     F.Generator();
     F.DiscreteLogarithm();
 

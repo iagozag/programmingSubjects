@@ -3,6 +3,7 @@
 
 #include <bits/stdc++.h>
 #include <boost/multiprecision/cpp_int.hpp>
+#include <chrono>
 
 using namespace std;
 using namespace boost::multiprecision;
@@ -16,7 +17,8 @@ class Functions {
 
     public:
         Functions(ll _n, ll _a);
-        void MillerRabin();
+        bool MillerRabin(ll pp);
+        void NextPrime();
         void Generator();
         void DiscreteLogarithm();
 };

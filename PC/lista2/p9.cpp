@@ -56,7 +56,7 @@ const int MAX = 110, MAXXY = 21, MOD = 1e9+7;
 
 int n, m, xmax, ymax;
 int v[MAX][MAX];
-int memo[MAX][MAX][MAXXY][MAXXY];
+int memo[MAX][MAX][MAXXY][MAXXY][3];
 
 int dp(int i, int j, int x, int y, int d){
     if(i >= n or j < 0 or j >= m) return INF;
@@ -66,13 +66,13 @@ int dp(int i, int j, int x, int y, int d){
     
     if(x < 0 or y < 0) return INF;
 
-    int& p = memo[i][j][x][y];
+    int& p = memo[i][j][x][y][d];
     if(p != INF) return p;
 
     if(i == n-1 and j == m-1) return p = v[i][j];
 
-    return p = v[i][j]+min({ d != 1 ? dp(i, j-1, x, y, -1) : p,
-                             d != -1 ? dp(i, j+1, x, y, 1) : p,
+    return p = v[i][j]+min({ d != 1 ? dp(i, j-1, x, y, 2) : p,
+                             d != 2 ? dp(i, j+1, x, y, 1) : p,
                              dp(i+1, j, x, y, 0)
                            });
 }
@@ -82,8 +82,6 @@ void solve(){
 
     memset(memo, INF, sizeof memo);
     int ans = dp(0, 0, xmax, ymax, 0);
-
-    // rep(i, 0, n) rep(j, 0, m) cout << memo[i][j] << " \n"[j == m-1];
 
     if(ans > 1e6){ cout << "Impossivel" << endl; return; }
     cout << ans << endl;
