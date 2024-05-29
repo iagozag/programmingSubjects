@@ -57,8 +57,24 @@ void solve(int s, int b){
     vi slots(s), balls(b); forr(x, slots) cin >> x; forr(x, balls) cin >> x;
 
     vector<vi> val(b, vi(s));
-    rep(i, 0, b) rep(j, 0, s) val[i][j] = (s[j]+s[(j+1)%s])*b[i];
+    rep(i, 0, b) rep(j, 0, s) val[i][j] = (slots[j]+slots[(j+1)%s])*balls[i];
 
+    int ans = 0; unordered_set<int> cant, used;
+    rep(i, 0, b){
+        int mi = INF, idx, ba;
+        rep(j, 0, b){
+            if(used.count(j)) continue;
+            rep(k, 0, s){
+                if(cant.count(k) or cant.count((k+1)%s)) continue;
+                if((slots[k]+slots[(k+1)%s])*balls[j] < mi) 
+                    mi = (slots[k]+slots[(k+1)%s])*balls[j], idx = k, ba = j;
+            }
+        }
+        cout << idx << ", " << ba << ", " << mi << endl;
+        cant.insert(idx), used.insert(ba), cant.insert((idx+1)%s), ans -= mi;
+    }
+
+    cout << ans << endl;
 }
 
 int main(){ _
