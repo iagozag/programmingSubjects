@@ -140,7 +140,7 @@ ll Functions::chinese_remainder(vector<pair<ll, ll>> congruences){
 ll Functions::discLogPohligHellman(ll g, ll a, ll p){
     ll phi = p-1;
 
-    auto [fact, exp, partial] = primeFact(phi, -1);
+    auto [fact, exp, paraial] = primeFact(phi, -1);
     vector<pair<ll, ll>> cong;
 
     for(size_t i = 0; i < fact.size(); i++){
