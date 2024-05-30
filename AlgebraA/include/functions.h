@@ -19,12 +19,13 @@ class Functions {
         Functions(ll _n, ll _a);
         ll fexp(ll a, ll b, ll m);
         bool composite(ll n, ll a, ll d, ll s);
-        bool MillerRabin(ll pp);
+        bool millerRabin(ll pp);
         void NextPrime();
         void Generator();
         ll discLogBrute(ll g, ll a, ll p);
         ll discLogBabyGiantStep(ll g, ll a, ll p);
         ll mod_inv(ll a, ll m);
+        pair<ll, ll> congPair(ll g, ll a, ll p, ll q, ll e, ll e1, ll e2);
         ll chinese_remainder(vector<pair<ll, ll>> congruences);
         ll discLogPohligHellman(ll g, ll a, ll p);
         void DiscreteLogarithm();

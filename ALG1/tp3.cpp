@@ -24,36 +24,47 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-int l, c, n;
-map<pii, int> mp; map<int, pii> mp_r;
-vector<vi> g;
-vi val;
-
-int dp(int i, int got){
-    if(i == n) return 0;
-
-    int ans = 0;
-    if(got){
-        forr(ve, g[i]) ans = max(ans, val[i]+dp(ve, 0));
-    }
-    int ans2 = 0;
-    forr(ve, g[i]) ans2 = max(ans2, dp(ve, 1));
-    return max(ans, ans2);
-}
-
 void solve(){
-    cin >> l >> c >> n;
-    g = vector<vi>(l*c), val = vi(n);
+    int l, c, n, ans = 0; cin >> l >> c >> n;
+    map<pii, int> mp; map<int, pii> mp_r;
+    vector<vi> g(l*c); vi val(l*c, -1); vector<vector<pii>> edges(n);
+
     rep(i, 0, n){
-        int x, y, v, di, ci, ei, bi; cin >> x >> y >> v >> di >> ci >> ei >> bi;
-        mp[{x, y}] = i, mp_r[i] = {x ,y}, val[i] = v;
-        if(di) g[i].eb(mp[{x, (y+1)%c}]);
-        if(ci) g[i].eb(mp[{(x-1+l)%l, y}]);
-        if(ei) g[i].eb(mp[{x, (y-1+c)%c}]);
-        if(bi) g[i].eb(mp[{(x+1)%l, y}]);
+        int x, y, v, di, ci, ei, bi; cin >> x >> y >> v >> di >> ci >> ei >> bi; --x, --y;
+        mp[{x, y}] = i, mp_r[i] = {x, y}; val[i] = v;
+
+        if(di) edges[i].eb(x, (y+1)%c);
+        if(ci) edges[i].eb((x-1+l)%l, y);
+        if(ei) edges[i].eb(x, (y-1+c)%c);
+        if(bi) edges[i].eb((x+1)%l, y);
+    }
+    rep(i, 0, n) forr(x, edges[i]) g[i].eb(mp[x]);
+
+    vector<bool> vis(n); vi id(n);
+    auto dfs = [&](auto self, int i, int p) -> void{
+        id[i] = p, vis[i] = 1;
+        forr(ve, g[i]) if(!vis[ve]) self(self, ve, p);
+    };
+
+    rep(i, 0, n) if(!vis[i]) dfs(dfs, i, i);
+
+    auto dp = [&](auto self, int i, bool can, set<int> s) -> int{
+        int ma = 0, ma2 = 0; s.insert(i);
+        forr(ve, g[i]) if(!s.count(ve)){
+            if(can) ma = max(ma, val[i]+self(self, ve, 0, s));
+            ma2 = max(ma2, self(self, ve, 1, s));
+        }
+
+        return max(ma, ma2);
+    };
+
+    set<int> ok;
+    rep(i, 0, n){
+        if(ok.count(id[i])) continue;
+        ans += dp(dp, i, 1, set<int>()), ok.insert(id[i]);
     }
 
-    cout << max(dp(0, 1), dp(0, 0)) << endl; 
+    cout << ans << endl;
 }
 
 int main(){ _
@@ -63,3 +74,4 @@ int main(){ _
 
     exit(0);
 }
+
