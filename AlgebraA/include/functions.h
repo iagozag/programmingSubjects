@@ -21,6 +21,7 @@ class Functions {
         bool composite(ll n, ll a, ll d, ll s);
         bool millerRabin(ll pp);
         void NextPrime();
+        tuple<vector<ll>, vector<ll>, bool> primeFact(ll n, long long lim);
         void Generator();
         ll discLogBrute(ll g, ll a, ll p);
         ll discLogBabyGiantStep(ll g, ll a, ll p);

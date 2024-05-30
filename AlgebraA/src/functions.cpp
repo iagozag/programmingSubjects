@@ -60,32 +60,31 @@ void Functions::NextPrime(){
     cout << "p: " << p << ", iterations_cnt: " << cnt << endl;
 }
 
-pair<vector<ll>, vector<ll>> primeFact(ll n, long long lim){
+tuple<vector<ll>, vector<ll>, bool> Functions::primeFact(ll n, long long lim){
     vector<ll> fact, exp;
     for (long long i = 2; i*i <= n and (lim == -1 or i < lim); i++) if(n%i == 0) {
         fact.emplace_back(i), exp.emplace_back(0);
         while(n%i == 0) n /= i, exp[fact.size()-1]++;
     }
+    bool partial = (n != 1 and !millerRabin(n));
+    if(n > 1) fact.emplace_back(n), exp.emplace_back(1);
 
-    return {fact, exp};
+    return {fact, exp, partial};
 }
 
 // Returns a number that is a possible generator for Zp and its order interval
 void Functions::Generator(){
     ll phi = p-1, n = phi;
-    auto [fact, exp] = primeFact(n, 1e7);
-
-    bool parcial = (n != 1 and !millerRabin(n));
-    if(n) fact.emplace_back(n), exp.emplace_back(1);
+    auto [fact, exp, partial] = primeFact(n, 1e7);
 
     vector<ll> ord(fact.size()); ll min_order = 1;
     for(size_t i = 0; i < fact.size(); i++){
         ll a = 2+rand()%(p-2);
         while(fexp(a, phi/fact[i], p) == 1) a = 2+rand()%(p-2);
         g *= fexp(a, phi/(fexp(fact[i], exp[i], p)), p), g %= p;
-        if(!parcial or i < fact.size()-1) min_order *= fexp(fact[i], exp[i], p);
+        if(!partial or i < fact.size()-1) min_order *= fexp(fact[i], exp[i], p);
     }
-    if(parcial) min_order *= 10000019; // first prime greater than 1e7
+    if(partial) min_order *= 10000019; // first prime greater than 1e7
     
     cout << "g: " << g << endl;
     cout << "ord(g, p) is in: [" << min_order << ", " << phi << "]" << endl;
@@ -98,12 +97,12 @@ ll Functions::discLogBrute(ll g, ll a, ll p){
 
 ll Functions::discLogBabyGiantStep(ll g, ll a, ll p){
     a %= p;
-    ll n = sqrt(p) + 1, ans = -1;
+    ll n = sqrt(p)+1, ans = -1;
     map<ll, ll> vals;
     for (ll pp = 1; pp <= n; pp++)
-        vals[fexp(a, pp * n, p)] = pp;
+        vals[fexp(g, pp * n, p)] = pp;
     for (ll q = 0; q <= n; ++q) {
-        ll cur = (fexp(a, q, p) * g) % p;
+        ll cur = (fexp(g, q, p) * a) % p;
         if (vals.count(cur)) return vals[cur] * n - q;
     }
 
@@ -116,8 +115,14 @@ ll Functions::mod_inv(ll a, ll m) {
 }
 
 pair<ll, ll> Functions::congPair(ll g, ll a, ll p, ll q, ll e, ll e1, ll e2){
+    ll inv = mod_inv(e1, p), x = 0;
+    for(int i = 1; i < e+1; i++){
+        ll a = fexp(e1, fexp(q, e-1, p), p);
+        ll b = fexp(e2*fexp(inv, x, p), fexp(q, e-i, p), p);
+        x += discLogBabyGiantStep(a, b, p)*fexp(q, i-1, p);
+    }
 
-    return {-1, -1};
+    return {x, fexp(q, e, p)};
 }
 
 // Returns the solution for a system of congruences x = a_i % m_i
@@ -135,16 +140,16 @@ ll Functions::chinese_remainder(vector<pair<ll, ll>> congruences){
 ll Functions::discLogPohligHellman(ll g, ll a, ll p){
     ll phi = p-1;
 
-    auto [fact, exp] = primeFact(phi, 1e7);
+    auto [fact, exp, partial] = primeFact(phi, -1);
     vector<pair<ll, ll>> cong;
 
     for(size_t i = 0; i < fact.size(); i++){
-        ll e1 = fexp(a, phi/(fexp(fact[i], exp[i], p)), p);
-        ll e2 = fexp(g, phi/(fexp(fact[i], exp[i], p)), p);
-        cong.emplace_back(congPair(g, a, p, fact[i], exp[i], e1, e2));
+        ll e1 = fexp(g, phi/(fexp(fact[i], exp[i], p)), p);
+        ll e2 = fexp(a, phi/(fexp(fact[i], exp[i], p)), p);
+        cong.emplace_back(congPair(a, g, p, fact[i], exp[i], e1, e2));
     }
 
-    return chinese_remainder(cong);
+    return (chinese_remainder(cong)+p)%p;
 }
 
 // Returns the discrete logarithm of a modulo p in base g
@@ -152,9 +157,11 @@ void Functions::DiscreteLogarithm(){
     auto start = chrono::steady_clock::now();
 
     ll ans = -1;
-    // ll ans = discLogBrute(g, a, p);
-    // ll ans = discLogBabyGiantStep(g, a, p);
-    // ll ans = discLogPohligHellman(g, a, p);
+    ans = discLogBrute(g, a, p);
+    cout << "brute: " << ans << endl;
+    ans = discLogBabyGiantStep(g, a, p);
+    cout << "babygiantstep: " << ans << endl;
+    ans = discLogPohligHellman(g, a, p);
 
     cout << "Elapsed(ms)=" << since(start).count() << std::endl;
     cout << "Discrete Logarithm of 'a' module 'p' in base 'g' = " << ans << endl;
