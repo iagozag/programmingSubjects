@@ -57,25 +57,70 @@ void Functions::NextPrime(){
         if(millerRabin(p)) break;
     }
     
-    cout << "p: " << p << ", iterations_cnt: " << cnt << endl;
+    cout << "p: " << p << endl;
 }
 
-tuple<vector<ll>, vector<ll>, bool> Functions::primeFact(ll n, long long lim){
-    vector<ll> fact, exp;
+// Returns the factorization of n using trivial algorithm
+void Functions::primeFact(ll n, long long lim){
+    fact.clear(), exp.clear(), partial = 0;
     for (long long i = 2; i*i <= n and (lim == -1 or i < lim); i++) if(n%i == 0) {
         fact.emplace_back(i), exp.emplace_back(0);
         while(n%i == 0) n /= i, exp[fact.size()-1]++;
     }
-    bool partial = (n != 1 and !millerRabin(n));
+    partial = (n != 1 and !millerRabin(n));
     if(n > 1) fact.emplace_back(n), exp.emplace_back(1);
+}
 
-    return {fact, exp, partial};
+// Return a factor of n
+ll Functions::PollardRho(ll n) {
+    if(!(n&1)) return 2;
+    auto start = chrono::high_resolution_clock::now();
+
+    ll x = (rand()%n)+1, y = x, c = rand()%n+1;
+    ll d = 1;
+    while(d==1) {
+        x = (x*x+c+n)%n;
+        y = (y*y+c+n)%n; y = (y*y+c+n)%n;
+        d = x>=y? x-y : y-x;
+        d = gcd(n,d);
+        auto now = chrono::high_resolution_clock::now();
+        
+        if(chrono::duration_cast<chrono::seconds>(now-start).count()>3) return -1;
+    }
+    return d;
+}
+
+// Factorize n and compute the facts array with all the divisors of n
+void Functions::factorize(ll n){
+    if(n == 1) return;
+
+    if(millerRabin(n)){
+        fact.emplace_back(n);
+        return;
+    }
+
+    ll d = PollardRho(n);
+    if(d == -1) return;
+    factorize(d), factorize(n/d);
+}
+
+// Returns the factorization of n using pollard rho algorithm
+void Functions::primeFactRho(ll n){
+    fact.clear(), exp.clear(), partial = 0;
+    factorize(n);
+    sort(fact.begin(), fact.end());
+    fact.erase(unique(fact.begin(), fact.end()), fact.end());
+    for(size_t i = 0; i < fact.size(); i++){
+        exp.emplace_back(0);
+        while(n%fact[i] == 0) exp[i]++, n /= fact[i];
+    }
 }
 
 // Returns a number that is a possible generator for Zp and its order interval
 void Functions::Generator(){
     ll phi = p-1, n = phi;
-    auto [fact, exp, partial] = primeFact(n, 1e7);
+    primeFactRho(n);
+    if(partial) primeFact(n, 1e7);
 
     vector<ll> ord(fact.size()); ll min_order = 1;
     for(size_t i = 0; i < fact.size(); i++){
@@ -84,45 +129,52 @@ void Functions::Generator(){
         g *= fexp(a, phi/(fexp(fact[i], exp[i], p)), p), g %= p;
         if(!partial or i < fact.size()-1) min_order *= fexp(fact[i], exp[i], p);
     }
-    if(partial) min_order *= 10000019; // first prime greater than 1e7
     
-    cout << "g: " << g << endl;
-    cout << "ord(g, p) is in: [" << min_order << ", " << phi << "]" << endl;
+    cout << "g: " << g << ", minimum order: " << min_order << endl;
 }
 
+// Brute the discrete logarithm testing if g^x % p == a
 ll Functions::discLogBrute(ll g, ll a, ll p){
+    a %= p;
     for(int x = 0; x < p; x++) if(fexp(g, x, p) == a) return x;
-    return -1;
+    return -1; // Discrete log not found
 }
 
-ll Functions::discLogBabyGiantStep(ll g, ll a, ll p){
-    a %= p;
-    ll n = sqrt(p)+1, ans = -1;
+ll Functions::discLogBabyGiantStep(ll g, ll a, ll p) {
+    g %= p, a %= p;
+    ll n = sqrt(p) + 1;
     map<ll, ll> vals;
-    for (ll pp = 1; pp <= n; pp++)
-        vals[fexp(g, pp * n, p)] = pp;
-    for (ll q = 0; q <= n; ++q) {
-        ll cur = (fexp(g, q, p) * a) % p;
-        if (vals.count(cur)) return vals[cur] * n - q;
+    for (ll i = 1; i <= n; i++) {
+        vals[fexp(g, i * n, p)] = i;
     }
-
-    return -1;
+    for (ll j = 0; j <= n; ++j) {
+        ll cur = (fexp(g, j, p) * a) % p;
+        if (vals.count(cur)) {
+            return vals[cur] * n - j;
+        }
+    }
+    return -1; // Discrete log not found
 }
 
 // Returns modular inverse of a modulo m, i.e., mod_inv * a = 1 mod m
 ll Functions::mod_inv(ll a, ll m) {
-    return a <= 1 ? a : m - (ll)(m/a) * mod_inv(m%a, m) % m;
-}
+    ll m0 = m, t, q;
+    ll x0 = 0, x1 = 1;
+    if (m == 1) return 0;
 
-pair<ll, ll> Functions::congPair(ll g, ll a, ll p, ll q, ll e, ll e1, ll e2){
-    ll inv = mod_inv(e1, p), x = 0;
-    for(int i = 1; i < e+1; i++){
-        ll a = fexp(e1, fexp(q, e-1, p), p);
-        ll b = fexp(e2*fexp(inv, x, p), fexp(q, e-i, p), p);
-        x += discLogBabyGiantStep(a, b, p)*fexp(q, i-1, p);
+    while (a > 1) {
+        q = a / m;
+        t = m;
+        m = a % m;
+        a = t;
+        t = x0;
+        x0 = x1 - q * x0;
+        x1 = t;
     }
 
-    return {x, fexp(q, e, p)};
+    if (x1 < 0) x1 += m0;
+
+    return x1;
 }
 
 // Returns the solution for a system of congruences x = a_i % m_i
@@ -137,32 +189,61 @@ ll Functions::chinese_remainder(vector<pair<ll, ll>> congruences){
     return solution;
 }
 
-ll Functions::discLogPohligHellman(ll g, ll a, ll p){
-    ll phi = p-1;
+pair<ll, ll> Functions::congPair(ll p, ll q, ll e, ll e1, ll e2) {
+    ll inv = mod_inv(e1, p);
+    ll x = 0;
+    ll q_pow_i = 1; // q^i
+    for (int i = 0; i < e; i++) {
+        ll b = (e2 * fexp(inv, x, p)) % p;
+        ll c = fexp(e1, q_pow_i, p);
+        ll dlog = discLogBabyGiantStep(c, b, p);
+        if (dlog == -1)
+            return {-1, -1}; // Error case, discrete log not found
+        x = (x + dlog * q_pow_i) % (p - 1);
+        q_pow_i = (q_pow_i * q) % (p - 1);
+    }
+    return {x, fexp(q, e, p)};
+}
 
-    auto [fact, exp, paraial] = primeFact(phi, -1);
+ll Functions::discLogPohligHellman(ll g, ll a, ll p) {
+    g %= p, a %= p;
+
+    ll phi = p - 1;
+    primeFactRho(phi);
+    if (partial) primeFact(phi, -1);
     vector<pair<ll, ll>> cong;
 
-    for(size_t i = 0; i < fact.size(); i++){
-        ll e1 = fexp(g, phi/(fexp(fact[i], exp[i], p)), p);
-        ll e2 = fexp(a, phi/(fexp(fact[i], exp[i], p)), p);
-        cong.emplace_back(congPair(a, g, p, fact[i], exp[i], e1, e2));
+    for (size_t i = 0; i < fact.size(); i++) {
+        ll q = fact[i];
+        ll e = exp[i];
+        ll e1 = fexp(g, phi / (q * e), p);
+        ll e2 = fexp(a, phi / (q * e), p);
+        pair<ll, ll> cp = congPair(p, q, e, e1, e2);
+        if (cp.first == -1) return -1; // Error case
+        cong.emplace_back(cp);
     }
 
-    return (chinese_remainder(cong)+p)%p;
+    return chinese_remainder(cong);
 }
 
 // Returns the discrete logarithm of a modulo p in base g
 void Functions::DiscreteLogarithm(){
-    auto start = chrono::steady_clock::now();
+    auto start = chrono::high_resolution_clock::now();
 
     ll ans = -1;
+    // if(p < (ll)1e6) 
     ans = discLogBrute(g, a, p);
-    cout << "brute: " << ans << endl;
+    cout << "ib: " << ans << endl;
+    // else 
+    
     ans = discLogBabyGiantStep(g, a, p);
-    cout << "babygiantstep: " << ans << endl;
-    ans = discLogPohligHellman(g, a, p);
+    cout << "ibg: " << ans << endl;
 
-    cout << "Elapsed(ms)=" << since(start).count() << std::endl;
-    cout << "Discrete Logarithm of 'a' module 'p' in base 'g' = " << ans << endl;
+    ans = discLogPohligHellman(g, a, p);
+    cout << "iph: " << ans << endl;
+
+    cout << "i: " << ans << endl;
+
+    auto now = chrono::high_resolution_clock::now();
+    cout << "t: " << chrono::duration_cast<chrono::seconds>(now-start).count() << "s" << std::endl;
 }
