@@ -250,6 +250,7 @@ void Functions::DiscreteLogarithm(){
     catch (invalid_argument &e) {cout << "i: time limit\n";}
 
     if(b) cout << "i: " << ans << endl;
+    else return;
     
     auto now = chrono::high_resolution_clock::now();
     cout << "t: " << chrono::duration_cast<chrono::seconds>(now-start).count() << "s" << std::endl;
