@@ -57,7 +57,7 @@ void Functions::NextPrime(){
         if(millerRabin(prime)) break;
     }
     
-    cout << "p: " << prime << endl;
+    cout << "p: " << prime << ", iterations: " << cnt << endl;
 }
 
 // Returns the factorization of n using trivial algorithm
@@ -74,7 +74,6 @@ void Functions::primeFact(ll n, long long lim){
 // Return a factor of n
 ll Functions::PollardRho(ll n) {
     if(!(n&1)) return 2;
-    auto start = chrono::high_resolution_clock::now();
 
     ll x = (rand()%n)+1, y = x, c = rand()%n+1;
     ll d = 1;
@@ -83,9 +82,6 @@ ll Functions::PollardRho(ll n) {
         y = (y*y+c+n)%n; y = (y*y+c+n)%n;
         d = x>=y? x-y : y-x;
         d = gcd(n,d);
-        auto now = chrono::high_resolution_clock::now();
-        
-        if(chrono::duration_cast<chrono::seconds>(now-start).count()>3) return -1;
     }
     return d;
 }
@@ -100,7 +96,6 @@ void Functions::factorize(ll n){
     }
 
     ll d = PollardRho(n);
-    if(d == -1) return;
     factorize(d), factorize(n/d);
 }
 
@@ -120,7 +115,6 @@ void Functions::primeFactRho(ll n){
 void Functions::Generator(){
     ll phi = prime-1, n = phi;
     primeFactRho(n);
-    if(partial) primeFact(n, 1e7);
 
     vector<ll> ord(fact.size()); ll min_order = 1;
     for(size_t i = 0; i < fact.size(); i++){
@@ -135,25 +129,27 @@ void Functions::Generator(){
 
 // Brute the discrete logarithm testing if g^x % p == a
 ll Functions::discLogBrute(ll g, ll h, ll p){
-    h %= p;
-    for(int x = 0; x < p; x++) if(fexp(g, x, p) == h) return x;
+    h %= p; ll f = 1;
+    for(int x = 0; x < p; x++){
+        if(f == h) return x;
+        f = f*g%p;
+    }
     return -1; // Discrete log not found
 }
 
 ll Functions::discLogBabyGiantStep(ll g, ll h, ll p) {
-    g %= p, h %= p;
+    h %= p;
     ll n = sqrt(p) + 1;
     map<ll, ll> vals;
     for (ll i = 1; i <= n; i++) {
         vals[fexp(g, i * n, p)] = i;
     }
-    for (ll j = 0; j <= n; ++j) {
+    for (ll j = 0; j <= n; j++) {
         ll cur = (fexp(g, j, p) * h) % p;
-        if (vals.count(cur)) {
+        if (vals.count(cur))
             return vals[cur] * n - j;
-        }
     }
-    return -1; // Discrete log not found
+    return -1;
 }
 
 // Returns modular inverse of a modulo m, i.e., mod_inv * a = 1 mod m
@@ -192,13 +188,11 @@ ll Functions::chinese_remainder(vector<pair<ll, ll>> congruences){
 pair<ll, ll> Functions::congPair(ll p, ll q, ll e, ll e1, ll e2) {
     ll inv = mod_inv(e1, p);
     ll x = 0;
-    ll q_pow_i = 1; // q^i
+    ll q_pow_i = 1;
     for (int i = 0; i < e; i++) {
         ll b = (e2 * fexp(inv, x, p)) % p;
         ll c = fexp(e1, q_pow_i, p);
         ll dlog = discLogBabyGiantStep(c, b, p);
-        if (dlog == -1)
-            return {-1, -1}; // Error case, discrete log not found
         x = (x + dlog * q_pow_i) % (p - 1);
         q_pow_i = (q_pow_i * q) % (p - 1);
     }
@@ -209,18 +203,15 @@ ll Functions::discLogPohligHellman(ll g, ll h, ll p) {
     g %= p, h %= p;
 
     ll phi = p - 1;
-    primeFactRho(phi);
-    if(partial) primeFact(phi, -1);
+    if(partial) primeFactRho(phi);
     vector<pair<ll, ll>> cong;
 
     for (size_t i = 0; i < fact.size(); i++) {
         ll q = fact[i];
         ll e = exp[i];
-        ll e1 = fexp(g, phi / (q * e), p);
-        ll e2 = fexp(h, phi / (q * e), p);
-        pair<ll, ll> cp = congPair(p, q, e, e1, e2);
-        if (cp.first == -1) return -1; // Error case
-        cong.emplace_back(cp);
+        ll e1 = fexp(g, phi / (fexp(q, e, p)), p);
+        ll e2 = fexp(h, phi / fexp(q, e, p), p);
+        cong.emplace_back(congPair(p, q, e, e1, e2));
     }
 
     return chinese_remainder(cong);
@@ -228,19 +219,12 @@ ll Functions::discLogPohligHellman(ll g, ll h, ll p) {
 
 // Returns the discrete logarithm of a modulo p in base g
 void Functions::DiscreteLogarithm(){
-    auto start = chrono::high_resolution_clock::now();
+    start = chrono::high_resolution_clock::now();
 
     ll ans = -1;
-    // if(p < (ll)1e6) 
-    ans = discLogBrute(g, a, prime);
-    cout << "ib: " << ans << endl;
-    // else 
-    
-    ans = discLogBabyGiantStep(g, a, prime);
-    cout << "ibg: " << ans << endl;
-
-    ans = discLogPohligHellman(g, a, prime);
-    cout << "iph: " << ans << endl;
+    if(prime < (ll)1e6) ans = discLogBrute(g, a, prime);
+    else if(prime < (ll)1e12) ans = discLogBabyGiantStep(g, a, prime);
+    else ans = discLogPohligHellman(g, a, prime);
 
     cout << "i: " << ans << endl;
 

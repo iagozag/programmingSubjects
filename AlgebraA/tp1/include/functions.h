@@ -16,6 +16,7 @@ class Functions {
         ll prime, a, g;
         vector<ll> fact, exp;
         bool partial = false;
+        std::chrono::high_resolution_clock::time_point start;
 
         Functions(ll _n, ll _a);
         ll fexp(ll a, ll b, ll m);
