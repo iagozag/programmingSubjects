@@ -74,14 +74,20 @@ void Functions::primeFact(ll n, long long lim){
 // Return a factor of n
 ll Functions::PollardRho(ll n) {
     if(!(n&1)) return 2;
+    auto s = chrono::high_resolution_clock::now();
 
     ll x = (rand()%n)+1, y = x, c = rand()%n+1;
     ll d = 1;
     while(d==1) {
+        auto now = chrono::high_resolution_clock::now();
+        if(chrono::duration_cast<chrono::seconds>(now-s).count()>10.0) return 0;
+
         x = (x*x+c+n)%n;
         y = (y*y+c+n)%n; y = (y*y+c+n)%n;
         d = x>=y? x-y : y-x;
         d = gcd(n,d);
+
+        if(chrono::duration_cast<chrono::seconds>(now-s).count()>20) return -1;
     }
     return d;
 }
@@ -96,6 +102,11 @@ void Functions::factorize(ll n){
     }
 
     ll d = PollardRho(n);
+    if(d==0) {
+        partial = true;
+        return;
+    }
+
     factorize(d), factorize(n/d);
 }
 
@@ -137,17 +148,23 @@ ll Functions::discLogBrute(ll g, ll h, ll p){
     return -1; // Discrete log not found
 }
 
-ll Functions::discLogBabyGiantStep(ll g, ll h, ll p) {
+ll Functions::discLogBabyGiantStep(ll g, ll h, ll q, ll p) {
+    auto s = chrono::high_resolution_clock::now();
+
     h %= p;
-    ll n = sqrt(p) + 1;
+    ll n = sqrt(q) + 1;
     map<ll, ll> vals;
     for (ll i = 1; i <= n; i++) {
+        auto now = chrono::high_resolution_clock::now();
+        if(chrono::duration_cast<chrono::seconds>(now-s).count()>20) throw length_error("");
         vals[fexp(g, i * n, p)] = i;
     }
     for (ll j = 0; j <= n; j++) {
         ll cur = (fexp(g, j, p) * h) % p;
         if (vals.count(cur))
             return vals[cur] * n - j;
+        auto now = chrono::high_resolution_clock::now();
+        if(chrono::duration_cast<chrono::seconds>(now-s).count()>20) throw length_error("");
     }
     return -1;
 }
@@ -192,7 +209,7 @@ pair<ll, ll> Functions::congPair(ll p, ll q, ll e, ll e1, ll e2) {
     for (int i = 0; i < e; i++) {
         ll b = (e2 * fexp(inv, x, p)) % p;
         ll c = fexp(e1, q_pow_i, p);
-        ll dlog = discLogBabyGiantStep(c, b, p);
+        ll dlog = discLogBabyGiantStep(c, b, fexp(q, e, p), p);
         x = (x + dlog * q_pow_i) % (p - 1);
         q_pow_i = (q_pow_i * q) % (p - 1);
     }
@@ -203,7 +220,7 @@ ll Functions::discLogPohligHellman(ll g, ll h, ll p) {
     g %= p, h %= p;
 
     ll phi = p - 1;
-    if(partial) primeFactRho(phi);
+    if(partial) throw invalid_argument("");
     vector<pair<ll, ll>> cong;
 
     for (size_t i = 0; i < fact.size(); i++) {
@@ -222,12 +239,18 @@ void Functions::DiscreteLogarithm(){
     start = chrono::high_resolution_clock::now();
 
     ll ans = -1;
-    if(prime < (ll)1e6) ans = discLogBrute(g, a, prime);
-    else if(prime < (ll)1e12) ans = discLogBabyGiantStep(g, a, prime);
-    else ans = discLogPohligHellman(g, a, prime);
+    bool b = false;
+    try {
+        if(prime < (ll)1e6) ans = discLogBrute(g, a, prime);
+        else if(prime < (ll)1e12) ans = discLogBabyGiantStep(g, a, prime, prime);
+        else ans = discLogPohligHellman(g, a, prime);
+        b = true;
+    } 
+    catch (length_error &e) {cout << "i: time limit\n";}
+    catch (invalid_argument &e) {cout << "i: time limit\n";}
 
-    cout << "i: " << ans << endl;
-
+    if(b) cout << "i: " << ans << endl;
+    
     auto now = chrono::high_resolution_clock::now();
     cout << "t: " << chrono::duration_cast<chrono::seconds>(now-start).count() << "s" << std::endl;
 }

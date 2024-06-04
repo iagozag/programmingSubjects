@@ -29,7 +29,7 @@ class Functions {
         void primeFactRho(ll n);
         void Generator();
         ll discLogBrute(ll g, ll a, ll p);
-        ll discLogBabyGiantStep(ll g, ll a, ll p);
+        ll discLogBabyGiantStep(ll g, ll a, ll q, ll p);
         ll mod_inv(ll a, ll m);
         pair<ll, ll> congPair(ll p, ll q, ll e, ll e1, ll e2);
         ll chinese_remainder(vector<pair<ll, ll>> congruences);
