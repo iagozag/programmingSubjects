@@ -86,8 +86,6 @@ ll Functions::PollardRho(ll n) {
         y = (y*y+c+n)%n; y = (y*y+c+n)%n;
         d = x>=y? x-y : y-x;
         d = gcd(n,d);
-
-        if(chrono::duration_cast<chrono::seconds>(now-s).count()>20) return -1;
     }
     return d;
 }
