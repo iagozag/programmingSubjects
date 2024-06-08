@@ -53,28 +53,31 @@ void yes(){ cout << "YES" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(int s, int b){
-    vi slots(s), balls(b); forr(x, slots) cin >> x; forr(x, balls) cin >> x;
+void solve(int n, int b){
+    vi slots(n), balls(b); forr(x, slots) cin >> x; forr(x, balls) cin >> x;
 
-    vector<vi> val(b, vi(s));
-    rep(i, 0, b) rep(j, 0, s) val[i][j] = (slots[j]+slots[(j+1)%s])*balls[i];
+    int dp[n][b]; 
 
-    int ans = 0; unordered_set<int> cant, used;
-    rep(i, 0, b){
-        int mi = INF, idx, ba;
-        rep(j, 0, b){
-            if(used.count(j)) continue;
-            rep(k, 0, s){
-                if(cant.count(k) or cant.count((k+1)%s)) continue;
-                if((slots[k]+slots[(k+1)%s])*balls[j] < mi) 
-                    mi = (slots[k]+slots[(k+1)%s])*balls[j], idx = k, ba = j;
-            }
-        }
-        cout << idx << ", " << ba << ", " << mi << endl;
-        cant.insert(idx), used.insert(ba), cant.insert((idx+1)%s), ans -= mi;
+    int ans = INF;
+    rep(c, 0, n){
+        memset(dp, INF, sizeof dp);
+        rep(i, 0, n) dp[i][0] = (slots[i]+slots[(i+1)%n])*balls[0];
+        
+        rep(j, 1, b){
+            int pref[n+1]; memset(pref, INF, sizeof pref);
+            rep(i, 1, n+1) pref[i] = min(pref[i-1], dp[i-1][j-1]);
+            rep(i, 2, n-1)
+                dp[i][j] = min(dp[i][j], pref[i-1]+(slots[i]+slots[(i+1)%n])*balls[j]);
+        } 
+
+        int mi = INF;
+        rep(i, 0, n) mi = min(mi, dp[i][b-1]);
+        ans = min(ans, mi);
+
+        rotate(slots.rbegin(),slots.rbegin()+1, slots.rend());
     }
 
-    cout << ans << endl;
+    cout << -ans << endl;
 }
 
 int main(){ _

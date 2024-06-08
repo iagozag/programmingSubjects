@@ -48,23 +48,53 @@ void solve(){
 
     rep(i, 0, n) if(!vis[i]) dfs(dfs, i, i);
 
-    auto dp = [&](auto self, int i, bool can, set<int> s) -> int{
-        int ma = 0, ma2 = 0; s.insert(i);
-        forr(ve, g[i]) if(!s.count(ve)){
-            if(can) ma = max(ma, val[i]+self(self, ve, 0, s));
-            ma2 = max(ma2, self(self, ve, 1, s));
+    pair<ll, bitset<3601>> memo[n][2];
+
+    function<pair<ll, bitset<3601>>(int, bool)> dp = [&](int i, bool can) -> pair<ll, bitset<3601>>{
+        pair<ll, bitset<3601>>& p = memo[i][can];
+
+        if(p.ff != -1) return p;
+
+        bool b = false;
+        pair<ll, bitset<3601>> ma, ma2; ma = ma2 = {0, bitset<3601>()}; 
+        forr(ve, g[i]) if(!p.ss.test(ve)){
+            b = true;
+            if(can){
+                pair<ll, bitset<3601>> m1 = dp(ve, 0);
+                if(ma.ff < val[i]+m1.ff) ma = m1, ma.ss.set(i);
+            }
+            pair<ll, bitset<3601>> m2 = dp(ve, 1);
+            if(ma2.ff < m2.ff) ma2 = m2;
         }
 
-        return max(ma, ma2);
+        if(!b){
+            pair<ll, bitset<3601>> got = {val[i], bitset<3601>()}; got.ss.set(i);
+            pair<ll, bitset<3601>> ngot = {0, bitset<3601>()}; 
+            return (can ? got : ngot);
+        }
+
+        return ma.ff > ma2.ff ? ma : ma2;
     };
 
-    set<int> ok;
+    set<int> ok; vector<pii> vert;
+    rep(i, 0, n) rep(j, 0, 2) memo[i][j] = {-1, bitset<3601>()};
     rep(i, 0, n){
         if(ok.count(id[i])) continue;
-        ans += dp(dp, i, 1, set<int>()), ok.insert(id[i]);
+        pair<ll, bitset<3601>> a = dp(i, 0);
+        pair<ll, bitset<3601>> b = dp(i, 1);
+        if(a.ff > b.ff){
+            ans += a.ff;
+            rep(j, 0, n) if(a.ss.test(j)) vert.eb(mp_r[j]);
+        } else{
+            ans += b.ff;
+            rep(j, 0, n) if(b.ss.test(j)) vert.eb(mp_r[j]);
+        }
+
+        ok.insert(id[i]);
     }
 
     cout << ans << endl;
+    rep(i, 0, sz(vert)) cout << vert[i].ff << " " << vert[i].ss << " \n"[i==sz(vert)-1];
 }
 
 int main(){ _
