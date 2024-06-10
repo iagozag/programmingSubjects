@@ -37,21 +37,26 @@ void solve(int n, int l, int m, int p){
         dp[i+1][0] = min(dp[i+1][0], c[0]+p-v[j]+dp[i][j]);
     }
 
-    rep(i, 0, n+1) rep(j, 0, m+1) cout << dp[i][j] << " \n"[j==m];
-
-    int mi = dp[n][0], idx = 0;
-    rep(j, 1, m) if(mi > dp[n][j]) mi = dp[n][j], idx = j;
+    int mi = dp[n][0];
+    rep(j, 1, m+1) if(mi > dp[n][j]) mi = dp[n][j];
     cout << mi << endl;
 
-    vi ans;
-    repr(i, n, 1){
-        if(idx > 0){ idx--; continue; }
-        rep(j, 0, m)
-            if(dp[i-1][j]+c[0]+p-v[j] == dp[i][0]) idx = j;
-        ans.eb(i);
+    vi ans; bool vis[n+1][m+1]; memset(vis, 0, sizeof vis);
+    rep(j, 0, m+1) if(dp[n][j] == mi) vis[n][j] = 1;
+
+    repr(i, n, 1) rep(j, 0, m+1) if(vis[i][j]){
+        if(j > 0) vis[i-1][j-1] = 1;
+        else{
+            rep(k, 0, m) if(dp[i-1][k]+c[0]+p-v[k] == dp[i][0]) vis[i-1][k] = 1;
+        }
     }
 
-    reverse(all(ans));
+    int idx = l-1;
+    rep(i, 0, n){
+        if(vis[i+1][0] and dp[i][idx]+c[0]+p-v[idx] == dp[i+1][0]) ans.eb(i+1), idx = 0;
+        else idx++;
+    }
+
     if(sz(ans) == 0) cout << 0 << endl;
     else rep(i, 0, sz(ans)) cout << ans[i] << " \n"[i==sz(ans)-1];
 }
