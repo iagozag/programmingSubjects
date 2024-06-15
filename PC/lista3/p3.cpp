@@ -22,19 +22,50 @@ typedef vector<ll> vl;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-void no(){ cout << "NO" << endl; }
-void yes(){ cout << "YES" << endl; }
+void no(){ cout << "N" << endl; }
+void yes(){ cout << "Y" << endl; }
 
 const int MAX = 2e5+10, MOD = 1e9+7;
 
-void solve(){
+int n, m, g;
 
+void solve(){
+    vi p(n); map<pii, int> mp;
+    rep(i, 0, g){
+        int a, b; char c; cin >> a >> c >> b;
+        mp[{min(a, b), max(a, b)}]++;
+        if(c == '<') p[b] += 2;
+        else p[a]++, p[b]++;
+    }
+
+    rep(i, 0, n) rep(j, 0, n){
+        if(i == j) continue;
+        if(!mp.count({min(i, j), max(i, j)})) mp[{min(i, j), max(i, j)}] = 0;
+    }
+
+    forr(x, mp){
+        auto [a, b] = x.ff;
+        // cout << a << " " << b << ": " << x.ss << endl;
+        if(x.ss == m) continue;
+        if(a == 0) p[0] += 2*(m-x.ss);
+        else{
+            while(x.ss < m){
+                if(p[a] == p[b]) p[a]++, p[b]++;
+                else if(p[a] > p[b] and p[a]+2 >= p[0]) p[b] += 2;
+                else p[a] += 2;
+                x.ss++;
+            }
+        }
+    }
+
+    // rep(i, 0, n) cout << p[i] << " ";
+
+    rep(i, 1, n) if(p[i] >= p[0]) return no();
+    return yes();
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
-
-    while(ttt--) solve();
+    while(cin >> n >> m >> g and n != 0) solve();
 
     exit(0);
 }
