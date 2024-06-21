@@ -43,13 +43,9 @@ int main(){ _
     vector<vector<vi>> dp(l, vector<vi>(maxc, vi(maxc, -INF))); vi pos;
     rep(j, 0, 1<<c) if(val(0, j)) dp[0][j][j] = sum[0][j], pos.eb(j);
 
-    rep(i, 1, l) 
-        rep(m, 0, pos.size()) 
-            rep(j, 0, maxc) 
-                if(val(i, j)) 
-                    rep(k, 0, maxc) 
-                        if(val2(i, j, k)) 
-                            dp[i][pos[m]][j] = max(dp[i][pos[m]][j], dp[i-1][pos[m]][k]+sum[i][j]);
+    rep(i, 1, l) rep(m, 0, pos.size()) rep(j, 0, maxc) if(val(i, j)) 
+        rep(k, 0, maxc) if(val2(i, j, k)) 
+            dp[i][pos[m]][j] = max(dp[i][pos[m]][j], dp[i-1][pos[m]][k]+sum[i][j]);
 
     rep(j, 0, maxc) rep(m, 0, pos.size())
         if(dp[l-1][pos[m]][j] >= 0 and !val2(0, pos[m], j)) dp[l-1][pos[m]][j] = -INF;
