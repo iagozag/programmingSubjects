@@ -73,14 +73,12 @@ void solve(){
 
     int dp[1<<k][k]; memset(dp, INF, sizeof dp);
     dp[1][0] = 0;
-    rep(i, 0, 1<<k){
-        rep(j, 0, k) if(i&(1<<j)){
-            rep(l, 0, k){
-                if(j == l or !(i&(1<<l))) continue;
-                dp[i][j] = min(dp[i][j], dp[i^(1<<j)][l]+dist[{j, l}]);
-            }  
-        } 
-    }
+    rep(i, 0, 1<<k) rep(j, 0, k) if(i&(1<<j)){
+        rep(l, 0, k){
+            if(j == l or !(i&(1<<l))) continue;
+            dp[i][j] = min(dp[i][j], dp[i^(1<<j)][l]+dist[{j, l}]);
+        }  
+    } 
 
     int mi = INF;
     rep(i, 0, k) mi = min(mi, dp[(1<<k)-1][i]+dist[{i, 0}]);
