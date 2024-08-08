@@ -25,7 +25,7 @@ const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 void no(){ cout << "NO" << endl; }
 void yes(){ cout << "YES" << endl; }
 
-const int MAX = 1e5+10, MOD = 998244353;
+const int MAX = 3e6, MOD = 998244353;
 
 template<int p> struct mod_int {
 	ll expo(ll b, ll e) {
@@ -134,27 +134,29 @@ vector<mint> convolution(const vector<mint>& a, const vector<mint>& b) {
 	return l;
 }
 
-vector<vector<mint>> v(MAX);
-
-vector<mint> mult(int l, int r){
-    if(l == r) return v[l];
-    int m = (l+r)>>1;
-    return convolution(mult(l, m), mult(m+1, r));
-}
+vector<mint> v, b;
 
 void solve(){
     string s; cin >> s;
-    int n = sz(s); unordered_set<char> c;
+    int n = sz(s), sum = 0;
+    vi sums;
+    forr(c, s){
+        sum += (c-'a')+1;
+        sums.eb(sum);
+    }
+    
+    v.resize(sum+1), b.resize(sum+1);
+    b[sum] = 1;
     rep(i, 0, n){
-        v[i] = vector<mint>(27), c.insert(s[i]);
-        v[i][0] = 1, v[i][(s[i]-'a')+1] = 1;
+        v[sums[i]] = 1; 
+        if(i < n-1) b[sum-sums[i]] = 1;
     }
 
+    vector<mint> m = convolution(v, b); 
     ll ans = 0;
-    vector<mint> res = mult(0, n-1);
-    rep(i, 0, sz(res)) if(res[i].v) ans++;
+    rep(i, sum+1, 2*sum+1) if(m[i].v) ans++;
     
-    cout << ans-sz(c)+1 << endl;
+    cout << ans << endl;
 }
 
 int main(){ _
