@@ -24,12 +24,13 @@ int main(){
             cout << n << " eh primo" << endl;
             continue;
         } else{
-            mpz_class res = f1*f2;
+            mc res = f1*f2;
             assert(res == n);
         }
 
-        cout << "Fator 1: " << f1 << endl;
-        cout << "Fator 2: " << f2 << endl;
+        cout << "mdc(x - y, N) = " << f1 << endl;
+        cout << "mdc(x + y, N) = " << f2 << endl;
+
         cout << endl;
     }
 

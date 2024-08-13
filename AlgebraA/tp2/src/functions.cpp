@@ -25,7 +25,7 @@ void FACT::createFB(const mc &n){
 }
 
 void FACT::genSmooth(const mc &n, vm &smooth, vm &xlist){
-    vm seq(intervalSize.get_ui()*2);
+    vm seq; seq.reserve(intervalSize.get_ui()*2);
     mc res;
 
     for(mc i = root-intervalSize; i < root+intervalSize; i++)
@@ -83,13 +83,13 @@ Matrix FACT::genMat(const vm &smooth, const mc &n){
     return transpose(mat);
 }
 
-void FACT::gauss(vector<vm> &a, vm& ans){
-    ans = vm(a[0].size());
+void FACT::gauss(vector<vm> &a, vector<bool>& ans){
+    ans = vector<bool>(a[0].size());
 
     for(int i = 0; i < sz(a); i++) for(int j = 0; j < sz(a[i]); j++) if(a[i][j]){
         ans[j] = true;
         for(int k = 0; k < sz(a); k++) if(k != i and a[k][j])
-            for(size_t l = 0; l < sz(a[k]); l++)
+            for(int l = 0; l < sz(a[k]); l++)
                 a[k][l] ^= a[i][l];
 
         break;
@@ -98,7 +98,7 @@ void FACT::gauss(vector<vm> &a, vm& ans){
     a = transpose(a);
 }
 
-vector<int> FACT::find_dep(const pair<vm, int> &solution, Matrix &mat, vm &ans){
+vector<int> FACT::find_dep(const pair<vm, int> &solution, Matrix &mat, vector<bool> &ans){
     vector<int> sol_vec, indices;
     for(int i = 0; i < sz(solution.first); i++) if(solution.first[i] == 1)
         indices.push_back(i);
@@ -127,16 +127,19 @@ bool FACT::quadSieve(const mc &n, mc &f1, mc &f2){
 
     initialize(n);
 
+    cout << "Limite superior para os primos: " << B << endl;
+
     for(int ttt = 0; ttt < MAX_IT; ttt++){
         vm smooth, xlist;
 
         createFB(n);
+
         genSmooth(n, smooth, xlist);
 
         if(sz(smooth)){
             Matrix mat = genMat(smooth, n);
 
-            vm ans;
+            vector<bool> ans;
             gauss(mat, ans);
 
             vector<pair<vm, int>> solRows;
@@ -162,12 +165,19 @@ bool FACT::quadSieve(const mc &n, mc &f1, mc &f2){
                 bgcd(f1, x-y, n);
 
                 if(f1 != 1 and f1 != n) {
+                    cout << "Número de primos na base de fatores: " << sz(factBase) << endl;
+                    cout << "Tamanho do vetor de índices j: " << sz(smooth) << "\n";
+
+                    cout << "x = " << x << endl;
+                    cout << "y = " << y << endl;
+
                     f2 = n/f1;
                     return true;
                 }
             }
         }
 
+        cout << "Aumentando limite superior de primos e tamanho do intervalo..." << endl;
         B += B/10, intervalSize += 500;
     }
 
