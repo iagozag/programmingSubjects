@@ -31,58 +31,80 @@ void yes(){ cout << "YES" << endl; }
 const int MAX = 2e5+10, MOD = 1e9+7;
 
 int n, k, t;
-vi v, seg, lz;
+vi seg, lz;
+vi live;
 
 void push(int node, int l, int r){
-     
+    if(l == r or lz[node] == -1) return;
+
+    seg[node<<1] = lz[node];
+    lz[node<<1] = lz[node];
+    seg[(node<<1)+1] = lz[node];
+    lz[(node<<1)+1] = lz[node];
+    lz[node] = -1;
 }
 
-int build(int node, int l, int r){
-    if(l == r) return seg[node] = t;
-    int m = (l+r)>>1;
-    return build(node*2, l, m)+build(node*2+1, m+1, r);
+void kill(int node, int l, int r, int x){
+    push(node, l, r);
+    if(l == r){
+        live[node] = 0;
+        return;
+    }
+
+    int m = l+(r-l)/2;
+    if(x-seg[node<<1] > t) kill(node<<1, l, m, x);
+    if(x-seg[(node<<1)+1] > t) kill((node<<1)+1, m+1, r, x);
+
+    live[node] = live[node<<1] | live[(node<<1)+1];
 }
 
-int update(int node, int l, int r, int ul, int ur, int val){
+int update(int node, int l, int r, int ul, int ur, int x){
+    if(!live[node]) return INF;
+    push(node, l, r);
     if(ul > r or ur < l) return seg[node];
     if(ul <= l and r <= ur){
-
+        if(x-seg[node] > t) kill(node, l, r, x);
+        seg[node] = x, lz[node] = x;
+        return seg[node];
     }
-    if(lazy[node]) push(node, l, r);
-    int m = (l+r)>>1;
-    return seg[node] = update(node*2, l, m, ul, ur, val)+update(node*2+1, m+1, r, ul, ur, val);
+    int m = l+(r-l)/2;
+    return seg[node] = min(update(node<<1, l, m, ul, ur, x), update((node<<1)+1, m+1, r, ul, ur, x));
 }
 
 vi ans;
-void querym(int node, int l, int r){
+
+void get_ans(int node, int l, int r){
+    if(!live[node]) return;
+    push(node, l, r);
     if(l == r){
-        ans[l] = seg[node];
+        if(live[node]) ans.eb(l+1);
         return;
     }
-    if(lazy[node]) push(node, l, r);
-    int m = (l+r)>>1;
-    querym(node*2, l, m), querym(node*2+1, m+1, r);
+    int m = l+(r-l)/2;
+    get_ans(node<<1, l, m), get_ans((node<<1)+1, m+1, r);
 }
 
 void solve(){
-    seg = lz = vi(4*n);
+    seg = vi(4*n), lz = vi(4*n, -1), live = vi(4*n, 1);
+
     rep(i, 0, k){
         int a, b; cin >> a >> b; --a, --b;
-        update(1, 0, n-1, a, b, t);
-        lz[1] -= 1;
+        update(1, 0, n-1, a, b, i+1);
     }
 
-    ans = vi(n);
-    querym(1, 0, n-1);
-    sort(all(ans));
+    update(1, 0, n-1, 0, n-1, k+1);
+
+    ans.clear();
+    get_ans(1, 0, n-1);
+    if(sz(ans) == 0){
+        cout << 0 << endl;
+        return;
+    }
     cout << sz(ans) << " ";
-    forr(x, ans) cout << x << " ";
-    cout << endl;
+    rep(i, 0, sz(ans)) cout << ans[i] << " \n"[i==sz(ans)-1]; 
 }
 
 int main(){ _
-    int ttt = 1; // cin >> ttt;
-
     while(cin >> n >> k >> t) solve();
 
     exit(0);
