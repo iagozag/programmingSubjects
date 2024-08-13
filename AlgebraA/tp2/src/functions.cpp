@@ -1,178 +1,176 @@
 #include "../include/functions.h"
 
-ll fexp(ll x, ll b, ll m){
-    ll ans = 1; 
-    if(m != -1) x %= m;
-    while(b > 0){
-        if(b&1){
-            if(m != -1) ans = ans*x%m;
-            else ans = ans*x;
+void FACT::initialize(const mc &n){
+    size_t nl = num_length(n, 10);  
+
+    B = min((long long) 100000, (long long) (300+ceil(exp(0.55*sqrt(num_length(n, 2)*log(2) * log(num_length(n, 2)*log(2)))))));
+    intervalSize = 65536;
+    MAX_IT = 100;
+
+    if(nl > 56) intervalSize *= 3;
+    if(nl > 94) intervalSize *= 3;
+}
+
+void FACT::createFB(const mc &n){
+    factBase.clear();
+    vector<bool> isp(B+1, 1);
+    isp[0] = isp[1] = 0;
+
+    for(ll i = 2; i < (ll)sqrt(B); i++) if(isp[i])
+        for(ll j = i*i; j < B+1; j += i) isp[j] = false;
+
+    for(ll i = 2; i < B+1; i++)
+        if(isp[i] and legendre(n, mc(static_cast<unsigned long int>(i))) == 1) 
+            factBase.eb(mc(static_cast<unsigned long int>(i))); 
+}
+
+void FACT::genSmooth(const mc &n, vm &smooth, vm &xlist){
+    vm seq(intervalSize.get_ui()*2);
+    mc res;
+
+    for(mc i = root-intervalSize; i < root+intervalSize; i++)
+        fexp(res, i, 2), seq.eb(res-n);
+
+    vm sieved(seq);
+
+    bool twob = (factBase[0] == 2);
+    if(twob){
+        int i = 0;
+        while(sieved[i]%2 != 0) i++;
+
+        mc two = 2;
+        while(i < sz(sieved)) remove_fact(sieved[i], sieved[i], two), i += 2;
+    }
+
+    mc s1, s2, tmp;
+    for(int i = twob ? 1 : 0; i < sz(factBase); i++){
+        tonelliShanks(n, factBase[i], s1, s2);
+        for (auto sol: {s1, s2}){
+            mc t1 = (sol-root+intervalSize), t2 = factBase[i].get_ui();
+            tmp = (t1%t2+t2)%t2;
+
+            for(int j = tmp.get_ui(); j < sz(sieved); j += factBase[i].get_ui())
+                remove_fact(sieved[j], sieved[j], factBase[i]);
+
+            t1 = (sol-root+intervalSize), t2 = factBase[i];
+            tmp = (t1%t2+t2)%t2+intervalSize;
+
+            for (ll j = tmp.get_ui(); j > 0; j -= factBase[i].get_ui())
+                remove_fact(sieved[j], sieved[j], factBase[i]);
         }
-        if(m != -1) x = x*x%m;
-        else x = x*x;
-
-        b >>= 1;
-    }
-    return ans;
-}
-
-ll legendreSymbol(ll a, ll p){
-    ll res = fexp(a, (p-1)>>1, p); 
-    return (res > 1 ? -1 : res);
-}
-
-vector<ll> sieve(const ll& n, int b){
-    vector<ll> fact;
-    vector<bool> isp(b+1);
-    for(int i = 2; i <= b; ++i) if(!isp[i]){
-        if(legendreSymbol(n, i) == 1) fact.emplace_back(i);
-        if((ll)i*(ll)i > (ll)1e8) continue;
-        for(int j = i*i; j <= b; j += i) isp[j] = 1;
-    }
-    return fact;
-}
-
-pair<ll, ll> tonelliShanks(ll n, ll p){
-    if(p == 2) return {n, n};
-
-    ll q = p - 1;
-    ll s = 0;
-    while (q % 2 == 0) q >>= 1, ++s;
-
-    ll z = 2;
-    while(legendreSymbol(z, p) != -1) z++;
-
-    ll c = fexp(z, q, p),
-       r = fexp(n, (q + 1)>>1, q),
-       t = fexp(n, 1, p),
-       m = s;
-
-    while(t%p != 1) {
-        ll i = 1;
-        while(fexp(t, fexp(2, i, -1), p) != 1) i++;
-
-        ll b = fexp(c, fexp(2, m-i-1, -1), p);
-
-        r = r*b%p;
-        t = t*b*b%p;
-        c = b*b%p;
-        m = i;
     }
 
-    return {r, p-r};
-}
-
-ll gauss(vector<dynamic_bitset<>> a, int n, int m, dynamic_bitset<>& ans){
-    vector<int> where(m, -1);
-    for(int col = 0, row = 0; col < m && row < n; col++){
-        for(int i = row; i < n; i++) if(a[i][col]){
-            swap(a[i], a[row]);
-            break;
+    for(int i = 0; i < sz(sieved); i++){
+        if(abs(sieved[i]) == 1) {
+            smooth.eb(seq[i]);
+            xlist.eb(i+root-intervalSize);
         }
-        if(!a[row][col]) continue;
-        where[col] = row;
-
-        for(int i = 0; i < n; i++) if(i != row && a[i][col])
-            a[i] ^= a[row];
-        row++;
     }
-
-    ans.resize(m);
-    ans.reset();
-    for(int i = 0; i < m; ++i) if(where[i] != -1)
-            ans[i] = a[where[i]][m] / a[where[i]][i];
-    for(int i = 0; i < n; i++){
-        int sum = 0;
-        for(int j = 0; j < m; j++) sum += ans[j]*a[i][j];
-        if(sum == a[i][m]) return 0;
-    }
-
-    for(int i = 0; i < m; i++) if(where[i] == -1)
-        return INF;
-
-    return 1;
 }
 
-ll gcd(ll a, ll b) {
-    return b == 0 ? a : gcd(b, a%b);
+Matrix FACT::genMat(const vm &smooth, const mc &n){
+    factBase.insert(factBase.begin(), -1);
+    Matrix mat(sz(smooth), vm(factBase.size()));
+
+    for(int i = 0; i < sz(smooth); i++){
+        auto factors = get_pfactors(smooth[i], factBase);
+
+        for (int j = 0; j < sz(factBase); j++)
+            if(factors.find(factBase[j]) != factors.end())
+                mat[i][j] = factors[factBase[j]]%2;
+    }
+
+    return transpose(mat);
 }
 
-void quadraticSieve(const ll& n){
-    typedef number<cpp_dec_float<50>> PreciseFloat;
-    PreciseFloat precise_n(n.str());
-    const int b = (int)min((ll)10000000, (ll)(MIN_BOUND + ceil(exp(PreciseFloat(0.55) * sqrt(log(precise_n) * log(log(precise_n))))))+1);
+void FACT::gauss(vector<vm> &a, vm& ans){
+    ans = vm(a[0].size());
 
-    
-    vector<ll> factBase = sieve(n, b);
+    for(int i = 0; i < sz(a); i++) for(int j = 0; j < sz(a[i]); j++) if(a[i][j]){
+        ans[j] = true;
+        for(int k = 0; k < sz(a); k++) if(k != i and a[k][j])
+            for(size_t l = 0; l < sz(a[k]); l++)
+                a[k][l] ^= a[i][l];
 
-    for(auto x: factBase) cout << x << " ";
-    cout << endl;
-
-    cout << "Limite superior para os primos: " << b << endl;
-    cout << "Número de primos na base de fatores: " << sz(factBase) << endl;
-
-    ll root = sqrt(n);
-    vector<pair<ll, vector<int>>> smoothNumbers;
-    vector<dynamic_bitset<>> exps;
-
-    for(ll x = root+1; x <= root+b; x++){
-        ll val = x*x-n, temp = abs(val);
-        vector<int> exp(sz(factBase), 0);
-
-        for(int i = 0; i < sz(factBase); i++)
-            while(temp%factBase[i] == 0) temp /= factBase[i], exp[i]++;
-
-        if(temp == 1){
-            smoothNumbers.emplace_back(x, exp);
-            dynamic_bitset<> bitExp(sz(factBase));
-            for(int i = 0; i < sz(factBase); i++) bitExp[i] = exp[i]%2;
-            exps.push_back(bitExp);
-        }
-        if(sz(smoothNumbers) >= sz(factBase)+20) break;
+        break;
     }
 
-    for(int i = 0; i < sz(smoothNumbers); i++){
-        cout << smoothNumbers[i].first << ": ";
-        for(int j = 0; j < sz(smoothNumbers[i].second); j++) cout << smoothNumbers[i].second[j] << " ";
-        cout << endl;
+    a = transpose(a);
+}
+
+vector<int> FACT::find_dep(const pair<vm, int> &solution, Matrix &mat, vm &ans){
+    vector<int> sol_vec, indices;
+    for(int i = 0; i < sz(solution.first); i++) if(solution.first[i] == 1)
+        indices.push_back(i);
+
+    for(int row = 0; row < sz(mat); row++)
+        for(auto i : indices) if(mat[row][i] == 1 and ans[row])
+            sol_vec.eb(row);
+
+    sol_vec.eb(solution.second);
+    return sol_vec;
+}
+
+bool FACT::quadSieve(const mc &n, mc &f1, mc &f2){
+    big_sqrt(root, n);
+
+    if(root*root == n){
+        f1 = root, f2 = root;
+        return true;
     }
 
-    cout << "Tamanho do vetor de índices j: " << sz(smoothNumbers) << "\n";
+    int is_p = mpz_probab_prime_p(n.get_mpz_t(), 50);
+    if(is_p){
+        f1 = 1, f2 = n;
+        return true;
+    }
 
-    ll a, b_;
-    do{
-        a = 1;
-        b_ = 1;
-        dynamic_bitset<> ans;
-        if(gauss(exps, exps.size(), sz(factBase), ans) == INF){
-            cout << "Impossível" << endl;
-            return;
-        }
+    initialize(n);
 
-        vector<int> combined_exponents(sz(factBase), 0);
+    for(int ttt = 0; ttt < MAX_IT; ttt++){
+        vm smooth, xlist;
 
-        for(int i = 0; i < sz(smoothNumbers); i++){
-            if(ans[i]){
-                a = (a * smoothNumbers[i].first) % n;
-                for(int j = 0; j < sz(factBase); j++) {
-                    combined_exponents[j] += smoothNumbers[i].second[j];
+        createFB(n);
+        genSmooth(n, smooth, xlist);
+
+        if(sz(smooth)){
+            Matrix mat = genMat(smooth, n);
+
+            vm ans;
+            gauss(mat, ans);
+
+            vector<pair<vm, int>> solRows;
+            for(int i = 0; i < sz(ans); i++) if (!ans[i])
+                solRows.eb({mat[i], i});
+
+            mpz_class x, y;
+            for (const auto &sol : solRows) {
+                vector<int> solv = find_dep(sol, mat, ans);
+
+                vm va, vb;
+                for(auto i: solv) va.eb(smooth[i]), vb.eb(xlist[i]);
+                
+                x = 1;
+                for(auto z: va) x *= z;
+                x = abs(x);
+
+                big_sqrt(x, x);
+
+                y = 1;
+                for(auto z: vb) y *= z;
+
+                bgcd(f1, x-y, n);
+
+                if(f1 != 1 and f1 != n) {
+                    f2 = n/f1;
+                    return true;
                 }
             }
         }
 
-        for(int i = 0; i < sz(factBase); i++) {
-            if (combined_exponents[i] > 0) {
-                b_ = (b_ * fexp(factBase[i], combined_exponents[i] / 2, n)) % n;
-            }
-        }
+        B += B/10, intervalSize += 500;
+    }
 
-        a = (a + n) % n;
-        b_ = (b_ + n) % n;
-    } while(!a or !b or (a%n == b_%n) or a%n == (-b_)%n+n);
-
-    cout << "x = " << a << endl;
-    cout << "y = " << b_ << endl;
-    cout << "mdc(x - y, N) = " << gcd(a-b_, n) << endl;
-    cout << "mdc(x + y, N) = " << gcd(a+b_, n) << endl;
-    
+    f1 = 1, f2 = n;
+    return false;
 }

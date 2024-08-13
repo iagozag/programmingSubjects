@@ -1,36 +1,27 @@
-#ifndef FUNCTIONS_H
-#define FUNCTIONS_H
+#ifndef FACT_H
+#define FACT_H
 
-#include <bits/stdc++.h>
-#include <boost/multiprecision/cpp_int.hpp>
-#include <boost/multiprecision/logged_adaptor.hpp>
-#include <boost/multiprecision/cpp_dec_float.hpp>
-#include <boost/dynamic_bitset.hpp>
+#include <utils.h>
 
-using namespace std;
-using namespace boost;
-using namespace boost::multiprecision;
+const long long INF = 0x3f3f3f3f3f3f3f3fll;
 
-#define sz(a) (int)(a.size())
+class FACT{
+    mc root;
+    ll B;
+    mc intervalSize;
+    vm factBase;
+    int MAX_IT;
 
-typedef cpp_int ll;
+    public:
+        void initialize(const mc &n);
+        bool quadSieve(const mc &n, mc &fact1, mc &fact2);
+        void createFB(const mc &n);
+        void genSmooth(const mc &n, vm &smooths, vm &xlist);
+        Matrix genMat(const vm &smooth, const mc &n);
+        void gauss(vector<vm> &a, vm& ans);
+        vector<int> find_dep(const pair<vm, int> &solution, Matrix &mat, vm &flagged);
 
-const int MIN_BOUND = 20;
-const ll INF = 0x3f3f3f3f3f3f3f3fll;;
+};
 
-ll fexp(ll a, ll b, ll m);
-
-ll legendreSymbol(ll a, ll p);
-
-vector<ll> sieve(const ll& n, ll B);
-
-pair<ll, ll> tonelliShanks(ll n, ll p);
-
-ll gauss(vector<dynamic_bitset<>> a, int n, int m, dynamic_bitset<>& ans);
-
-ll gcd(ll a, ll b);
-
-void quadraticSieve(const ll& n);
-
-#endif // FUNCTIONS_H
+#endif // FACT_H
 

@@ -1,14 +1,37 @@
-#include "../include/functions.h" 
+#include "../include/functions.h"
 
-#define _ ios_base::sync_with_stdio(0);cin.tie(0);
+int main(){
+    FACT qs = FACT();
+    mc n;
 
-int main(){ _
-    ll a, b; cin >> a >> b;
+    for(int i = 0; i < 2; i++){
+        cin >> n;
+        cout << "Fatorando " << n << ":" << endl;
 
-    cout << "Fatorando A: " << endl;
-    quadraticSieve(a);
-    cout << "Fatorando B: " << endl;
-    quadraticSieve(b);
+        if (num_length(n, 2) > 80){
+            cout << "AVISO: fatorar numeros com mais de 80 bits pode levar muito tempo ou até travar devido ao uso excessivo de memoria" << endl;
+        }
+
+        mc f1, f2;
+        bool ok = qs.quadSieve(n, f1, f2);
+
+        if(!ok){
+            cout << "Fatoracao falhou!" << endl;
+            continue;
+        }
+
+        if (f1 == 1 and f2 == n){
+            cout << n << " eh primo" << endl;
+            continue;
+        } else{
+            mpz_class res = f1*f2;
+            assert(res == n);
+        }
+
+        cout << "Fator 1: " << f1 << endl;
+        cout << "Fator 2: " << f2 << endl;
+        cout << endl;
+    }
 
     exit(0);
 }
