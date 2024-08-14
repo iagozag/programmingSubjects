@@ -44,10 +44,7 @@ void Cache::run(const string &inpFile, const string &outFile) {
 
             // caso nao exista, substituo usando First In First Out
             if(!ok){
-                for(int i = 0; i < associativity-1; i++)
-                    cache[setIdx][i] = cache[setIdx][i + 1];
-
-                cache[setIdx][associativity - 1] = {true, tag};
+                // ainda vou fazer 
             }
         }
 
