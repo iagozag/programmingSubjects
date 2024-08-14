@@ -1,7 +1,13 @@
 #ifndef CACHE_H
 #define CACHE_H
 
-#include <macros.h>
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define endl '\n'
+
+typedef unsigned int ui;
 
 // define a classe da cache
 class Cache{
@@ -18,6 +24,8 @@ class Cache{
         int numSets;
 
         vector<vector<CacheLine>> cache;
+        vector<int> next;
+        queue<int> q;
 
         void printCache(ofstream &output);
 

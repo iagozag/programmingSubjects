@@ -8,6 +8,7 @@ Cache::Cache(int _cacheSize, int _lineSize, int _associativity):
     numLines = cacheSize/lineSize;
     numSets = numLines/associativity;
     cache = vector<vector<CacheLine>>(numSets, vector<CacheLine>(associativity, {0, 0}));
+    next = vector<int>(numSets);
 }
 
 // roda simulacao
@@ -34,17 +35,14 @@ void Cache::run(const string &inpFile, const string &outFile) {
         else{
             misses++;
 
-            // procuro se existe alguma linha vazia
-            bool ok = false;
-            for(auto &cl: cache[setIdx]) if(!cl.val){
-                cl = {true, tag};
-                ok = true;
-                break;
-            }
-
-            // caso nao exista, substituo usando First In First Out
-            if(!ok){
-                // ainda vou fazer 
+            // prenche se tem espaco vazio
+            if(next[setIdx] < associativity)
+                cache[setIdx][next[setIdx]] = {true, tag}, q.push(next[setIdx]++);
+            // substitui usando First In First Out
+            else{
+                int trade = q.front(); q.pop();
+                cache[setIdx][trade] = {true, tag};
+                q.push(trade);
             }
         }
 
