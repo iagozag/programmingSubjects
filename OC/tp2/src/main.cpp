@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
     Cache cache(stoi(argv[1]), stoi(argv[2]), stoi(argv[3]));
 
     // roda simulação
-    cache.run(argv[4], "out.txt");
+    cache.run(argv[4], "output.txt");
 
     exit(0); 
 }
