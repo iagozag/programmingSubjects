@@ -49,6 +49,7 @@ void Cache::run(const string &inpFile, const string &outFile) {
         printCache(out);
     }
 
+    out << endl;
     out << "#hits: " << hits << endl;
     out << "#miss: " << misses << endl;
 }
