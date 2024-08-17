@@ -44,9 +44,9 @@ void Cache::run(const string &inpFile, const string &outFile) {
                 cache[setIdx][trade] = {true, tag};
                 q.push(trade);
             }
+            
+            printCache(out);
         }
-
-        printCache(out);
     }
 
     out << endl;

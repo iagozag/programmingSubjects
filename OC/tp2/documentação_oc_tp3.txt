@@ -1,0 +1,22 @@
+Documentação do Trabalho Prático de Organização de Computadores:
+
+Integrantes:
+ - Caroline Campos Carvalho 2022043558
+ - Déborah Brito Yamamoto 2022069409
+ - Iago Zagnoli Albergaria 2022069476
+
+Para executar o programa, basta seguir os seguintes passos:
+ - Para compilar o programa, primeiramente, é necessario acessar um terminal Linux e navegar até o diretório onde o projeto está localizado. Em seguida, deve-se inserir o comando "make".
+ - Para executar o programa, é necessário digitar uma linha de comando com os seguintes elementos, na respectiva ordem listada a seguir, sendo que todos eles devem ser separados por um espaço:
+	 - ./main
+	 - tamanho total da cache, em bytes
+	 - tamanho de cada linha, em bytes
+	 - tamanho de cada grupo, em unidades
+	 - nome do arquivo com os acessos à memória
+ 
+Exemplo de uma possível instanciação da linha de comando:
+./main 4096 1024 1 <nome_do_arquivo_txt>
+
+O programa imprime o estado da cache sempre que ocorre uma modificação. Em outras palavras, toda vez que há um miss, a situação atualizada da cache é exibida logo após o evento.
+
+Optamos por deixar apenas o shift do offset para a tag para ficar equivalente aos exemplos dados no enunciado do trabalho.
