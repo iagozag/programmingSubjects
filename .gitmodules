@@ -7,3 +7,6 @@
 [submodule "ALG2/euclidean_tsp"]
 	path = ALG2/euclidean_tsp
 	url = https://github.com/iagozag/euclidean_tsp.git
+[submodule "PO/simplex"]
+	path = PO/simplex
+	url = https://github.com/iagozag/simplex.git
