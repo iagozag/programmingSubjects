@@ -1,3 +1,9 @@
 [submodule "PDS_II/codes/20231-team-7"]
 	path = PDS_II/codes/20231-team-7
 	url = https://github.com/pds2/20231-team-7
+[submodule "ALG2/lzw-streamlit"]
+	path = ALG2/lzw-streamlit
+	url = https://github.com/iagozag/lzw-streamlit.git
+[submodule "ALG2/euclidean_tsp"]
+	path = ALG2/euclidean_tsp
+	url = https://github.com/iagozag/euclidean_tsp.git
