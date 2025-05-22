@@ -45,7 +45,7 @@ template<class H, class... T> void DBGC(H h, T... t) {
 #define dbgc(...) cerr << "["<< #__VA_ARGS__ << "]: [ "; DBGC(__VA_ARGS__) 
 #else
 #define dbg(...) 0
-#define dbgc(...) 0
+#define dbgc(...) 0(m1+m2+m3)%2
 #endif
 
 const int MAX = 2e5+10;
