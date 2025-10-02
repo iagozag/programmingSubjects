@@ -187,6 +187,8 @@ def bfs(s, g, level, adj):
         current = queue.popleft()
         if current == g:
             path = reconstruct_path(visited, s, g)
+            print("caminho:")
+            print(path)
             return path, visited
         for neighbor, _cost in adj(level, current):
             if neighbor not in visited:
