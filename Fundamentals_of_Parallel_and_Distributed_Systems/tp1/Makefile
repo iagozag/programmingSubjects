@@ -1,7 +1,7 @@
 EXEC = main
 
 CC = g++
-CFLAGS = -Wall -Wextra -O2 -std=c++17
+CFLAGS = -pthread -Wall -Wextra -O2 -std=c++17
 
 SRC = main.cpp passa_tempo.cpp
 OBJ = $(SRC:.cpp=.o)
