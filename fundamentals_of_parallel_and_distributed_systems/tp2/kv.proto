@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package kv;
+
+service PairService {
+  rpc Insert(InsertRequest) returns (InsertReply) {}
+  rpc Query(QueryRequest) returns (QueryReply) {}
+  rpc Activate(ActivateRequest) returns (ActivateReply) {}
+  rpc Terminate(TerminateRequest) returns (TerminateReply) {}
+}
+
+service CentralService {
+  rpc Register(RegisterRequest) returns (RegisterReply) {}
+  rpc Search(SearchRequest) returns (SearchReply) {}
+  rpc Pairing(PairingRequest) returns (PairingReply) {}
+  rpc Terminate(TerminateRequest) returns (TerminateReply) {}
+}
+
+message InsertRequest {
+  int32 key = 1;
+  string value = 2; // até ~1024 chars
+}
+message InsertReply { int32 result = 1; } // 0 (inserido) ou 1 (atualizado)
+
+message QueryRequest { int32 key = 1; }
+message QueryReply { string value = 1; }
+
+message ActivateRequest {}
+message ActivateReply { int32 result = 1; }
+
+message RegisterRequest {
+  string locator = 1;            // "host:port"
+  repeated int32 keys = 2;       // lista de chaves
+}
+message RegisterReply { int32 processed = 1; }
+
+message SearchRequest {
+  int32 key = 1;
+  string except = 2; // opcional: locator a ser excluído na busca recursiva
+}
+message SearchReply { string locator = 1; } // "" se nao encontrado
+
+message PairingRequest { string locator = 1; }
+message PairingReply { int32 result = 1; }
+
+message TerminateRequest {}
+message TerminateReply { int32 total = 1; }
