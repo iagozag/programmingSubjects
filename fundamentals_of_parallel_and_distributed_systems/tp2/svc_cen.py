@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import threading
+import socket  # <-- 1. Importado
 from concurrent import futures
 
 import grpc
@@ -9,11 +10,14 @@ import kv_pb2_grpc
 
 
 class CentralServicer(kv_pb2_grpc.CentralServiceServicer):
-    def __init__(self, stop_event, super_mode=False):
+    def __init__(self, stop_event, port, super_mode=False):  # <-- 2. Recebe a porta
         self.lock = threading.Lock()
         self.directory = {}   # key:int -> locator:str
         self.super_peers = [] if super_mode else None
         self.stop_event = stop_event
+        self.port = port
+        # 3. Armazena o próprio locator para evitar loops
+        self.locator = f"{socket.getfqdn()}:{self.port}" if super_mode else ""
 
     def Register(self, request, context):
         processed = 0
@@ -30,9 +34,11 @@ class CentralServicer(kv_pb2_grpc.CentralServiceServicer):
             loc = self.directory.get(key, "")
         if loc:
             return kv_pb2.SearchReply(locator=loc)
+        
         # se não há loc e não estamos em modo super, retorna vazio
         if self.super_peers is None:
             return kv_pb2.SearchReply(locator="")
+        
         # modo super -> propaga para super_peers exceto o que pediu
         for peer in list(self.super_peers):
             if peer == except_locator:
@@ -40,8 +46,10 @@ class CentralServicer(kv_pb2_grpc.CentralServiceServicer):
             try:
                 channel = grpc.insecure_channel(peer)
                 stub = kv_pb2_grpc.CentralServiceStub(channel)
-                # encaminha a busca, indicando que o peer atual não deve ser consultado novamente
-                forward_req = kv_pb2.SearchRequest(key=key, except=except_locator)
+                
+                # 4. CORREÇÃO: Passa 'self.locator' no campo 'except'
+                forward_req = kv_pb2.SearchRequest(key=key, except=self.locator)
+                
                 resp = stub.Search(forward_req, timeout=2)
                 if resp.locator:
                     return kv_pb2.SearchReply(locator=resp.locator)
@@ -72,7 +80,10 @@ def serve():
 
     stop_event = threading.Event()
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    servicer = CentralServicer(stop_event, super_mode)
+    
+    # 2. Passa a porta para o construtor do servicer
+    servicer = CentralServicer(stop_event, port, super_mode)
+    
     kv_pb2_grpc.add_CentralServiceServicer_to_server(servicer, server)
     server.add_insecure_port(f"[::]:{port}")
     server.start()
