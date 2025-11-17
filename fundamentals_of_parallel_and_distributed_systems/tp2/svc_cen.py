@@ -29,7 +29,7 @@ class CentralServicer(kv_pb2_grpc.CentralServiceServicer):
 
     def Search(self, request, context):
         key = int(request.key)
-        except_locator = request.except if hasattr(request, 'except') else ""
+        except_locator = request.exc if hasattr(request, 'except') else ""
         with self.lock:
             loc = self.directory.get(key, "")
         if loc:

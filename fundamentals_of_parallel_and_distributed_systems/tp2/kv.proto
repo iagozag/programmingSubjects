@@ -36,7 +36,7 @@ message RegisterReply { int32 processed = 1; }
 
 message SearchRequest {
   int32 key = 1;
-  string except = 2; // opcional: locator a ser excluído na busca recursiva
+  string exc = 2; // opcional: locator a ser excluído na busca recursiva
 }
 message SearchReply { string locator = 1; } // "" se nao encontrado
 
