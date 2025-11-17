@@ -10,6 +10,15 @@ CORS(app)
 
 ROWS, COLS = 6, 7
 
+AI_PLAYERS = {
+    "AI_Random" : search.choose_move,
+    "AI_Dummy": search.choose_move_infinity,
+    "AI_Heuristic_Default_Minimax": search.choose_move_minimax,
+    "AI_Alpha_Beta_Minimax": search.choose_move_minimax_alpha_beta,
+    "AI_Iterative_Deepening": search.choose_move_iterative_deepening,
+    "AI_Competition": search.choose_move_minimax_alpha_beta
+}
+
 def fallback_move(board):
     """Escolhe a primeira coluna válida (fallback simples)."""
     for c in range(COLS):
@@ -17,22 +26,22 @@ def fallback_move(board):
             return c
     return 0  # Nenhuma jogada possível (tabuleiro cheio)
 
-def _agent_worker(board, player, config, q):
+def _agent_worker(board, player, turn, config, q):
     """Roda em OUTRO processo para isolar travamentos/loops infinitos."""
     try:
-        col = search.choose_move(board, player, config)
+        col = AI_PLAYERS[player](board, turn, config)
         q.put(("ok", col))
     except Exception as e:
         q.put(("err", str(e)))
 
-def run_agent_with_timeout(board, player, config, timeout_s=5.0):
+def run_agent_with_timeout(board, player, turn, config, timeout_s=5.0):
     """
     Executa choose_move em um processo separado e aplica um hard timeout.
     Retorna (col, info, flags) — onde flags indica timeout/crash.
     """
     ctx = get_context("spawn")
     q = ctx.Queue()
-    p = ctx.Process(target=_agent_worker, args=(board, player, config, q))
+    p = ctx.Process(target=_agent_worker, args=(board, player, turn, config, q))
     p.start()
     p.join(timeout_s)
 
@@ -96,15 +105,20 @@ def index():
 def ping():
     return jsonify({"result": "success", "message": "pong"})
 
+@app.route("/ai_players", methods=["GET"])
+def ai_players():
+    return jsonify({"result": "success", "players": list(AI_PLAYERS.keys()) })
+
 @app.route("/ai_move", methods=["GET"])
 def ai_move():
     """
     Exemplo de chamada (GET):
-      /ai_move?board=0000000;0000000;0000000;0000000;0000000;0000000&player=2&max_depth=5&max_time_ms=2000
+      /ai_move?board=0000000;0000000;0000000;0000000;0000000;0000000&player=2&turn=1&max_depth=5&max_time_ms=2000
 
     Parâmetros:
       - board: string 6 linhas * 7 colunas (0/1/2), separadas por ';' (ou '\n').
-      - player: string com o nome do jogador atual 
+      - player: string com o nome do jogador atual
+      - turn: de quem é o turno nesse momento (1 ou 2)
       - max_depth: int >= 1 (default 5)
       - max_time_ms: int >= 0 (0 = sem limite, default 2000)
 
@@ -114,8 +128,11 @@ def ai_move():
     # Lê parâmetros
     board_str = request.args.get("board", type=str)
     player = request.args.get("player", type=str)
+    turn = request.args.get("turn", type=str)
     max_time_ms = request.args.get("max_time_ms", type=int)
     max_depth = request.args.get("max_depth", type=int)
+
+    print(player)
 
     # Lê tabuleiro
     board = parse_board_str(board_str)
@@ -128,7 +145,7 @@ def ai_move():
     
     # Executa agente com timeout
     t0 = time.time()
-    col, info = run_agent_with_timeout(board, player, config, timeout_s=hard_timeout_s)
+    col, info = run_agent_with_timeout(board, player, turn, config, timeout_s=hard_timeout_s)
     t1 = time.time()
 
     # Calcula tempo decorrido

@@ -3,31 +3,69 @@
 const ROWS = 6, COLS = 7;
 const EMPTY = 0;
 
+let gameStarted = false;
 let cellSize = 80, margin = 16;
-let board, turn = 0, winner = 0, aiThinking = false;
+let board, turn = 1, winner = 0, aiThinking = false;
 let players = { 1: "", 2: "" };
 
-const API = "http://localhost:5001/ai_move";
+const API = "http://localhost:5001/";
 
 // ------------------------- p5.js SETUP -------------------------
-function setup() 
+async function setup() 
 {
   const w = COLS * cellSize + margin * 2;
   const h = ROWS * cellSize + margin * 2;
   let cnv = createCanvas(w, h);
   cnv.parent("mapCanvas");
 
-  document.getElementById("newGame").onclick = newGame;
-  newGame();
+  // Load AI players
+  const url = `${API}/ai_players`;
+
+  gameStarted = false;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    let player1Select = document.getElementById("player1");
+    let player2Select = document.getElementById("player2");
+
+    for(let p of data.players) 
+    {
+      console.log(p);
+
+      const newOption1 = document.createElement('option');
+      newOption1.value = p;
+      newOption1.textContent = p;
+      
+      player1Select.appendChild(newOption1);
+
+      const newOption2 = document.createElement('option');
+      newOption2.value = p;
+      newOption2.textContent = p;
+
+      player2Select.appendChild(newOption2);
+      gameStarted = true;
+    }
+
+    document.getElementById("newGame").onclick = newGame;
+    newGame();
+  } 
+  catch (error) {
+    console.error("Erro ao chamar a API ai_players:", error);
+  } 
+
 }
 
 function draw() 
 {
   background(255);
   drawGrid();
-  drawChips();
-  
-  updateHUD();
+
+  if(gameStarted) {
+    drawChips();
+    updateHUD();
+  }
 }
 
 function LoadPlayers() 
@@ -38,7 +76,7 @@ function LoadPlayers()
   players[1] = p1Select.value;
   players[2] = p2Select.value;
 
-  if (winner === 0 && players[turn] === "ai") {
+  if (winner === 0 && players[turn].slice(0, 2) === "AI") {
     makeAIMove();
   }
 }
@@ -54,7 +92,7 @@ function newGame()
   winner = 0;
   
   aiThinking = false;
-  if (players[turn] === "ai") {
+  if (players[turn].slice(0, 2) === "AI") {
     makeAIMove();
   }
 
@@ -133,14 +171,20 @@ function drawChips()
   push();
   translate(margin, margin);
 
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
+  for (let r = 0; r < ROWS; r++) 
+  {
+    for (let c = 0; c < COLS; c++) 
+    {
       const cell = board[r][c];
+      
       if (cell === EMPTY) continue;
 
-      if (cell === 1) {
+      if (cell === 1) 
+      {
         fill(220, 50, 30);  // vermelho
-      } else if (cell === 2) {
+      } 
+      else if (cell === 2) 
+      {
         fill(240, 220, 70); // amarelo
       }
 
@@ -155,7 +199,7 @@ function changeTurn()
 {
   turn = turn === 1 ? 2 : 1;
 
-  if (winner === 0 && players[turn] === "ai") {
+  if (winner === 0 && players[turn].slice(0, 2) === "AI") {
     makeAIMove();
   }
 }
@@ -229,14 +273,13 @@ async function makeAIMove()
   aiThinking = true;
 
   const boardStr = encodeBoard(board);
-  const player = turn;
-
+  const player = players[turn];
   const maxTimeMs = parseInt(document.getElementById("maxTimeMs").value);
   const maxDepth = parseInt(document.getElementById("maxDepth").value);
 
-  console.log(`Calling AI API with board=${boardStr}, player=${player}, max_time_ms=${maxTimeMs}, max_depth=${maxDepth}`);
+  console.log(`Calling AI API with board=${boardStr}, player=${player}, turn=${turn}, max_time_ms=${maxTimeMs}, max_depth=${maxDepth}`);
 
-  const url = `${API}?board=${encodeURIComponent(boardStr)}&player=${encodeURIComponent(player)}&max_time_ms=${encodeURIComponent(maxTimeMs)}&max_depth=${encodeURIComponent(maxDepth)}`;
+  const url = `${API}/ai_move?board=${encodeURIComponent(boardStr)}&player=${encodeURIComponent(player)}&turn=${encodeURIComponent(turn)}&max_time_ms=${encodeURIComponent(maxTimeMs)}&max_depth=${encodeURIComponent(maxDepth)}`;
 
   try {
     const response = await fetch(url);
