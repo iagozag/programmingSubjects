@@ -27,4 +27,4 @@ run_cli_central: stubs
 	$(PY) cln_cen.py $(arg)
 
 run_super_par: stubs
-	$(PY) svc_cen.py $(arg1) super
+	$(PY) svc_cen.py $(arg) super

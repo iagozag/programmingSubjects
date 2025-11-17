@@ -34,7 +34,7 @@ if __name__ == "__main__":
             try:
                 _, chs = line.split(' ', 1)
                 ch = int(chs.strip())
-                resp = stub.Search(kv_pb2.SearchRequest(key=ch, except=""))
+                resp = stub.Search(kv_pb2.SearchRequest(key=ch, except_=""))
                 if resp.locator:
                     # imprime locator=valor
                     print(f"{resp.locator}=", end="")
