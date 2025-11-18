@@ -5,9 +5,12 @@ PY_FILES := kv_pb2.py kv_pb2_grpc.py
 all: stubs
 
 clean:
-	rm -f $(PY_FILES) *.pyc __pycache__ *.zip
+	rm -f $(PY_FILES) *.pyc *.zip
 
-stubs:
+# REGRA STUBS CORRIGIDA (AGORA EM DUAS PARTES)
+stubs: $(PY_FILES)
+
+$(PY_FILES): $(PROTO)
 	$(PY) -m pip install --user grpcio grpcio-tools protobuf >/dev/null 2>&1 || true
 	$(PY) -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. $(PROTO)
 
@@ -26,5 +29,6 @@ run_serv_central: stubs
 run_cli_central: stubs
 	$(PY) cln_cen.py $(arg)
 
+# REGRA RUN_SUPER_PAR CORRIGIDA (USA $(arg))
 run_super_par: stubs
 	$(PY) svc_cen.py $(arg) super
