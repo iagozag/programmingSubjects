@@ -12,7 +12,7 @@ import kv_pb2_grpc
 class CentralServicer(kv_pb2_grpc.CentralServiceServicer):
     def __init__(self, stop_event, port, super_mode=False):
         self.lock = threading.Lock()
-        self.directory = {}   # key:int -> locator:str
+        self.directory = {}
         self.super_peers = [] if super_mode else None
         self.stop_event = stop_event
         self.port = port
@@ -29,7 +29,6 @@ class CentralServicer(kv_pb2_grpc.CentralServiceServicer):
     def Search(self, request, context):
         key = int(request.key)
         
-        # CORREÇÃO 1: Leitura do campo
         except_locator = request.except_
         
         with self.lock:
@@ -40,7 +39,6 @@ class CentralServicer(kv_pb2_grpc.CentralServiceServicer):
         if self.super_peers is None:
             return kv_pb2.SearchReply(locator="")
         
-        # modo super -> propaga para super_peers
         for peer in list(self.super_peers):
             if peer == except_locator:
                 continue
@@ -48,7 +46,6 @@ class CentralServicer(kv_pb2_grpc.CentralServiceServicer):
                 channel = grpc.insecure_channel(peer)
                 stub = kv_pb2_grpc.CentralServiceStub(channel)
                 
-                # CORREÇÃO 2: Escrita/Criação da mensagem
                 forward_req = kv_pb2.SearchRequest(key=key, except_=self.locator)
                 
                 resp = stub.Search(forward_req, timeout=2)

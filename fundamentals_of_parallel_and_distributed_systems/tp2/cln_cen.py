@@ -36,18 +36,14 @@ if __name__ == "__main__":
                 ch = int(chs.strip())
                 resp = stub.Search(kv_pb2.SearchRequest(key=ch, except_=""))
                 if resp.locator:
-                    # imprime locator=valor
                     print(f"{resp.locator}=", end="")
-                    # consulta diretamente o pair service no locator retornado
                     try:
                         pch = grpc.insecure_channel(resp.locator)
                         pstub = kv_pb2_grpc.PairServiceStub(pch)
                         qresp = pstub.Query(kv_pb2.QueryRequest(key=ch), timeout=5)
                         print(qresp.value)
                     except Exception:
-                        # se falhar, imprime linha em branco após o '=' para manter formato
                         print("")
-                # se locator vazio, não imprime nada
             except Exception:
                 continue
         else:

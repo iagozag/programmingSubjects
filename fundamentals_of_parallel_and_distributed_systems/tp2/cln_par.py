@@ -20,7 +20,6 @@ if __name__ == "__main__":
         if not line:
             continue
         if line.startswith('I '):
-            # I ch valor (valor pode conter espaços)
             try:
                 _prefix, rest = line.split(' ', 1)
                 ch_str, val = rest.split(' ', 1)
@@ -28,7 +27,6 @@ if __name__ == "__main__":
                 resp = stub.Insert(kv_pb2.InsertRequest(key=ch, value=val))
                 print(resp.result)
             except Exception:
-                # se a linha não estiver bem formada, ignore
                 continue
         elif line.startswith('C '):
             try:
@@ -46,5 +44,4 @@ if __name__ == "__main__":
             print(resp.total)
             break
         else:
-            # ignora qualquer outra linha
             continue
