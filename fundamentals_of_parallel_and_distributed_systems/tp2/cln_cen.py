@@ -12,12 +12,15 @@ if __name__ == "__main__":
 
     for raw in sys.stdin:
         line = raw.rstrip('\n')
+
         if not line:
             continue
+
         if line == 'T':
             resp = stub.Terminate(kv_pb2.TerminateRequest())
             print(resp.total)
             break
+
         elif line.startswith('P '):
             try:
                 _, loc = line.split(' ', 1)
@@ -25,6 +28,7 @@ if __name__ == "__main__":
                 print(resp.result)
             except Exception:
                 continue
+
         elif line.startswith('B '):
             try:
                 _, chs = line.split(' ', 1)
@@ -35,11 +39,13 @@ if __name__ == "__main__":
                     try:
                         pch = grpc.insecure_channel(resp.locator)
                         pstub = kv_pb2_grpc.PairServiceStub(pch)
+
                         qresp = pstub.Query(kv_pb2.QueryRequest(key=ch), timeout=5)
                         print(qresp.value)
                     except Exception:
                         print("")
             except Exception:
                 continue
+
         else:
             continue

@@ -20,15 +20,19 @@ class PairServicer(kv_pb2_grpc.PairServiceServicer):
     def Insert(self, request, context):
         key = int(request.key)
         value = request.value[:1024]
+
         with self.lock:
             existed = key in self.store
             self.store[key] = value
+
         return kv_pb2.InsertReply(result=1 if existed else 0)
 
     def Query(self, request, context):
         key = int(request.key)
+
         with self.lock:
             v = self.store.get(key, "")
+
         return kv_pb2.QueryReply(value=v)
 
     def Activate(self, request, context):
@@ -38,11 +42,13 @@ class PairServicer(kv_pb2_grpc.PairServiceServicer):
         locator = f"{socket.getfqdn()}:{self.port}"
         with self.lock:
             keys = list(self.store.keys())
+
         try:
             channel = grpc.insecure_channel(self.central_locator)
             stub = kv_pb2_grpc.CentralServiceStub(channel)
             req = kv_pb2.RegisterRequest(locator=locator, keys=keys)
             resp = stub.Register(req, timeout=5)
+
             return kv_pb2.ActivateReply(result=resp.processed)
         except Exception:
             return kv_pb2.ActivateReply(result=0)
@@ -50,6 +56,7 @@ class PairServicer(kv_pb2_grpc.PairServiceServicer):
     def Terminate(self, request, context):
         with self.lock:
             total = len(self.store)
+
         self.stop_event.set()
         return kv_pb2.TerminateReply(total=total)
 
@@ -61,6 +68,7 @@ def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     servicer = PairServicer(stop_event, central_locator, port)
     kv_pb2_grpc.add_PairServiceServicer_to_server(servicer, server)
+
     bind_addr = f"[::]:{port}"
     server.add_insecure_port(bind_addr)
     server.start()

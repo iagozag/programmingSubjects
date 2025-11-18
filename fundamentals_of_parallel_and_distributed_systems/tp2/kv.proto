@@ -18,9 +18,9 @@ service CentralService {
 
 message InsertRequest {
   int32 key = 1;
-  string value = 2; // até ~1024 chars
+  string value = 2;
 }
-message InsertReply { int32 result = 1; } // 0 (inserido) ou 1 (atualizado)
+message InsertReply { int32 result = 1; }
 
 message QueryRequest { int32 key = 1; }
 message QueryReply { string value = 1; }
@@ -29,16 +29,16 @@ message ActivateRequest {}
 message ActivateReply { int32 result = 1; }
 
 message RegisterRequest {
-  string locator = 1;            // "host:port"
-  repeated int32 keys = 2;       // lista de chaves
+  string locator = 1;
+  repeated int32 keys = 2;
 }
 message RegisterReply { int32 processed = 1; }
 
 message SearchRequest {
   int32 key = 1;
-  string except_ = 2; // opcional: locator a ser excluído na busca recursiva
+  string except_ = 2;
 }
-message SearchReply { string locator = 1; } // "" se nao encontrado
+message SearchReply { string locator = 1; }
 
 message PairingRequest { string locator = 1; }
 message PairingReply { int32 result = 1; }

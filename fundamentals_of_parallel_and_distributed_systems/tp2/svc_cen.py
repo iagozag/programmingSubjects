@@ -24,6 +24,7 @@ class CentralServicer(kv_pb2_grpc.CentralServiceServicer):
             for k in request.keys:
                 self.directory[int(k)] = request.locator
                 processed += 1
+
         return kv_pb2.RegisterReply(processed=processed)
 
     def Search(self, request, context):
@@ -33,6 +34,7 @@ class CentralServicer(kv_pb2_grpc.CentralServiceServicer):
         
         with self.lock:
             loc = self.directory.get(key, "")
+
         if loc:
             return kv_pb2.SearchReply(locator=loc)
         
@@ -58,14 +60,17 @@ class CentralServicer(kv_pb2_grpc.CentralServiceServicer):
     def Pairing(self, request, context):
         if self.super_peers is None:
             return kv_pb2.PairingReply(result=0)
+
         with self.lock:
             if request.locator not in self.super_peers:
                 self.super_peers.append(request.locator)
+
         return kv_pb2.PairingReply(result=1)
 
     def Terminate(self, request, context):
         with self.lock:
             total = len(self.directory)
+
         self.stop_event.set()
         return kv_pb2.TerminateReply(total=total)
 
