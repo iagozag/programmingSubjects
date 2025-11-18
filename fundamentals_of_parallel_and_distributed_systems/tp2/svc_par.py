@@ -54,9 +54,6 @@ class PairServicer(kv_pb2_grpc.PairServiceServicer):
         return kv_pb2.TerminateReply(total=total)
 
 def serve():
-    if not (2 <= len(sys.argv) <= 3):
-        print("uso: svc_par.py PORT [central_locator]", file=sys.stderr)
-        sys.exit(1)
     port = sys.argv[1]
     central_locator = sys.argv[2] if len(sys.argv) == 3 else None
 

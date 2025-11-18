@@ -61,7 +61,7 @@ class CentralServicer(kv_pb2_grpc.CentralServiceServicer):
         with self.lock:
             if request.locator not in self.super_peers:
                 self.super_peers.append(request.locator)
-        return kv_pb2.PairingReply(result=0)
+        return kv_pb2.PairingReply(result=1)
 
     def Terminate(self, request, context):
         with self.lock:
@@ -70,9 +70,6 @@ class CentralServicer(kv_pb2_grpc.CentralServiceServicer):
         return kv_pb2.TerminateReply(total=total)
 
 def serve():
-    if not (2 <= len(sys.argv) <= 3):
-        print("uso: svc_cen.py PORT [super_flag]", file=sys.stderr)
-        sys.exit(1)
     port = sys.argv[1]
     super_mode = (len(sys.argv) == 3)
 

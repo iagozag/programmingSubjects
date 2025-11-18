@@ -7,7 +7,6 @@ all: stubs
 clean:
 	rm -f $(PY_FILES) *.pyc *.zip
 
-# REGRA STUBS CORRIGIDA (AGORA EM DUAS PARTES)
 stubs: $(PY_FILES)
 
 $(PY_FILES): $(PROTO)
@@ -29,6 +28,5 @@ run_serv_central: stubs
 run_cli_central: stubs
 	$(PY) cln_cen.py $(arg)
 
-# REGRA RUN_SUPER_PAR CORRIGIDA (USA $(arg))
 run_super_par: stubs
 	$(PY) svc_cen.py $(arg) super

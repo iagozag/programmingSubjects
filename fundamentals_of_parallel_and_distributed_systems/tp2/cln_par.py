@@ -4,13 +4,7 @@ import grpc
 import kv_pb2
 import kv_pb2_grpc
 
-def usage():
-    print("uso: cln_par.py host:port")
-    sys.exit(1)
-
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        usage()
     locator = sys.argv[1]
     channel = grpc.insecure_channel(locator)
     stub = kv_pb2_grpc.PairServiceStub(channel)
