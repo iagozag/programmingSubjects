@@ -1,47 +1,98 @@
+// Define a versão da sintaxe do Protocol Buffers
 syntax = "proto3";
 
+// Define um namespace para evitar conflitos de nomes
 package kv;
 
+// --- Serviço 1: Servidor de Pares (Armazenamento) ---
+// Define os RPCs (Chamadas de Procedimento Remoto) que o 'svc_par.py' implementa.
 service PairService {
+  // Insere ou atualiza um par (chave, valor)
   rpc Insert(InsertRequest) returns (InsertReply) {}
+  
+  // Consulta um valor associado a uma chave
   rpc Query(QueryRequest) returns (QueryReply) {}
+  
+  // Ativa o registro no servidor central (na Parte 2)
   rpc Activate(ActivateRequest) returns (ActivateReply) {}
+  
+  // Solicita o término do servidor
   rpc Terminate(TerminateRequest) returns (TerminateReply) {}
 }
 
+// --- Serviço 2: Servidor Central (Concentrador) ---
+// Define os RPCs que o 'svc_cen.py' implementa.
 service CentralService {
+  // Registra um 'svc_par' e suas chaves (usado pelo 'Activate' do PairService)
   rpc Register(RegisterRequest) returns (RegisterReply) {}
+  
+  // Busca qual 'svc_par' possui uma chave (usado pelo 'cln_cen')
   rpc Search(SearchRequest) returns (SearchReply) {}
+  
+  // Registra outro super-par (usado na Parte 3)
   rpc Pairing(PairingRequest) returns (PairingReply) {}
+  
+  // Solicita o término do servidor central
   rpc Terminate(TerminateRequest) returns (TerminateReply) {}
 }
+
+// --- Mensagens do PairService ---
 
 message InsertRequest {
-  int32 key = 1;
-  string value = 2;
+  int32 key = 1;    // A chave
+  string value = 2; // O valor
 }
-message InsertReply { int32 result = 1; }
+message InsertReply {
+  int32 result = 1; // 0 (novo) ou 1 (atualizado)
+}
 
-message QueryRequest { int32 key = 1; }
-message QueryReply { string value = 1; }
+message QueryRequest {
+  int32 key = 1; // A chave a ser buscada
+}
+message QueryReply {
+  string value = 1; // O valor encontrado (ou "" se não existir)
+}
 
-message ActivateRequest {}
-message ActivateReply { int32 result = 1; }
+message ActivateRequest {
+  // Mensagem vazia, apenas aciona o RPC
+}
+message ActivateReply {
+  int32 result = 1; // Resultado da ativação (0 ou # de chaves)
+}
+
+// --- Mensagens do CentralService ---
 
 message RegisterRequest {
-  string locator = 1;
-  repeated int32 keys = 2;
+  string locator = 1;     // O locator do 'svc_par' (ex: "xingu:5555")
+  repeated int32 keys = 2; // A lista de chaves que ele possui
 }
-message RegisterReply { int32 processed = 1; }
+message RegisterReply {
+  int32 processed = 1; // Quantas chaves foram processadas
+}
 
 message SearchRequest {
-  int32 key = 1;
-  string except_ = 2;
+  int32 key = 1; // A chave sendo buscada
+  
+  // O locator do par que *pediu* a busca (na Parte 3),
+  // para evitar loops recursivos (não perguntar de volta).
+  string except_ = 2; 
 }
-message SearchReply { string locator = 1; }
+message SearchReply {
+  string locator = 1; // O locator do 'svc_par' que tem a chave
+}
 
-message PairingRequest { string locator = 1; }
-message PairingReply { int32 result = 1; }
+message PairingRequest {
+  string locator = 1; // O locator do outro super-par
+}
+message PairingReply {
+  int32 result = 1; // 0 (Parte 2) ou 1 (Parte 3)
+}
 
-message TerminateRequest {}
-message TerminateReply { int32 total = 1; }
+// --- Mensagens Comuns (Terminate) ---
+
+message TerminateRequest {
+  // Mensagem vazia, apenas aciona o RPC
+}
+message TerminateReply {
+  int32 total = 1; // O número total de chaves no servidor que terminou
+}
