@@ -35,32 +35,31 @@ void solve(){
 	int n; cin >> n;
 	vector<int> v(n); for(int i = 0; i < n; i++) cin >> v[i];
 
-	vector<int> ans, qntt(n);
-	for(int i = 0; i < n; i++){
-		if(v[i] >= n or qntt[v[i]]){
-			int mex = get_mex(v);
-			ans.emplace_back(i);
-			v[i] = mex;
-		}
-		qntt[v[i]]++;
-	}
-
-	for(int i = 0; i < n; i++) if(v[i] == 0) ans.emplace_back(i), v[i] = n;
-
-	int cur = 0, sub = 0;
+	vector<int> ans;
+	bool verify = 0;
 	while(wrong(v)){
-		ans.emplace_back(cur-sub);
-		swap(v[cur-sub], cur);
-		if(cur == n) sub++;
+		int mex = get_mex(v);
+
+		if(mex == 0){ ans.emplace_back(0), v[0] = 0; continue; }
+
+		if(mex == n){ ans.emplace_back(n-1), v[n-1] = mex, verify = true; continue; }
+
+		if(verify){
+			bool ok = true;
+			for(int i = mex; i < n; i++) if(v[i] != i+1) ok = false;
+			if(ok){ ans.emplace_back(mex-1), v[mex-1] = mex; continue; }
+		}
+
+		ans.emplace_back(mex), v[mex] = mex;
 	}
 
 	cout << ans.size() << endl;
 	for(auto x: ans) cout << x+1 << ' ';
 	cout << endl;
 
-// 	cout << "v: ";
-// 	for(auto x: v) cout << x << ' ';
-// 	cout << endl;
+//  	cout << "v: ";
+//  	for(auto x: v) cout << x << ' ';
+//  	cout << endl;
 }
 
 int32_t main(){ _

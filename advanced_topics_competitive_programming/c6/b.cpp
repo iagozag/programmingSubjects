@@ -30,9 +30,17 @@ void dfs(int v, int p){
 	else parity[v] = 0;
 }
 
-int dist[MAX];
-void dfs2(int v, int p){
+int l, nl;
+bool dfs2(int v, int p){
+	bool leaf = true, nl_ = false;;
+	for(auto ve: g[v]) if(ve != p){
+		leaf = false;
+		if(dfs2(ve, v)) nl_ = true;
+	}
+	nl += nl_;
 
+	if(leaf) l++;
+	return leaf;
 }
 
 void solve(){
@@ -43,11 +51,14 @@ void solve(){
 		g[a].emplace_back(b), g[b].emplace_back(a);
 	}
 
-	dfs(0, 0);
+	int root = -1;
+	for(int i = 0; i < n; i++) if(g[i].size() > 1) root = i;
 
-	
+	dfs(root, -1);
+	dfs2(root, -1);
 
-	cout << mi << ' ' << ma << endl;
+	// cout << n-1 << ' ' << l << ' ' << nl << endl;
+	cout << mi << ' ' << n-1-l+nl << endl;
 }
 
 int32_t main(){ _
