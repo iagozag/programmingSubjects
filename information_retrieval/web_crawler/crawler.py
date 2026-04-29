@@ -192,6 +192,7 @@ class Crawler:
                             if self.crawl_cnt >= limit:
                                 continue
                             self.crawl_cnt += 1
+                            print(self.crawl_cnt)
 
                         record = self.corpus.create_warc_record(
                             url, 
@@ -282,7 +283,7 @@ def main():
     
     # instantiate the crawler class and run it
     crawler = Crawler()
-    crawler.run(seeds_path, limit, debug_mode, workers=5)
+    crawler.run(seeds_path, limit, debug_mode, workers=40)
 
 if __name__ == "__main__":
     main()

@@ -2,4 +2,6 @@
 .stversions/
 venv/
 information_retrieval/web_crawler/pa1/
+information_retrieval/indexer_and_query_processor/corpus.zip
 heuristics_and_metaheuristics/constructive_heuristics/source_code/lemon-1.3.1/
+
