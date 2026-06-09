@@ -1,0 +1,66 @@
+Starting SPCA for K=10...
+
+
+Extracting Component 1:
+Non-zero features: 10
+Selected Indices: [ 0  1  2  3  5  6  7  8  9 11]
+Weights: [ 0.42156162  0.42317285  0.13980405  0.17899852  0.27163216  0.38642494
+  0.29226413  0.36363818  0.37391646 -0.10512876]
+Obj Val: 4.172638
+Time: 0.02 seconds
+Nodes Explored: 13
+Gap: 1.0902%
+
+accumulated variance ratio: 0.3210 (32.10%)
+
+
+Extracting Component 2:
+Non-zero features: 10
+Selected Indices: [ 0  1  2  3  6  7  9 10 11 12]
+Weights: [ 0.16797592  0.13494651  0.54104032  0.48594845 -0.19157333 -0.23040252
+ -0.28837962  0.20087263  0.35347724  0.2940384 ]
+Obj Val: 2.349680
+Time: 0.03 seconds
+Nodes Explored: 11
+Gap: 1.6125%
+
+accumulated variance ratio: 0.5017 (50.17%)
+
+
+Extracting Component 3:
+Non-zero features: 10
+Selected Indices: [ 0  1  2  3  4  5  6  7  8 12]
+Weights: [-0.20205529 -0.22501214  0.07887569  0.30150265  0.51392898  0.48590894
+  0.30615975 -0.17480459 -0.17029827 -0.39736071]
+Obj Val: 1.891286
+Time: 0.02 seconds
+Nodes Explored: 11
+Gap: 0.7969%
+
+accumulated variance ratio: 0.6473 (64.73%)
+
+
+Extracting Component 4:
+Non-zero features: 10
+Selected Indices: [ 0  1  5  6  7  8  9 10 11 12]
+Weights: [-0.05106745 -0.0568231  -0.08500392 -0.06930692  0.29704591  0.13191862
+ -0.19386574  0.83258831 -0.27201392 -0.26779945]
+Obj Val: 1.114930
+Time: 0.03 seconds
+Nodes Explored: 12
+Gap: 0.2918%
+
+accumulated variance ratio: 0.7331 (73.31%)
+
+Total time: 0.11 seconds
+Total nodes explored: 47
+
+Heatmap saved as 'j_matrix_heatmap.png' in ../data/pitprops/
+
+==============================================
+ COMPARAÇÃO COM PCA CLÁSSICO TRUNCADO
+==============================================
+PCA Clássico Truncado - Comp 1 Var Acumulada: 0.3207 (32.07%)
+PCA Clássico Truncado - Comp 2 Var Acumulada: 0.5007 (50.07%)
+PCA Clássico Truncado - Comp 3 Var Acumulada: 0.6439 (64.39%)
+PCA Clássico Truncado - Comp 4 Var Acumulada: 0.7292 (72.92%)

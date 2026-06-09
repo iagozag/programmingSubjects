@@ -10,3 +10,6 @@
 [submodule "PO/simplex"]
 	path = PO/simplex
 	url = https://github.com/iagozag/simplex.git
+[submodule "computer_networks/computer_networks/SENHA_Game"]
+	path = computer_networks/computer_networks/SENHA_Game
+	url = https://github.com/souza-marcos/SENHA_Game

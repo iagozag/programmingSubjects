@@ -1,0 +1,270 @@
+Starting SPCA for K=5...
+
+
+Extracting Component 1:
+Non-zero features: 5
+Selected Indices: [ 2 12 27 60 71]
+Weights: [0.43554052 0.45917042 0.44120664 0.44439421 0.45532127]
+Obj Val: 4.305114
+Time: 2.55 seconds
+Nodes Explored: 527
+Gap: 77.7372%
+
+accumulated variance ratio: 0.0538 (5.38%)
+
+
+Extracting Component 2:
+Non-zero features: 5
+Selected Indices: [10 35 42 45 64]
+Weights: [0.46943756 0.47003022 0.45031854 0.43474201 0.40854934]
+Obj Val: 4.043022
+Time: 8.01 seconds
+Nodes Explored: 1131
+Gap: 74.7576%
+
+accumulated variance ratio: 0.1044 (10.44%)
+
+
+Extracting Component 3:
+Non-zero features: 5
+Selected Indices: [13 14 24 26 76]
+Weights: [0.42854386 0.4746278  0.44053816 0.43678878 0.45411485]
+Obj Val: 4.024262
+Time: 4.27 seconds
+Nodes Explored: 758
+Gap: 72.6881%
+
+accumulated variance ratio: 0.1547 (15.47%)
+
+
+Extracting Component 4:
+Non-zero features: 5
+Selected Indices: [ 1 11 32 54 68]
+Weights: [0.44203466 0.45428968 0.44817839 0.47798547 0.41096503]
+Obj Val: 3.706151
+Time: 5.37 seconds
+Nodes Explored: 551
+Gap: 67.4431%
+
+accumulated variance ratio: 0.2010 (20.10%)
+
+
+Extracting Component 5:
+Non-zero features: 5
+Selected Indices: [15 33 38 44 62]
+Weights: [-0.43449735 -0.43097274 -0.46447085 -0.44647091 -0.45869936]
+Obj Val: 3.683568
+Time: 4.46 seconds
+Nodes Explored: 472
+Gap: 66.9091%
+
+accumulated variance ratio: 0.2470 (24.70%)
+
+
+Extracting Component 6:
+Non-zero features: 5
+Selected Indices: [16 22 40 43 77]
+Weights: [0.43530507 0.43943385 0.43711605 0.4543089  0.46897801]
+Obj Val: 3.680939
+Time: 3.05 seconds
+Nodes Explored: 352
+Gap: 61.6375%
+
+accumulated variance ratio: 0.2930 (29.30%)
+
+
+Extracting Component 7:
+Non-zero features: 5
+Selected Indices: [ 7 50 59 61 72]
+Weights: [0.41936324 0.43350479 0.45925578 0.46392107 0.45833333]
+Obj Val: 3.463823
+Time: 4.12 seconds
+Nodes Explored: 504
+Gap: 60.5333%
+
+accumulated variance ratio: 0.3363 (33.63%)
+
+
+Extracting Component 8:
+Non-zero features: 5
+Selected Indices: [18 49 56 63 65]
+Weights: [ 0.33234923  0.38155061 -0.51807649 -0.45600842 -0.51731634]
+Obj Val: 3.350590
+Time: 2.67 seconds
+Nodes Explored: 343
+Gap: 52.1867%
+
+accumulated variance ratio: 0.3782 (37.82%)
+
+
+Extracting Component 9:
+Non-zero features: 5
+Selected Indices: [29 41 46 52 69]
+Weights: [0.45126546 0.46433404 0.46027822 0.45693396 0.40013586]
+Obj Val: 3.155984
+Time: 3.97 seconds
+Nodes Explored: 511
+Gap: 50.5335%
+
+accumulated variance ratio: 0.4177 (41.77%)
+
+
+Extracting Component 10:
+Non-zero features: 5
+Selected Indices: [34 48 67 73 79]
+Weights: [-0.45688092  0.46098487  0.44156935 -0.41271013  0.46199528]
+Obj Val: 3.102829
+Time: 3.16 seconds
+Nodes Explored: 458
+Gap: 51.3643%
+
+accumulated variance ratio: 0.4565 (45.65%)
+
+
+Extracting Component 11:
+Non-zero features: 5
+Selected Indices: [ 8  9 25 28 75]
+Weights: [0.43583829 0.40354014 0.43121602 0.45420518 0.50492646]
+Obj Val: 2.878685
+Time: 5.66 seconds
+Nodes Explored: 903
+Gap: 50.6839%
+
+accumulated variance ratio: 0.4924 (49.24%)
+
+
+Extracting Component 12:
+Non-zero features: 5
+Selected Indices: [ 3 17 30 66 74]
+Weights: [0.51802175 0.44923008 0.45448118 0.40630329 0.39775657]
+Obj Val: 2.568012
+Time: 8.13 seconds
+Nodes Explored: 1105
+Gap: 43.0857%
+
+accumulated variance ratio: 0.5245 (52.45%)
+
+
+Extracting Component 13:
+Non-zero features: 5
+Selected Indices: [ 0 31 57 58 70]
+Weights: [0.34311536 0.38137279 0.48735292 0.50533653 0.4939117 ]
+Obj Val: 2.483596
+Time: 8.32 seconds
+Nodes Explored: 1427
+Gap: 43.9651%
+
+accumulated variance ratio: 0.5556 (55.56%)
+
+
+Extracting Component 14:
+Non-zero features: 5
+Selected Indices: [ 4  6 37 51 55]
+Weights: [0.42034013 0.50018933 0.55739552 0.34787055 0.37606001]
+Obj Val: 2.353237
+Time: 7.54 seconds
+Nodes Explored: 1284
+Gap: 44.3101%
+
+accumulated variance ratio: 0.5850 (58.50%)
+
+
+Extracting Component 15:
+Non-zero features: 5
+Selected Indices: [ 5 19 20 23 55]
+Weights: [ 0.52733165 -0.37953285  0.49559425  0.48883802  0.30545027]
+Obj Val: 2.210525
+Time: 6.51 seconds
+Nodes Explored: 1204
+Gap: 42.8781%
+
+accumulated variance ratio: 0.6130 (61.30%)
+
+
+Extracting Component 16:
+Non-zero features: 5
+Selected Indices: [19 39 50 53 78]
+Weights: [0.40543911 0.49331134 0.29844662 0.46369003 0.53682792]
+Obj Val: 1.889996
+Time: 40.16 seconds
+Nodes Explored: 7399
+Gap: 49.1343%
+
+accumulated variance ratio: 0.6376 (63.76%)
+
+
+Extracting Component 17:
+Non-zero features: 5
+Selected Indices: [18 21 31 36 47]
+Weights: [ 0.30220522 -0.57254629  0.32663354  0.32410747  0.60755874]
+Obj Val: 1.715988
+Time: 38.64 seconds
+Nodes Explored: 6083
+Gap: 40.8440%
+
+accumulated variance ratio: 0.6596 (65.96%)
+
+
+Extracting Component 18:
+Non-zero features: 5
+Selected Indices: [ 0  8  9 36 51]
+Weights: [ 0.52663099 -0.34072783  0.30186639  0.57826078 -0.42550616]
+Obj Val: 1.443958
+Time: 89.35 seconds
+Nodes Explored: 16153
+Gap: 48.9797%
+
+accumulated variance ratio: 0.6791 (67.91%)
+
+
+Extracting Component 19:
+Non-zero features: 5
+Selected Indices: [31 39 53 66 74]
+Weights: [-0.3026589   0.45429586 -0.37451874 -0.52540915  0.53450331]
+Obj Val: 1.260734
+Time: 61.99 seconds
+Nodes Explored: 9170
+Gap: 51.4067%
+
+accumulated variance ratio: 0.6954 (69.54%)
+
+
+Extracting Component 20:
+Non-zero features: 5
+Selected Indices: [17 30 48 73 79]
+Weights: [-0.4745523   0.5211541   0.36407643  0.49726961  0.35124038]
+Obj Val: 1.082835
+Time: 78.13 seconds
+Nodes Explored: 8626
+Gap: 54.6603%
+
+accumulated variance ratio: 0.7092 (70.92%)
+
+Total time: 386.06 seconds
+Total nodes explored: 58961
+
+Heatmap saved as 'j_matrix_heatmap.png' in ../data/colon/
+
+==============================================
+ COMPARAÇÃO COM PCA CLÁSSICO TRUNCADO
+==============================================
+PCA Clássico Truncado - Comp 1 Var Acumulada: 0.0520 (5.20%)
+PCA Clássico Truncado - Comp 2 Var Acumulada: 0.0912 (9.12%)
+PCA Clássico Truncado - Comp 3 Var Acumulada: 0.1247 (12.47%)
+PCA Clássico Truncado - Comp 4 Var Acumulada: 0.1485 (14.85%)
+PCA Clássico Truncado - Comp 5 Var Acumulada: 0.1775 (17.75%)
+PCA Clássico Truncado - Comp 6 Var Acumulada: 0.1950 (19.50%)
+PCA Clássico Truncado - Comp 7 Var Acumulada: 0.2153 (21.53%)
+PCA Clássico Truncado - Comp 8 Var Acumulada: 0.2395 (23.95%)
+PCA Clássico Truncado - Comp 9 Var Acumulada: 0.2612 (26.12%)
+PCA Clássico Truncado - Comp 10 Var Acumulada: 0.2795 (27.95%)
+PCA Clássico Truncado - Comp 11 Var Acumulada: 0.2900 (29.00%)
+PCA Clássico Truncado - Comp 12 Var Acumulada: 0.3111 (31.11%)
+PCA Clássico Truncado - Comp 13 Var Acumulada: 0.3245 (32.45%)
+PCA Clássico Truncado - Comp 14 Var Acumulada: 0.3366 (33.66%)
+PCA Clássico Truncado - Comp 15 Var Acumulada: 0.3486 (34.86%)
+PCA Clássico Truncado - Comp 16 Var Acumulada: 0.3604 (36.04%)
+PCA Clássico Truncado - Comp 17 Var Acumulada: 0.3712 (37.12%)
+PCA Clássico Truncado - Comp 18 Var Acumulada: 0.3785 (37.85%)
+PCA Clássico Truncado - Comp 19 Var Acumulada: 0.3930 (39.30%)
+PCA Clássico Truncado - Comp 20 Var Acumulada: 0.4098 (40.98%)

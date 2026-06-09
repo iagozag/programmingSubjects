@@ -1,0 +1,366 @@
+Starting SPCA for K=6...
+
+
+Extracting Component 1:
+Non-zero features: 6
+Selected Indices: [29 30 31 33 35 39]
+Weights: [0.36231294 0.39274353 0.44221862 0.44137341 0.39023605 0.41452367]
+Obj Val: 4.629048
+Time: 0.19 seconds
+Nodes Explored: 36
+Gap: 29.7771%
+
+accumulated variance ratio: 0.0812 (8.12%)
+
+
+Extracting Component 2:
+Non-zero features: 6
+Selected Indices: [24 25 27 28 34 49]
+Weights: [0.41161519 0.42604134 0.49189547 0.34717025 0.46263222 0.26934142]
+Obj Val: 2.560568
+Time: 2.84 seconds
+Nodes Explored: 374
+Gap: 32.1272%
+
+accumulated variance ratio: 0.1261 (12.61%)
+
+
+Extracting Component 3:
+Non-zero features: 6
+Selected Indices: [ 8 14 22 52 55 56]
+Weights: [0.36405234 0.40476116 0.40072698 0.36670289 0.44542689 0.45844963]
+Obj Val: 2.099863
+Time: 17.28 seconds
+Nodes Explored: 4476
+Gap: 38.2777%
+
+accumulated variance ratio: 0.1630 (16.30%)
+
+
+Extracting Component 4:
+Non-zero features: 6
+Selected Indices: [ 0 10 16 18 20 23]
+Weights: [0.38343476 0.4265076  0.32196195 0.42154015 0.53356759 0.32406646]
+Obj Val: 1.852541
+Time: 14.72 seconds
+Nodes Explored: 4524
+Gap: 34.0801%
+
+accumulated variance ratio: 0.1955 (19.55%)
+
+
+Extracting Component 5:
+Non-zero features: 6
+Selected Indices: [36 38 40 42 44 45]
+Weights: [0.54573506 0.41496746 0.36070968 0.49925054 0.20736548 0.32804303]
+Obj Val: 1.644196
+Time: 7.62 seconds
+Nodes Explored: 1153
+Gap: 20.7532%
+
+accumulated variance ratio: 0.2243 (22.43%)
+
+
+Extracting Component 6:
+Non-zero features: 6
+Selected Indices: [ 2 11 21 48 53 56]
+Weights: [-0.12294727 -0.1367607   0.67695183  0.62395917  0.33019637  0.09778555]
+Obj Val: 1.500797
+Time: 19.79 seconds
+Nodes Explored: 2628
+Gap: 17.7493%
+
+accumulated variance ratio: 0.2507 (25.07%)
+
+
+Extracting Component 7:
+Non-zero features: 6
+Selected Indices: [14 22 49 54 55 56]
+Weights: [-0.31241096 -0.37393319  0.34128567  0.59948804  0.50067087  0.18984265]
+Obj Val: 1.450749
+Time: 23.27 seconds
+Nodes Explored: 3459
+Gap: 19.6735%
+
+accumulated variance ratio: 0.2764 (27.64%)
+
+
+Extracting Component 8:
+Non-zero features: 6
+Selected Indices: [ 4 11 24 28 37 41]
+Weights: [ 0.39116552  0.28031561 -0.13027676  0.42708677  0.34513048  0.67076263]
+Obj Val: 1.442393
+Time: 13.62 seconds
+Nodes Explored: 2405
+Gap: 20.1234%
+
+accumulated variance ratio: 0.3020 (30.20%)
+
+
+Extracting Component 9:
+Non-zero features: 6
+Selected Indices: [ 2  6 15 17 26 51]
+Weights: [ 0.4232286   0.43010599  0.4050209   0.44188008 -0.34555826  0.39645421]
+Obj Val: 1.382732
+Time: 15.70 seconds
+Nodes Explored: 3311
+Gap: 23.3043%
+
+accumulated variance ratio: 0.3263 (32.63%)
+
+
+Extracting Component 10:
+Non-zero features: 6
+Selected Indices: [ 0  5  7  9 16 19]
+Weights: [-0.27839902  0.28431499  0.59839672  0.28236414  0.38303071  0.50708806]
+Obj Val: 1.303636
+Time: 6.85 seconds
+Nodes Explored: 889
+Gap: 12.2429%
+
+accumulated variance ratio: 0.3492 (34.92%)
+
+
+Extracting Component 11:
+Non-zero features: 6
+Selected Indices: [32 36 38 40 42 45]
+Weights: [ 0.17248337  0.18544913  0.37321178 -0.57045282  0.29407142 -0.62022307]
+Obj Val: 1.281391
+Time: 1.40 seconds
+Nodes Explored: 187
+Gap: 7.1919%
+
+accumulated variance ratio: 0.3717 (37.17%)
+
+
+Extracting Component 12:
+Non-zero features: 6
+Selected Indices: [12 13 14 32 50 52]
+Weights: [ 0.59388764  0.40447503 -0.17781297 -0.41755745 -0.4290362   0.30602891]
+Obj Val: 1.167169
+Time: 48.35 seconds
+Nodes Explored: 5274
+Gap: 12.4402%
+
+accumulated variance ratio: 0.3923 (39.23%)
+
+
+Extracting Component 13:
+Non-zero features: 6
+Selected Indices: [ 6 10 18 36 44 51]
+Weights: [ 0.31421307  0.31211785 -0.3863786   0.20142571 -0.65747165 -0.42628967]
+Obj Val: 1.134402
+Time: 71.37 seconds
+Nodes Explored: 5821
+Gap: 9.9037%
+
+accumulated variance ratio: 0.4123 (41.23%)
+
+
+Extracting Component 14:
+Non-zero features: 6
+Selected Indices: [ 9 11 15 19 26 37]
+Weights: [-0.36727615 -0.57206517  0.37983335  0.14205531  0.47840608  0.38016339]
+Obj Val: 1.120801
+Time: 50.28 seconds
+Nodes Explored: 4320
+Gap: 8.4908%
+
+accumulated variance ratio: 0.4322 (43.22%)
+
+
+Extracting Component 15:
+Non-zero features: 6
+Selected Indices: [ 1 13 32 46 50 56]
+Weights: [-0.39843317  0.60087894  0.30165133  0.51766935  0.32260043  0.13095566]
+Obj Val: 1.065034
+Time: 329.36 seconds
+Nodes Explored: 25297
+Gap: 12.4377%
+
+accumulated variance ratio: 0.4510 (45.10%)
+
+
+Extracting Component 16:
+Non-zero features: 6
+Selected Indices: [ 2  5  6 16 23 44]
+Weights: [ 0.39974086  0.58936281 -0.43419095 -0.3682514   0.32538213 -0.25070762]
+Obj Val: 1.041836
+Time: 542.49 seconds
+Nodes Explored: 44148
+Gap: 12.7289%
+
+accumulated variance ratio: 0.4694 (46.94%)
+
+
+Extracting Component 17:
+Non-zero features: 6
+Selected Indices: [ 1  9 13 43 47 50]
+Weights: [ 0.51406784  0.14038186  0.21005972 -0.61243548 -0.49582049  0.22580284]
+Obj Val: 1.031059
+Time: 499.34 seconds
+Nodes Explored: 40503
+Gap: 12.3892%
+
+accumulated variance ratio: 0.4876 (48.76%)
+
+
+Extracting Component 18:
+Non-zero features: 6
+Selected Indices: [ 1 12 32 46 50 52]
+Weights: [ 0.23075313 -0.46057688 -0.29933663  0.6316404  -0.46989145 -0.15890861]
+Obj Val: 1.026778
+Time: 275.28 seconds
+Nodes Explored: 24629
+Gap: 12.3419%
+
+accumulated variance ratio: 0.5057 (50.57%)
+
+
+Extracting Component 19:
+Non-zero features: 6
+Selected Indices: [ 2  3 10 17 23 51]
+Weights: [-0.18440512  0.89600097 -0.1713191   0.21653422  0.28268917 -0.08382446]
+Obj Val: 1.022618
+Time: 156.24 seconds
+Nodes Explored: 14329
+Gap: 12.5400%
+
+accumulated variance ratio: 0.5237 (52.37%)
+
+
+Extracting Component 20:
+Non-zero features: 6
+Selected Indices: [ 4 28 30 41 43 47]
+Weights: [ 0.3208802  -0.08700801  0.05393636 -0.12091583  0.58413558 -0.72850625]
+Obj Val: 1.012323
+Time: 162.57 seconds
+Nodes Explored: 14904
+Gap: 13.4177%
+
+accumulated variance ratio: 0.5415 (54.15%)
+
+
+Extracting Component 21:
+Non-zero features: 6
+Selected Indices: [15 24 25 26 28 37]
+Weights: [ 0.29175854 -0.24897572 -0.22692591  0.38597753  0.38059469 -0.71243365]
+Obj Val: 0.990459
+Time: 248.85 seconds
+Nodes Explored: 25483
+Gap: 14.3860%
+
+accumulated variance ratio: 0.5590 (55.90%)
+
+
+Extracting Component 22:
+Non-zero features: 6
+Selected Indices: [ 9 21 24 29 48 53]
+Weights: [ 0.11173474 -0.09168178  0.08991776  0.13068461 -0.37802839  0.90057796]
+Obj Val: 0.976354
+Time: 200.32 seconds
+Nodes Explored: 20987
+Gap: 15.3252%
+
+accumulated variance ratio: 0.5762 (57.62%)
+
+
+Extracting Component 23:
+Non-zero features: 6
+Selected Indices: [ 1 13 32 43 47 50]
+Weights: [0.70227207 0.3109129  0.16006214 0.46829693 0.36550975 0.17784216]
+Obj Val: 0.956930
+Time: 254.16 seconds
+Nodes Explored: 23420
+Gap: 16.7579%
+
+accumulated variance ratio: 0.5931 (59.31%)
+
+
+Extracting Component 24:
+Non-zero features: 6
+Selected Indices: [12 14 15 17 26 52]
+Weights: [ 0.23804329  0.34959958 -0.41220031  0.6681976   0.31470806 -0.32508035]
+Obj Val: 0.947890
+Time: 232.66 seconds
+Nodes Explored: 21979
+Gap: 16.6308%
+
+accumulated variance ratio: 0.6103 (61.03%)
+
+
+Extracting Component 25:
+Non-zero features: 6
+Selected Indices: [ 2  4  5  6 19 44]
+Weights: [-0.37414614  0.21597073  0.67222835  0.42632006 -0.38507794  0.17733172]
+Obj Val: 0.934149
+Time: 170.67 seconds
+Nodes Explored: 18927
+Gap: 16.2891%
+
+accumulated variance ratio: 0.6271 (62.71%)
+
+
+Extracting Component 26:
+Non-zero features: 6
+Selected Indices: [ 8 24 25 49 54 55]
+Weights: [ 0.37299078  0.22802826  0.23476146 -0.71396106  0.47560213 -0.13353004]
+Obj Val: 0.933390
+Time: 93.28 seconds
+Nodes Explored: 10198
+Gap: 11.7293%
+
+accumulated variance ratio: 0.6438 (64.38%)
+
+
+Extracting Component 27:
+Non-zero features: 6
+Selected Indices: [ 5  9 15 19 26 37]
+Weights: [-0.13662377  0.80359298  0.28423195 -0.34200556  0.28859467  0.23351611]
+Obj Val: 0.919193
+Time: 73.45 seconds
+Nodes Explored: 8290
+Gap: 13.0289%
+
+accumulated variance ratio: 0.6606 (66.06%)
+
+
+Extracting Component 28:
+Non-zero features: 6
+Selected Indices: [ 1 12 13 46 50 52]
+Weights: [ 0.13934923  0.45393565 -0.5476253   0.5703839   0.30013514  0.24333487]
+Obj Val: 0.915495
+Time: 38.57 seconds
+Nodes Explored: 3949
+Gap: 12.3292%
+
+accumulated variance ratio: 0.6768 (67.68%)
+
+
+Extracting Component 29:
+Non-zero features: 6
+Selected Indices: [12 32 38 42 45 50]
+Weights: [ 0.14871568  0.69243392  0.29720307 -0.36456373  0.17679888 -0.49590795]
+Obj Val: 0.888343
+Time: 71.21 seconds
+Nodes Explored: 8460
+Gap: 14.8540%
+
+accumulated variance ratio: 0.6928 (69.28%)
+
+
+Extracting Component 30:
+Non-zero features: 6
+Selected Indices: [ 4  7 19 41 43 47]
+Weights: [ 0.73774833 -0.32550367  0.31626226 -0.38515062 -0.18636016  0.25822826]
+Obj Val: 0.881585
+Time: 41.20 seconds
+Nodes Explored: 5000
+Gap: 15.3448%
+
+accumulated variance ratio: 0.7086 (70.86%)
+
+Total time: 3682.96 seconds
+Total nodes explored: 349360
+
+Heatmap saved as 'j_matrix_heatmap.png' in ../data/spambase/
