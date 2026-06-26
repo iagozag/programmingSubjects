@@ -3,10 +3,10 @@ SRCDIR := src
 BUILDDIR := build
 TARGET := main
 
-# CPLEX_HOME    = /opt/ibm/ILOG/CPLEX_Studio2212/cplex
-# CONCERT_HOME  = /opt/ibm/ILOG/CPLEX_Studio2212/concert
-CPLEX_HOME  = ~/cplex/cplex
-CONCERT_HOME = ~/cplex/concert
+CPLEX_HOME    = /opt/ibm/ILOG/CPLEX_Studio2212/cplex
+CONCERT_HOME  = /opt/ibm/ILOG/CPLEX_Studio2212/concert
+# CPLEX_HOME  = ~/cplex/cplex
+# CONCERT_HOME = ~/cplex/concert
 
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))

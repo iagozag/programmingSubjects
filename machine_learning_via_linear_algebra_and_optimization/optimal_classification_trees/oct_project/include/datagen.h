@@ -33,5 +33,4 @@ Dataset generateDataset(const GroundTruthTree& gt, int n, std::mt19937& rng);
 // Save dataset to CSV
 void saveDataset(const Dataset& ds, const std::string& filename);
 
-// Load dataset from CSV  
-Dataset loadDataset(const std::string& filename);
+

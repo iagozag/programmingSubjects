@@ -47,8 +47,16 @@ solver_stats = grp.agg(
     pct_optimal   = ("oct_optimal",  lambda x: 100 * x.mean()),
     mean_time_s   = ("oct_solve_time", "mean"),
     max_time_s    = ("oct_solve_time", "max"),
-    mean_mip_gap  = ("oct_mip_gap",   lambda x: x[df.loc[x.index, "oct_optimal"] == 0].mean()),
 ).reset_index()
+
+# mean MIP gap only for instances not solved to optimality
+df_subopt = df[df["oct_optimal"] == 0]
+if not df_subopt.empty:
+    gap_stats = df_subopt.groupby(["D", "p", "n", "alpha_label"])["oct_mip_gap"].mean().reset_index(name="mean_mip_gap")
+    solver_stats = solver_stats.merge(gap_stats, on=["D", "p", "n", "alpha_label"], how="left")
+else:
+    solver_stats["mean_mip_gap"] = float("nan")
+
 print(solver_stats.to_string(index=False))
 
 solver_stats.to_csv(f"{OUTDIR}/solver_stats.csv", index=False)
